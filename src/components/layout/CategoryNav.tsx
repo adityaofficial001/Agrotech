@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   Bug, 
   Leaf, 
@@ -25,16 +26,16 @@ interface Category {
 }
 
 const categories: Category[] = [
-  { id: 'insecticides', name: { en: 'Insecticides', hi: 'कीटनाशक' }, icon: Bug, href: '#insecticides' },
-  { id: 'seeds', name: { en: 'Seeds & Saplings', hi: 'बीज और पौधे' }, icon: Sprout, href: '#seeds' },
-  { id: 'implements', name: { en: 'Implements', hi: 'उपकरण' }, icon: Wrench, href: '#implements' },
-  { id: 'herbicides', name: { en: 'Herbicides', hi: 'खरपतवारनाशी' }, icon: Leaf, href: '#herbicides' },
-  { id: 'fertilizers', name: { en: 'Fertilizers', hi: 'उर्वरक' }, icon: Droplets, href: '#fertilizers' },
-  { id: 'growth', name: { en: 'Plant Growth Promoters', hi: 'पौधा विकास प्रवर्तक' }, icon: TrendingUp, href: '#growth' },
-  { id: 'bioproducts', name: { en: 'Bioproducts', hi: 'जैव उत्पाद' }, icon: Microscope, href: '#bioproducts' },
-  { id: 'allied', name: { en: 'Allied Products', hi: 'संबद्ध उत्पाद' }, icon: ShoppingBag, href: '#allied' },
-  { id: 'cropscience', name: { en: 'Crop Science', hi: 'फसल विज्ञान' }, icon: BookOpen, href: '#cropscience' },
-  { id: 'offers', name: { en: 'Services & Offers', hi: 'सेवाएं और ऑफर' }, icon: Gift, href: '#offers' },
+  { id: 'insecticides', name: { en: 'Insecticides', hi: 'कीटनाशक' }, icon: Bug, href: '/category/insecticides' },
+  { id: 'seeds', name: { en: 'Seeds & Saplings', hi: 'बीज और पौधे' }, icon: Sprout, href: '/category/seeds' },
+  { id: 'implements', name: { en: 'Implements', hi: 'उपकरण' }, icon: Wrench, href: '/category/implements' },
+  { id: 'herbicides', name: { en: 'Herbicides', hi: 'खरपतवारनाशी' }, icon: Leaf, href: '/category/herbicides' },
+  { id: 'fertilizers', name: { en: 'Fertilizers', hi: 'उर्वरक' }, icon: Droplets, href: '/category/fertilizers' },
+  { id: 'growth', name: { en: 'Plant Growth Promoters', hi: 'पौधा विकास प्रवर्तक' }, icon: TrendingUp, href: '/category/growth' },
+  { id: 'bioproducts', name: { en: 'Bioproducts', hi: 'जैव उत्पाद' }, icon: Microscope, href: '/category/bioproducts' },
+  { id: 'allied', name: { en: 'Allied Products', hi: 'संबद्ध उत्पाद' }, icon: ShoppingBag, href: '/category/allied' },
+  { id: 'cropscience', name: { en: 'Crop Science', hi: 'फसल विज्ञान' }, icon: BookOpen, href: '/category/cropscience' },
+  { id: 'offers', name: { en: 'Services & Offers', hi: 'सेवाएं और ऑफर' }, icon: Gift, href: '/category/offers' },
 ];
 
 interface CategoryNavProps {
@@ -49,6 +50,15 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
   onCategoryChange
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category: Category) => {
+    if (onCategoryChange) {
+      onCategoryChange(category.id);
+    }
+    navigate(category.href);
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <nav className="agri-gradient-header sticky top-0 z-40">
@@ -60,13 +70,9 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
             const isActive = activeCategory === category.id;
             
             return (
-              <a
+              <button
                 key={category.id}
-                href={category.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onCategoryChange?.(category.id);
-                }}
+                onClick={() => handleCategoryClick(category)}
                 className={`flex items-center gap-2 px-4 py-3.5 text-sm font-medium transition-all duration-200 ${
                   isActive 
                     ? 'bg-agri-lime/20 text-agri-lime' 
@@ -75,7 +81,7 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
               >
                 <Icon className="w-4 h-4" />
                 <span className="whitespace-nowrap">{category.name[currentLanguage]}</span>
-              </a>
+              </button>
             );
           })}
         </div>
@@ -83,7 +89,7 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
         {/* Mobile Navigation Toggle */}
         <div className="lg:hidden flex items-center justify-between py-3">
           <span className="text-primary-foreground font-medium">
-            {categories.find(c => c.id === activeCategory)?.name[currentLanguage]}
+            {categories.find(c => c.id === activeCategory)?.name[currentLanguage] || 'Categories'}
           </span>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -102,14 +108,9 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
                 const isActive = activeCategory === category.id;
                 
                 return (
-                  <a
+                  <button
                     key={category.id}
-                    href={category.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      onCategoryChange?.(category.id);
-                      setIsMobileMenuOpen(false);
-                    }}
+                    onClick={() => handleCategoryClick(category)}
                     className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       isActive 
                         ? 'bg-agri-lime/20 text-agri-lime' 
@@ -118,7 +119,7 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
                   >
                     <Icon className="w-4 h-4" />
                     <span>{category.name[currentLanguage]}</span>
-                  </a>
+                  </button>
                 );
               })}
             </div>
