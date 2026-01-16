@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Search, Package, Smartphone, User, Globe, Tractor } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 
@@ -36,14 +37,14 @@ const TopHeader: React.FC<TopHeaderProps> = ({
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 shrink-0">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
               <Tractor className="w-6 h-6 text-primary-foreground" />
             </div>
             <span className="text-xl font-display font-bold text-primary">
               AgriCare
             </span>
-          </a>
+          </Link>
 
           {/* Search Bar */}
           <div className="flex-1 max-w-xl order-last md:order-none w-full md:w-auto">
@@ -62,28 +63,30 @@ const TopHeader: React.FC<TopHeaderProps> = ({
           {/* Right Actions */}
           <div className="flex items-center gap-3 shrink-0">
             {/* Bulk Orders */}
-            <a
-              href="#bulk-orders"
+            <Link
+              to="/bulk-orders"
               className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               <Package className="w-4 h-4" />
               <span>{t.bulkOrders}</span>
-            </a>
+            </Link>
 
             {/* Get App */}
-            <a
-              href="#get-app"
+            <Link
+              to="/get-app"
               className="hidden md:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
             >
               <Smartphone className="w-4 h-4" />
               <span>{t.getApp}</span>
-            </a>
+            </Link>
 
             {/* Login */}
-            <AgriButton variant="ghost" size="sm" className="gap-2">
-              <User className="w-4 h-4" />
-              <span className="hidden sm:inline">{t.login}</span>
-            </AgriButton>
+            <Link to="/login">
+              <AgriButton variant="ghost" size="sm" className="gap-2">
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">{t.login}</span>
+              </AgriButton>
+            </Link>
 
             {/* Language Selector */}
             <div className="relative">
