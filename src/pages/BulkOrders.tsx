@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Package, Phone, Mail, Building, User, MessageSquare, Send, CheckCircle } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
-import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
-import Footer from '@/components/layout/Footer';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { useLanguage } from "../contexts/LanguageContext";
 import { toast } from '@/hooks/use-toast';
 
 const BulkOrders = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi'>('en');
+  const { language } = useLanguage();
+  // Map uppercase language code from context to lowercase for local translations object
+  const currentLanguage = language.toLowerCase() as 'en' | 'hi';
+
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -106,19 +109,10 @@ const BulkOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <TopHeader 
-        currentLanguage={currentLanguage}
-        onLanguageChange={setCurrentLanguage}
-      />
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Header />
 
-      <CategoryNav 
-        currentLanguage={currentLanguage}
-        activeCategory=""
-        onCategoryChange={() => {}}
-      />
-
-      <main className="flex-1 py-12">
+      <main className="flex-1 py-12 pt-32">
         <div className="container mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-12">
@@ -135,7 +129,7 @@ const BulkOrders = () => {
           <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Form */}
             <div className="lg:col-span-2">
-              <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-agri-md">
+              <div className="bg-white border border-border rounded-2xl p-6 md:p-8 shadow-sm">
                 {isSubmitted ? (
                   <div className="text-center py-12">
                     <div className="w-20 h-20 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
@@ -283,7 +277,7 @@ const BulkOrders = () => {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Benefits */}
-              <div className="bg-card border border-border rounded-2xl p-6 shadow-agri-md">
+              <div className="bg-white border border-border rounded-2xl p-6 shadow-sm">
                 <h3 className="text-lg font-display font-bold text-foreground mb-4">
                   {t.benefitsTitle}
                 </h3>
@@ -302,8 +296,8 @@ const BulkOrders = () => {
                 <h3 className="text-lg font-display font-bold text-foreground mb-4">
                   {t.contactUs}
                 </h3>
-                <a 
-                  href="tel:7974218016" 
+                <a
+                  href="tel:7974218016"
                   className="flex items-center gap-3 text-primary font-medium hover:underline"
                 >
                   <Phone className="w-5 h-5" />
@@ -315,9 +309,10 @@ const BulkOrders = () => {
         </div>
       </main>
 
-      <Footer currentLanguage={currentLanguage} />
+      <Footer />
     </div>
   );
 };
+
 
 export default BulkOrders;

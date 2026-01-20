@@ -20,7 +20,9 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#1a5319", // Dark Green
+          light: "#d6efd8",   // Light Green Highlight
+          hover: "#144013",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -76,6 +78,7 @@ export default {
       fontFamily: {
         sans: ['Nunito Sans', 'sans-serif'],
         display: ['Outfit', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {

@@ -1,146 +1,94 @@
-import React, { useState } from 'react';
-import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
-import Footer from '@/components/layout/Footer';
-import HeroBanner from '@/components/sections/HeroBanner';
-import CategoryBanner from '@/components/sections/CategoryBanner';
-import ProductSlider from '@/components/products/ProductSlider';
-import { Product } from '@/components/products/ProductCard';
-import { 
-  insecticideProducts, 
-  seedProducts, 
-  fertilizerProducts, 
-  herbicideProducts 
+
+import { Header } from "@/components/Header";
+import { CategoryStrip } from "@/components/CategoryStrip";
+import { Hero } from "@/components/Hero";
+import Footer from "@/components/layout/Footer";
+import { CategoryShowcase } from "@/components/CategoryShowcase";
+import { useLanguage } from "../contexts/LanguageContext";
+import ProductSlider from "@/components/products/ProductSlider";
+import {
+  insecticideProducts,
+  seedProducts,
+  fertilizerProducts,
+  herbicideProducts
 } from '@/data/products';
-import { toast } from '@/hooks/use-toast';
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Index = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi'>('en');
-  const [activeCategory, setActiveCategory] = useState('insecticides');
+  const { t, language } = useLanguage();
+  const navigate = useNavigate();
 
-  const translations = {
-    en: {
-      insecticides: 'Insecticides',
-      seeds: 'Seeds & Saplings',
-      fertilizers: 'Fertilizers',
-      herbicides: 'Herbicides',
-      allProducts: 'All Products',
-      featuredProducts: 'Featured Products',
-      addedToCart: 'Added to cart!',
-    },
-    hi: {
-      insecticides: 'कीटनाशक',
-      seeds: 'बीज और पौधे',
-      fertilizers: 'उर्वरक',
-      herbicides: 'खरपतवारनाशी',
-      allProducts: 'सभी उत्पाद',
-      featuredProducts: 'विशेष उत्पाद',
-      addedToCart: 'कार्ट में जोड़ा गया!',
-    }
+  // Combine products for showcases
+  const allProducts = [
+    ...insecticideProducts,
+    ...seedProducts,
+    ...fertilizerProducts,
+    ...herbicideProducts
+  ];
+
+  // Mock "Featured" (mix of items)
+  const featuredProducts = [
+    insecticideProducts[0],
+    seedProducts[0],
+    fertilizerProducts[0],
+    herbicideProducts[0],
+    insecticideProducts[1],
+    seedProducts[1],
+  ].filter(Boolean);
+
+  // Mock "Best Sellers" (sorted by price or random)
+  const bestSellers = [
+    ...stockFilter(seedProducts),
+    ...stockFilter(fertilizerProducts),
+    ...stockFilter(insecticideProducts)
+  ].slice(0, 8);
+
+  function stockFilter(products: any[]) {
+    return products.filter(p => p.inStock);
+  }
+
+  const handleAddToCart = (product: any) => {
+    toast.success(`${product.name} added to cart`);
   };
 
-  const t = translations[currentLanguage];
-
-  const handleAddToCart = (product: Product) => {
-    toast({
-      title: t.addedToCart,
-      description: product.name,
-    });
-  };
-
-  const getCategoryProducts = () => {
-    switch (activeCategory) {
-      case 'insecticides':
-        return { products: insecticideProducts, title: t.insecticides };
-      case 'seeds':
-        return { products: seedProducts, title: t.seeds };
-      case 'fertilizers':
-        return { products: fertilizerProducts, title: t.fertilizers };
-      case 'herbicides':
-        return { products: herbicideProducts, title: t.herbicides };
-      default:
-        return { products: insecticideProducts, title: t.insecticides };
-    }
-  };
-
-  const { products, title } = getCategoryProducts();
+  const code = language === 'HI' ? 'hi' : 'en';
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <TopHeader 
-        currentLanguage={currentLanguage}
-        onLanguageChange={setCurrentLanguage}
-      />
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Header />
+      <CategoryStrip />
 
-      {/* Category Navigation */}
-      <CategoryNav 
-        currentLanguage={currentLanguage}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
+      <main className="flex-grow">
+        {/* 1. Hero Banner */}
+        <Hero />
 
-      {/* Main Content */}
-      <main className="flex-1">
-        {/* Hero Banner */}
-        <HeroBanner currentLanguage={currentLanguage} />
+        {/* 2. Category Quick Links */}
+        <CategoryShowcase />
 
-        {/* Products Section */}
-        <div className="container mx-auto px-4 py-8">
-          {/* Category Banner */}
-          <CategoryBanner 
-            category={activeCategory}
-            currentLanguage={currentLanguage}
-          />
-
-          {/* Product Slider/Grid */}
-          <ProductSlider 
-            products={products}
-            title={title}
-            currentLanguage={currentLanguage}
+        {/* 3. Featured Products Section */}
+        <div className="container mx-auto px-4 mt-8">
+          <ProductSlider
+            products={featuredProducts}
+            title={language === 'HI' ? 'विशेष उत्पाद' : 'Featured Products'}
+            currentLanguage={code}
             onAddToCart={handleAddToCart}
           />
-
-          {/* Featured Products from other categories */}
-          {activeCategory === 'insecticides' && (
-            <>
-              <ProductSlider 
-                products={seedProducts.slice(0, 5)}
-                title={t.seeds}
-                currentLanguage={currentLanguage}
-                onAddToCart={handleAddToCart}
-              />
-              <ProductSlider 
-                products={fertilizerProducts.slice(0, 5)}
-                title={t.fertilizers}
-                currentLanguage={currentLanguage}
-                onAddToCart={handleAddToCart}
-              />
-            </>
-          )}
-
-          {activeCategory === 'seeds' && (
-            <ProductSlider 
-              products={fertilizerProducts.slice(0, 5)}
-              title={t.fertilizers}
-              currentLanguage={currentLanguage}
-              onAddToCart={handleAddToCart}
-            />
-          )}
-
-          {activeCategory === 'fertilizers' && (
-            <ProductSlider 
-              products={herbicideProducts.slice(0, 4)}
-              title={t.herbicides}
-              currentLanguage={currentLanguage}
-              onAddToCart={handleAddToCart}
-            />
-          )}
         </div>
+
+        {/* 4. Best-Selling Section */}
+        <div className="container mx-auto px-4 mt-8 mb-12">
+          <ProductSlider
+            products={bestSellers}
+            title={language === 'HI' ? 'सर्वाधिक बिकने वाले' : 'Best Sellers'}
+            currentLanguage={code}
+            onAddToCart={handleAddToCart}
+          />
+        </div>
+
       </main>
 
-      {/* Footer */}
-      <Footer currentLanguage={currentLanguage} />
+      <Footer currentLanguage={code} />
     </div>
   );
 };
