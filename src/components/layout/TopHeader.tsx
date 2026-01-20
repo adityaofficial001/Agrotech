@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Package, Smartphone, User, Globe, Tractor } from 'lucide-react';
+import { Search, Package, Smartphone, User, Globe, Tractor, ShoppingCart } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
+import { useCart } from '@/contexts/CartContext';
+import CartSidebar from '@/components/cart/CartSidebar';
 
 interface TopHeaderProps {
   onLanguageChange?: (lang: 'en' | 'hi') => void;
@@ -12,8 +14,10 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   onLanguageChange, 
   currentLanguage = 'en' 
 }) => {
+  const { itemsCount } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const translations = {
     en: {
@@ -80,6 +84,21 @@ const TopHeader: React.FC<TopHeaderProps> = ({
               <span>{t.getApp}</span>
             </Link>
 
+            {/* Cart */}
+            <AgriButton 
+              variant="ghost" 
+              size="sm" 
+              className="gap-2 relative"
+              onClick={() => setIsCartOpen(true)}
+            >
+              <ShoppingCart className="w-4 h-4" />
+              {itemsCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                  {itemsCount > 99 ? '99+' : itemsCount}
+                </span>
+              )}
+            </AgriButton>
+
             {/* Login */}
             <Link to="/login">
               <AgriButton variant="ghost" size="sm" className="gap-2">
@@ -130,6 +149,13 @@ const TopHeader: React.FC<TopHeaderProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Cart Sidebar */}
+      <CartSidebar 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+        currentLanguage={currentLanguage}
+      />
     </header>
   );
 };
