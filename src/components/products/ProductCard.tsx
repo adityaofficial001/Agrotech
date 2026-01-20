@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Tractor, ShoppingCart, Wheat, Bug, Droplets } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 
@@ -32,6 +33,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   currentLanguage = 'en',
   onAddToCart 
 }) => {
+  const navigate = useNavigate();
+  
   const translations = {
     en: {
       outOfStock: "Out of Stock",
@@ -46,6 +49,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const t = translations[currentLanguage];
+
+  const handleShopNow = () => {
+    if (product.inStock) {
+      navigate(`/product/${product.id}`);
+    }
+  };
 
   return (
     <div className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-lg transition-all duration-300 flex flex-col">
@@ -154,7 +163,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             size="sm"
             className="w-full"
             disabled={!product.inStock}
-            onClick={() => onAddToCart?.(product)}
+            onClick={handleShopNow}
           >
             <ShoppingCart className="w-4 h-4" />
             {product.inStock ? t.shopNow : t.outOfStock}
