@@ -37,6 +37,13 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Sync internal state with external prop
+  useEffect(() => {
+    if (externalActiveCategory) {
+      setActiveCategory(externalActiveCategory);
+    }
+  }, [externalActiveCategory]);
+
   // Unified Scroll Spy Logic
   useEffect(() => {
     if (location.pathname !== '/' && location.pathname !== '/index.html') return;
@@ -72,6 +79,13 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
   const handleCategoryClick = (category: NavCategory) => {
     setIsMobileMenuOpen(false);
     setActiveCategory(category.id);
+
+    // If an external handler is provided, let it handle the navigation logic completely
+    // This is used by CategoryPage to switch categories without going home
+    if (onCategoryChange && location.pathname !== '/' && location.pathname !== '/index.html') {
+      onCategoryChange(category.id);
+      return;
+    }
 
     // Smooth scroll if on index page
     if (location.pathname === '/' || location.pathname === '/index.html') {

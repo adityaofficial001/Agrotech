@@ -24,7 +24,7 @@ import {
   cropscienceProducts,
   offersProducts
 } from '@/data/products';
-import { toast } from '@/hooks/use-toast';
+
 
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -40,7 +40,9 @@ const CategoryPage = () => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // Reset filters when category changes
+  // Reset filters when category changes
   useEffect(() => {
+    window.scrollTo(0, 0);
     setSelectedBrands([]);
     setSelectedCrops([]);
     setPriceRange([0, 10000]);
@@ -56,12 +58,7 @@ const CategoryPage = () => {
     return `Showing ${filtered} of ${total} products`;
   };
 
-  const handleAddToCart = (product: Product) => {
-    toast({
-      title: t.products.addedToCart,
-      description: product.name,
-    });
-  };
+
 
   const handleCategoryChange = (newCategoryId: string) => {
     navigate(`/category/${newCategoryId}`);
@@ -231,6 +228,7 @@ const CategoryPage = () => {
 
       <CategoryNav
         activeCategory={categoryId || 'insecticides'}
+        onCategoryChange={handleCategoryChange}
       />
 
       <main className="flex-1">
