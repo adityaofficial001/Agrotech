@@ -6,18 +6,18 @@ interface CategoryBannerProps {
   currentLanguage?: 'en' | 'hi';
 }
 
-const CategoryBanner: React.FC<CategoryBannerProps> = ({ 
-  category, 
-  currentLanguage = 'en' 
+const CategoryBanner: React.FC<CategoryBannerProps> = ({
+  category,
+  currentLanguage = 'en'
 }) => {
-  const categoryData: Record<string, { 
-    title: { en: string; hi: string }; 
+  const categoryData: Record<string, {
+    title: { en: string; hi: string };
     description: { en: string; hi: string };
     showPestGraphic: boolean;
   }> = {
     insecticides: {
       title: { en: 'Insecticides', hi: 'कीटनाशक' },
-      description: { 
+      description: {
         en: 'Protect your crops with our premium range of insecticides. Effective solutions for every pest problem.',
         hi: 'हमारे प्रीमियम कीटनाशकों की श्रृंखला से अपनी फसलों की रक्षा करें। हर कीट समस्या का प्रभावी समाधान।'
       },
@@ -25,7 +25,7 @@ const CategoryBanner: React.FC<CategoryBannerProps> = ({
     },
     seeds: {
       title: { en: 'Seeds & Saplings', hi: 'बीज और पौधे' },
-      description: { 
+      description: {
         en: 'High-quality seeds and saplings for maximum yield and healthy crops.',
         hi: 'अधिकतम उपज और स्वस्थ फसलों के लिए उच्च गुणवत्ता वाले बीज और पौधे।'
       },
@@ -33,7 +33,7 @@ const CategoryBanner: React.FC<CategoryBannerProps> = ({
     },
     herbicides: {
       title: { en: 'Herbicides', hi: 'खरपतवारनाशी' },
-      description: { 
+      description: {
         en: 'Effective weed control solutions to keep your fields clean and productive.',
         hi: 'अपने खेतों को साफ और उत्पादक रखने के लिए प्रभावी खरपतवार नियंत्रण समाधान।'
       },
@@ -41,15 +41,67 @@ const CategoryBanner: React.FC<CategoryBannerProps> = ({
     },
     fertilizers: {
       title: { en: 'Fertilizers', hi: 'उर्वरक' },
-      description: { 
+      description: {
         en: 'Nutrient-rich fertilizers for healthy soil and abundant harvests.',
         hi: 'स्वस्थ मिट्टी और भरपूर फसल के लिए पोषक तत्वों से भरपूर उर्वरक।'
       },
       showPestGraphic: false,
     },
+    implements: {
+      title: { en: 'Agricultural Implements', hi: 'कृषि उपकरण' },
+      description: {
+        en: 'Modern tools and machinery to make your farming easier and more efficient.',
+        hi: 'आपकी खेती को आसान और अधिक कुशल बनाने के लिए आधुनिक उपकरण और मशीनरी।'
+      },
+      showPestGraphic: false,
+    },
+    growth: {
+      title: { en: 'Plant Growth Promoters', hi: 'पौध विकास प्रमोटर' },
+      description: {
+        en: 'Boost your crop growth and yield with our advanced plant growth solutions.',
+        hi: 'हमारे उन्नत पौध विकास समाधानों के साथ अपनी फसल की वृद्धि और उपज बढ़ाएं।'
+      },
+      showPestGraphic: false,
+    },
+    bioproducts: {
+      title: { en: 'Bioproducts', hi: 'जैव उत्पाद' },
+      description: {
+        en: 'Organic and eco-friendly solutions for sustainable and healthy farming.',
+        hi: 'स्थायी और स्वस्थ खेती के लिए जैविक और पर्यावरण के अनुकूल समाधान।'
+      },
+      showPestGraphic: false,
+    },
+    allied: {
+      title: { en: 'Allied Products', hi: 'संबद्ध उत्पाद' },
+      description: {
+        en: 'Essential agricultural accessories and supplies for your daily farming needs.',
+        hi: 'आपकी दैनिक खेती की जरूरतों के लिए आवश्यक कृषि सहायक उपकरण और आपूर्ति।'
+      },
+      showPestGraphic: false,
+    },
+    cropscience: {
+      title: { en: 'Crop Science', hi: 'फसल विज्ञान' },
+      description: {
+        en: 'Science-backed solutions for optimal crop health and development.',
+        hi: 'इष्टतम फसल स्वास्थ्य और विकास के लिए विज्ञान-समर्थित समाधान।'
+      },
+      showPestGraphic: false,
+    },
+    offers: {
+      title: { en: 'Special Offers', hi: 'विशेष ऑफर' },
+      description: {
+        en: 'Grab the best deals on premium agricultural products. Limited time offers!',
+        hi: 'प्रीमियम कृषि उत्पादों पर सर्वोत्तम सौदे प्राप्त करें। सीमित समय के ऑफर!'
+      },
+      showPestGraphic: false,
+    },
   };
 
-  const data = categoryData[category] || categoryData.insecticides;
+  const data = categoryData[category] || {
+    title: { en: category, hi: category },
+    description: { en: '', hi: '' },
+    showPestGraphic: false
+  };
 
   return (
     <div className="relative bg-gradient-to-r from-primary via-agri-green to-agri-green-dark rounded-2xl overflow-hidden mb-8">

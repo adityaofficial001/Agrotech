@@ -1,5 +1,4 @@
-import { Product } from '@/components/products/ProductCard';
-
+import { Product } from '@/data/categories';
 // Import product images
 import insecticide1 from '@/assets/products/insecticide-1.png';
 import insecticide2 from '@/assets/products/insecticide-2.png';
@@ -15,92 +14,108 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-001',
     name: 'Super Kill Pro - Broad Spectrum Insecticide',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide1,
+    price: 450,
     priceMin: 450,
     priceMax: 1200,
     quantity: '1L',
     inStock: true,
     crops: ['wheat', 'rice', 'cotton'],
     pests: ['aphids', 'whitefly'],
+    category: 'Insecticides'
   },
   {
     id: 'ins-002',
     name: 'Pest Guard Ultra - Contact Insecticide',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide2,
+    price: 320,
     priceMin: 320,
     priceMax: 890,
     quantity: '500ml',
     inStock: true,
     crops: ['tomato', 'brinjal'],
     pests: ['caterpillar'],
+    category: 'Insecticides'
   },
   {
     id: 'ins-003',
     name: 'BioShield Organic Pest Control',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide3,
+    price: 280,
     priceMin: 280,
     priceMax: 750,
     quantity: '1L',
     inStock: true,
     crops: ['vegetables'],
+    category: 'Insecticides'
   },
   {
     id: 'ins-004',
     name: 'Termite End - Soil Treatment',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide2,
+    price: 890,
     priceMin: 890,
     priceMax: 2400,
     quantity: '5L',
     inStock: false,
     pests: ['termite'],
+    category: 'Insecticides'
   },
   {
     id: 'ins-005',
     name: 'Crop Defender Systemic Insecticide',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide1,
+    price: 560,
     priceMin: 560,
     priceMax: 1450,
     quantity: '1L',
     inStock: true,
     crops: ['wheat', 'maize'],
     pests: ['stem borer'],
+    category: 'Insecticides'
   },
   {
     id: 'ins-006',
     name: 'Quick Kill Spray - Ready to Use',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide3,
+    price: 199,
     priceMin: 199,
     priceMax: 199,
     quantity: '500ml',
     inStock: true,
+    category: 'Insecticides'
   },
   {
     id: 'ins-007',
     name: 'Root Shield Plus - Soil Insecticide',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide2,
+    price: 720,
     priceMin: 720,
     priceMax: 1800,
     quantity: '1KG',
     inStock: true,
     crops: ['sugarcane'],
+    category: 'Insecticides'
   },
   {
     id: 'ins-008',
     name: 'Fly Away - Flying Pest Control',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: insecticide1,
+    price: 380,
     priceMin: 380,
     priceMax: 950,
     quantity: '1L',
     inStock: true,
     pests: ['fruit fly'],
+    category: 'Insecticides'
   },
 ];
 
@@ -108,8 +123,10 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-001',
     name: 'Premium Wheat Seeds - High Yield Variety',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: seeds1,
+    price: 180,
+
     priceMin: 180,
     priceMax: 450,
     quantity: '5KG',
@@ -119,8 +136,10 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-002',
     name: 'Hybrid Rice Seeds - Basmati Quality',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: seeds2,
+    price: 350,
+
     priceMin: 350,
     priceMax: 850,
     quantity: '2KG',
@@ -130,8 +149,10 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-003',
     name: 'Organic Tomato Seeds - Cherry Variety',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: seeds3,
+    price: 120,
+
     priceMin: 120,
     priceMax: 320,
     quantity: '100g',
@@ -141,8 +162,10 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-004',
     name: 'Cotton Seeds - Bt Hybrid',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: seeds1,
+    price: 890,
+
     priceMin: 890,
     priceMax: 1200,
     quantity: '450g',
@@ -152,8 +175,10 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-005',
     name: 'Maize Seeds - Sweet Corn Variety',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: seeds2,
+    price: 250,
+
     priceMin: 250,
     priceMax: 600,
     quantity: '1KG',
@@ -166,8 +191,10 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-001',
     name: 'NPK 20-20-20 - Balanced Fertilizer',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: fertilizer1,
+    price: 450,
+
     priceMin: 450,
     priceMax: 1200,
     quantity: '10KG',
@@ -176,8 +203,10 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-002',
     name: 'Urea 46% Nitrogen - Growth Booster',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: fertilizer1,
+    price: 280,
+
     priceMin: 280,
     priceMax: 680,
     quantity: '10KG',
@@ -186,8 +215,10 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-003',
     name: 'DAP - Di-Ammonium Phosphate',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: fertilizer1,
+    price: 650,
+
     priceMin: 650,
     priceMax: 1500,
     quantity: '25KG',
@@ -196,8 +227,10 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-004',
     name: 'Organic Vermicompost Premium',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: fertilizer2,
+    price: 180,
+
     priceMin: 180,
     priceMax: 450,
     quantity: '5KG',
@@ -206,8 +239,10 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-005',
     name: 'Potash MOP - Potassium Fertilizer',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: fertilizer1,
+    price: 520,
+
     priceMin: 520,
     priceMax: 1350,
     quantity: '25KG',
@@ -219,8 +254,10 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-001',
     name: 'Weed Clear Pro - Pre-Emergent',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: herbicide1,
+    price: 380,
+
     priceMin: 380,
     priceMax: 950,
     quantity: '1L',
@@ -229,8 +266,10 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-002',
     name: 'Grass Killer - Selective Herbicide',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: herbicide1,
+    price: 290,
+
     priceMin: 290,
     priceMax: 720,
     quantity: '500ml',
@@ -239,8 +278,10 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-003',
     name: 'Total Weed Control - Non-Selective',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: herbicide1,
+    price: 550,
+
     priceMin: 550,
     priceMax: 1400,
     quantity: '5L',
@@ -249,13 +290,442 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-004',
     name: 'Paddy Weed Killer - Rice Herbicide',
-    brand: 'AgroCare',
+    brand: 'Vartman',
     image: herbicide1,
+    price: 420,
+
     priceMin: 420,
     priceMax: 1100,
     quantity: '1L',
     inStock: true,
     crops: ['rice'],
+  },
+];
+
+
+export const implementsProducts: Product[] = [
+  {
+    id: 'impl-001',
+    name: 'Heavy Duty Sprayer 16L',
+    brand: 'AgroMech',
+    image: fertilizer1,
+    price: 1200,
+
+    priceMin: 1200,
+    priceMax: 1800,
+    quantity: '1 Unit',
+    inStock: true,
+  },
+  {
+    id: 'impl-002',
+    name: 'Garden Tools Set (5 pcs)',
+    brand: 'AgroMech',
+    image: fertilizer1,
+    price: 450,
+
+    priceMin: 450,
+    priceMax: 890,
+    quantity: '1 Set',
+    inStock: true,
+  },
+  {
+    id: 'impl-003',
+    name: 'Manual Seeder Machine',
+    brand: 'AgroMech',
+    image: fertilizer1,
+    price: 2500,
+
+    priceMin: 2500,
+    priceMax: 3500,
+    quantity: '1 Unit',
+    inStock: true,
+  },
+  {
+    id: 'impl-004',
+    name: 'Pruning Shears Premium',
+    brand: 'AgroMech',
+    image: fertilizer1,
+    price: 350,
+
+    priceMin: 350,
+    priceMax: 650,
+    quantity: '1 Unit',
+    inStock: true,
+  },
+  {
+    id: 'impl-005',
+    name: 'Soil pH Meter Digital',
+    brand: 'AgroMech',
+    image: fertilizer1,
+    price: 800,
+
+    priceMin: 800,
+    priceMax: 1500,
+    quantity: '1 Unit',
+    inStock: true,
+  },
+];
+
+export const growthProducts: Product[] = [
+  {
+    id: 'growth-001',
+    name: 'MaxGro Plant Booster',
+    brand: 'AgroMax',
+    image: fertilizer2,
+    price: 350,
+
+    priceMin: 350,
+    priceMax: 700,
+    quantity: '500ml',
+    inStock: true,
+  },
+  {
+    id: 'growth-002',
+    name: 'Root Activator Humphries',
+    brand: 'AgroMax',
+    image: fertilizer2,
+    price: 450,
+
+    priceMin: 450,
+    priceMax: 900,
+    quantity: '1L',
+    inStock: true,
+  },
+  {
+    id: 'growth-003',
+    name: 'Flowering Special Stimulant',
+    brand: 'AgroMax',
+    image: fertilizer2,
+    price: 550,
+
+    priceMin: 550,
+    priceMax: 1100,
+    quantity: '250ml',
+    inStock: true,
+  },
+  {
+    id: 'growth-004',
+    name: 'Cytokinin Growth Regulator',
+    brand: 'AgroMax',
+    image: fertilizer2,
+    price: 200,
+    priceMin: 200,
+    priceMax: 450,
+    quantity: '100ml',
+    inStock: true,
+  },
+  {
+    id: 'growth-005',
+    name: 'Green Leaf Elite - Foliar Feed',
+    brand: 'AgroMax',
+    image: fertilizer2,
+    price: 380,
+    priceMin: 380,
+    priceMax: 760,
+    quantity: '1L',
+    inStock: true,
+  },
+  {
+    id: 'growth-006',
+    name: 'Yield Master - Fruit Finisher',
+    brand: 'AgroMax',
+    image: fertilizer2,
+    price: 650,
+    priceMin: 650,
+    priceMax: 1300,
+    quantity: '500ml',
+    inStock: true,
+  },
+];
+
+export const bioproductsProducts: Product[] = [
+  {
+    id: 'bio-001',
+    name: 'Trichoderma Viride Bio-Fungicide',
+    brand: 'BioLife',
+    image: insecticide3,
+    price: 180,
+
+    priceMin: 180,
+    priceMax: 350,
+    quantity: '1KG',
+    inStock: true,
+  },
+  {
+    id: 'bio-002',
+    name: 'Pseudomonas Fluorescens',
+    brand: 'BioLife',
+    image: insecticide3,
+    price: 200,
+
+    priceMin: 200,
+    priceMax: 400,
+    quantity: '1L',
+    inStock: true,
+  },
+  {
+    id: 'bio-003',
+    name: 'Neem Oil 10000 PPM',
+    brand: 'BioLife',
+    image: insecticide3,
+    price: 300,
+
+    priceMin: 300,
+    priceMax: 600,
+    quantity: '1L',
+    inStock: true,
+  },
+  {
+    id: 'bio-004',
+    name: 'Beauveria Bassiana',
+    brand: 'BioLife',
+    image: insecticide3,
+    price: 250,
+    priceMin: 250,
+    priceMax: 500,
+    quantity: '1KG',
+    inStock: true,
+  },
+  {
+    id: 'bio-005',
+    name: 'Earthworm Extract Liquid',
+    brand: 'BioLife',
+    image: insecticide3,
+    price: 450,
+    priceMin: 450,
+    priceMax: 900,
+    quantity: '5L',
+    inStock: true,
+  },
+  {
+    id: 'bio-006',
+    name: 'Bio-NPK Organic Granules',
+    brand: 'BioLife',
+    image: insecticide3,
+    price: 1200,
+    priceMin: 1200,
+    priceMax: 2500,
+    quantity: '25KG',
+    inStock: true,
+  },
+];
+
+export const alliedProducts: Product[] = [
+  {
+    id: 'allied-001',
+    name: 'Mulching Film Silver/Black',
+    brand: 'AgroPlast',
+    image: fertilizer1,
+    price: 1500,
+
+    priceMin: 1500,
+    priceMax: 3000,
+    quantity: '400m',
+    inStock: true,
+  },
+  {
+    id: 'allied-002',
+    name: 'Crop Net / Safety Net',
+    brand: 'AgroPlast',
+    image: fertilizer1,
+    price: 800,
+
+    priceMin: 800,
+    priceMax: 1600,
+    quantity: '50m',
+    inStock: true,
+  },
+  {
+    id: 'allied-003',
+    name: 'Seedling Trays (50 Cavity)',
+    brand: 'AgroPlast',
+    image: fertilizer1,
+    price: 25,
+
+    priceMin: 25,
+    priceMax: 50,
+    quantity: '1 pc',
+    inStock: true,
+  },
+  {
+    id: 'allied-004',
+    name: 'Sticky Traps (Yellow/Blue)',
+    brand: 'AgroPlast',
+    image: insecticide2,
+    price: 150,
+    priceMin: 150,
+    priceMax: 300,
+    quantity: 'Pack of 10',
+    inStock: true,
+  },
+  {
+    id: 'allied-005',
+    name: 'UV Stabilized Shading Net 50%',
+    brand: 'AgroPlast',
+    image: fertilizer1,
+    price: 2500,
+    priceMin: 2500,
+    priceMax: 5000,
+    quantity: '3m x 50m',
+    inStock: true,
+  },
+  {
+    id: 'allied-006',
+    name: 'Drip Irrigation Pipe 16mm',
+    brand: 'AgroPlast',
+    image: fertilizer1,
+    price: 1800,
+    priceMin: 1800,
+    priceMax: 3500,
+    quantity: '100m Roll',
+    inStock: true,
+  },
+];
+
+export const cropscienceProducts: Product[] = [
+  {
+    id: 'cs-001',
+    name: 'Soil Testing Service Kit (Pro)',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 500,
+
+    priceMin: 500,
+    priceMax: 1000,
+    quantity: '1 Kit',
+    inStock: true,
+  },
+  {
+    id: 'cs-002',
+    name: 'Crop Doctor Consultation',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 100,
+
+    priceMin: 100,
+    priceMax: 500,
+    quantity: '1 Session',
+    inStock: true,
+  },
+  {
+    id: 'cs-003',
+    name: 'Disease Diagnostic Field Guide',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 300,
+    priceMin: 300,
+    priceMax: 600,
+    quantity: '1 Book',
+    inStock: true,
+  },
+  {
+    id: 'cs-004',
+    name: 'Digital Moisture Meter',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 1500,
+    priceMin: 1500,
+    priceMax: 2500,
+    quantity: '1 Unit',
+    inStock: true,
+  },
+  {
+    id: 'cs-005',
+    name: 'Pocket Microscope (100x)',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 850,
+    priceMin: 850,
+    priceMax: 1200,
+    quantity: '1 Unit',
+    inStock: true,
+  },
+  {
+    id: 'cs-006',
+    name: 'NPK Soil Test Strips (50 pcs)',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 450,
+    priceMin: 450,
+    priceMax: 600,
+    quantity: '1 Pack',
+    inStock: true,
+  },
+];
+
+export const offersProducts: Product[] = [
+  {
+    id: 'ser-001',
+    name: 'Drone Spraying Service',
+    brand: 'AgriTech Solutions',
+    image: seeds1,
+    price: 499,
+    priceMin: 499,
+    priceMax: 999,
+    quantity: 'Per Acre',
+    inStock: true,
+    category: 'Services',
+    crops: ['All Crops']
+  },
+  {
+    id: 'ser-002',
+    name: 'Soil Health Card & Analysis',
+    brand: 'AgriLab',
+    image: fertilizer2,
+    price: 299,
+    priceMin: 299,
+    priceMax: 499,
+    quantity: '1 Sample',
+    inStock: true,
+    category: 'Services'
+  },
+  {
+    id: 'ser-003',
+    name: 'Expert Farm Consultancy',
+    brand: 'Vartman Experts',
+    image: seeds3,
+    price: 999,
+    priceMin: 999,
+    priceMax: 2499,
+    quantity: '1 Month',
+    inStock: true,
+    category: 'Services'
+  },
+  {
+    id: 'off-001',
+    name: 'Monsoon Special Combo',
+    brand: 'Vartman',
+    image: seeds1,
+    price: 999,
+
+    priceMin: 999,
+    priceMax: 1500,
+    quantity: '1 Pack',
+    inStock: true,
+  },
+  {
+    id: 'off-002',
+    name: 'Farmer Starter Kit',
+    brand: 'Vartman',
+    image: seeds2,
+    price: 1499,
+
+    priceMin: 1499,
+    priceMax: 2499,
+    quantity: '1 Kit',
+    inStock: true,
+  },
+  {
+    id: 'off-003',
+    name: 'Bulk Purchase Membership',
+    brand: 'Vartman',
+    image: seeds3,
+    price: 499,
+
+    priceMin: 499,
+    priceMax: 999,
+    quantity: '1 Year',
+    inStock: true,
   },
 ];
 
@@ -265,5 +735,24 @@ export const getAllProducts = () => {
     seeds: seedProducts,
     fertilizers: fertilizerProducts,
     herbicides: herbicideProducts,
+    implements: implementsProducts,
+    growth: growthProducts,
+    bioproducts: bioproductsProducts,
+    allied: alliedProducts,
+    cropscience: cropscienceProducts,
+    offers: offersProducts,
   };
 };
+
+export const allProductsArray: Product[] = [
+  ...insecticideProducts,
+  ...seedProducts,
+  ...fertilizerProducts,
+  ...herbicideProducts,
+  ...implementsProducts,
+  ...growthProducts,
+  ...bioproductsProducts,
+  ...alliedProducts,
+  ...cropscienceProducts,
+  ...offersProducts
+];

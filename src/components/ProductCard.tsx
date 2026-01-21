@@ -11,17 +11,17 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-    const { addToCart } = useCart();
+    const { addToCart, buyNow } = useCart();
     const { t, language } = useLanguage();
     const navigate = useNavigate();
 
     const handleAddToCart = () => {
         addToCart(product);
-        navigate('/checkout');
+        // User remains on page, toast handled by context
     };
 
     const handleBuyNow = () => {
-        addToCart(product);
+        buyNow(product);
         navigate('/checkout');
     };
 
@@ -83,21 +83,22 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
                     {/* Action Buttons */}
                     <div className="grid grid-cols-2 gap-2">
-                        <button
-                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-agri-yellow text-agri-brown font-bold hover:bg-agri-lime shadow-agri-sm hover:shadow-agri-md active:scale-[0.98] h-8 rounded-md px-2 text-[10px] w-full"
+                        <Button
+                            variant="secondary"
+                            className="w-full h-9 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold shadow-sm hover:translate-y-[-1px] transition-all"
                             onClick={handleBuyNow}
                             disabled={!product.inStock}
                         >
-                            {t.hero.shopNow || "Buy Now"}
-                        </button>
-                        <button
-                            className="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-white font-bold hover:bg-primary/90 shadow-agri-sm hover:shadow-agri-md active:scale-[0.98] h-8 rounded-md px-2 text-[10px] w-full"
+                            {t.products.buyNow || "Buy Now"}
+                        </Button>
+                        <Button
+                            className="w-full h-9 rounded-lg bg-agri-yellow hover:bg-agri-yellow/90 text-agri-brown font-bold shadow-sm flex items-center gap-1.5 hover:translate-y-[-1px] transition-all"
                             onClick={handleAddToCart}
                             disabled={!product.inStock}
                         >
-                            <ShoppingCart className="w-3 h-3" />
-                            <span>{t.products.addToCart || "Add"}</span>
-                        </button>
+                            <ShoppingCart className="w-4 h-4" />
+                            {t.products.addToCart || "Add"}
+                        </Button>
                     </div>
                 </div>
             </div>

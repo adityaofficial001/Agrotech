@@ -1,51 +1,10 @@
-import React from 'react';
 import { Phone, Mail, MapPin, Tractor, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-interface FooterProps {
-  currentLanguage?: 'en' | 'hi';
-}
-
-const Footer: React.FC<FooterProps> = ({ currentLanguage = 'en' }) => {
-  const translations = {
-    en: {
-      tagline: "Your Trusted Partner in Agriculture",
-      quickLinks: "Quick Links",
-      categories: "Categories",
-      contact: "Contact Us",
-      aboutUs: "About Us",
-      blog: "Blog",
-      faq: "FAQ",
-      privacyPolicy: "Privacy Policy",
-      terms: "Terms & Conditions",
-      insecticides: "Insecticides",
-      seeds: "Seeds & Saplings",
-      fertilizers: "Fertilizers",
-      herbicides: "Herbicides",
-      address: "Bhopal, Madhya Pradesh, India",
-      rights: "All rights reserved.",
-      followUs: "Follow Us",
-    },
-    hi: {
-      tagline: "कृषि में आपका विश्वसनीय साथी",
-      quickLinks: "त्वरित लिंक",
-      categories: "श्रेणियाँ",
-      contact: "संपर्क करें",
-      aboutUs: "हमारे बारे में",
-      blog: "ब्लॉग",
-      faq: "अक्सर पूछे जाने वाले प्रश्न",
-      privacyPolicy: "गोपनीयता नीति",
-      terms: "नियम और शर्तें",
-      insecticides: "कीटनाशक",
-      seeds: "बीज और पौधे",
-      fertilizers: "उर्वरक",
-      herbicides: "खरपतवारनाशी",
-      address: "भोपाल, मध्य प्रदेश, भारत",
-      rights: "सर्वाधिकार सुरक्षित।",
-      followUs: "हमें फॉलो करें",
-    }
-  };
-
-  const t = translations[currentLanguage];
+const Footer: React.FC = () => {
+  const { t } = useLanguage();
+  const footerT = t.footer;
 
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -58,10 +17,10 @@ const Footer: React.FC<FooterProps> = ({ currentLanguage = 'en' }) => {
               <div className="w-10 h-10 rounded-full bg-agri-lime flex items-center justify-center">
                 <Tractor className="w-6 h-6 text-primary" />
               </div>
-              <span className="text-2xl font-display font-bold">AgriCare</span>
+              <span className="text-2xl font-display font-bold">Vartman</span>
             </div>
             <p className="text-primary-foreground/80 text-sm">
-              {t.tagline}
+              {footerT.tagline}
             </p>
             <div className="flex gap-3">
               <a href="#" className="w-9 h-9 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-agri-lime hover:text-primary transition-colors">
@@ -81,58 +40,58 @@ const Footer: React.FC<FooterProps> = ({ currentLanguage = 'en' }) => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-display font-semibold text-lg mb-4">{t.quickLinks}</h3>
+            <h3 className="font-display font-semibold text-lg mb-4">{footerT.quickLinks}</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.aboutUs}
-                </a>
+                <Link to="/about" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
+                  {footerT.aboutUs}
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.blog}
-                </a>
+                <Link to="/blog" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
+                  {footerT.blog}
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.faq}
-                </a>
+                <Link to="/faq" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
+                  {footerT.faq}
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.privacyPolicy}
-                </a>
+                <Link to="/privacy" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
+                  {footerT.privacyPolicy}
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.terms}
-                </a>
+                <Link to="/terms" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
+                  {footerT.terms}
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Categories */}
           <div>
-            <h3 className="font-display font-semibold text-lg mb-4">{t.categories}</h3>
+            <h3 className="font-display font-semibold text-lg mb-4">{footerT.categories}</h3>
             <ul className="space-y-2">
               <li>
                 <a href="#insecticides" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.insecticides}
+                  {footerT.insecticides}
                 </a>
               </li>
               <li>
                 <a href="#seeds" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.seeds}
+                  {footerT.seeds}
                 </a>
               </li>
               <li>
                 <a href="#fertilizers" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.fertilizers}
+                  {footerT.fertilizers}
                 </a>
               </li>
               <li>
                 <a href="#herbicides" className="text-primary-foreground/80 hover:text-agri-lime transition-colors text-sm">
-                  {t.herbicides}
+                  {footerT.herbicides}
                 </a>
               </li>
             </ul>
@@ -140,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ currentLanguage = 'en' }) => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-display font-semibold text-lg mb-4">{t.contact}</h3>
+            <h3 className="font-display font-semibold text-lg mb-4">{footerT.contact}</h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-agri-lime/20 flex items-center justify-center shrink-0">
@@ -152,13 +111,13 @@ const Footer: React.FC<FooterProps> = ({ currentLanguage = 'en' }) => {
                 <div className="w-8 h-8 rounded-full bg-agri-lime/20 flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4 text-agri-lime" />
                 </div>
-                <span className="text-primary-foreground/80 text-sm">info@agricare.com</span>
+                <span className="text-primary-foreground/80 text-sm">info@vartman.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-agri-lime/20 flex items-center justify-center shrink-0">
                   <MapPin className="w-4 h-4 text-agri-lime" />
                 </div>
-                <span className="text-primary-foreground/80 text-sm">{t.address}</span>
+                <span className="text-primary-foreground/80 text-sm">{footerT.address}</span>
               </li>
             </ul>
           </div>
@@ -169,8 +128,8 @@ const Footer: React.FC<FooterProps> = ({ currentLanguage = 'en' }) => {
       <div className="border-t border-primary-foreground/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
-            <p>© 2024 AgriCare. {t.rights}</p>
-            <p>Made with 💚 for farmers</p>
+            <p>© 2024 Vartman. {footerT.rights}</p>
+            <p>{footerT.madeWithLove}</p>
           </div>
         </div>
       </div>

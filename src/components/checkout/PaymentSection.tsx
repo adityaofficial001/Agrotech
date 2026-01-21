@@ -5,19 +5,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CreditCard, Truck, Wallet, Smartphone, Banknote } from "lucide-react";
+import { toast } from "sonner";
 
 interface PaymentSectionProps {
     setShippingCost: (cost: number) => void;
+    t?: any;
 }
 
-export const PaymentSection = ({ setShippingCost }: PaymentSectionProps) => {
+export const PaymentSection = ({ setShippingCost, t }: PaymentSectionProps) => {
     return (
         <div className="space-y-6">
             {/* Shipping Methods */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
                     <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
-                    Shipping Method
+                    {t?.sections?.shipping || "Shipping Method"}
                 </h2>
 
                 <RadioGroup defaultValue="standard" onValueChange={(val) => {
@@ -29,19 +31,19 @@ export const PaymentSection = ({ setShippingCost }: PaymentSectionProps) => {
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="standard" id="r1" />
                             <Label htmlFor="r1" className="cursor-pointer">
-                                <div className="font-medium">Standard Delivery</div>
-                                <div className="text-xs text-gray-500">5-7 Business Days</div>
+                                <div className="font-medium">{t?.payment?.delivery?.standard || "Standard Delivery"}</div>
+                                <div className="text-xs text-gray-500">{t?.payment?.delivery?.standardDays || "5-7 Business Days"}</div>
                             </Label>
                         </div>
-                        <span className="font-medium text-green-600">Free</span>
+                        <span className="font-medium text-green-600">{t?.payment?.delivery?.free || "Free"}</span>
                     </div>
 
                     <div className="flex items-center justify-between space-x-2 border p-4 rounded-lg hover:border-primary cursor-pointer transition-colors">
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="express" id="r2" />
                             <Label htmlFor="r2" className="cursor-pointer">
-                                <div className="font-medium">Express Delivery</div>
-                                <div className="text-xs text-gray-500">2-4 Business Days</div>
+                                <div className="font-medium">{t?.payment?.delivery?.express || "Express Delivery"}</div>
+                                <div className="text-xs text-gray-500">{t?.payment?.delivery?.expressDays || "2-4 Business Days"}</div>
                             </Label>
                         </div>
                         <span className="font-bold">₹50</span>
@@ -51,8 +53,8 @@ export const PaymentSection = ({ setShippingCost }: PaymentSectionProps) => {
                         <div className="flex items-center space-x-2">
                             <RadioGroupItem value="priority" id="r3" />
                             <Label htmlFor="r3" className="cursor-pointer">
-                                <div className="font-medium">Priority Delivery</div>
-                                <div className="text-xs text-gray-500">1-2 Business Days</div>
+                                <div className="font-medium">{t?.payment?.delivery?.priority || "Priority Delivery"}</div>
+                                <div className="text-xs text-gray-500">{t?.payment?.delivery?.priorityDays || "1-2 Business Days"}</div>
                             </Label>
                         </div>
                         <span className="font-bold">₹100</span>
@@ -64,46 +66,48 @@ export const PaymentSection = ({ setShippingCost }: PaymentSectionProps) => {
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
                     <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center text-sm">3</span>
-                    Payment Method
+                    {t?.sections?.payment || "Payment Method"}
                 </h2>
 
                 <Tabs defaultValue="upi" className="w-full">
                     <TabsList className="grid w-full grid-cols-4 lg:grid-cols-6 h-auto p-1 bg-gray-50/50">
                         <TabsTrigger value="upi" className="flex flex-col gap-1 py-3 data-[state=active]:bg-primary data-[state=active]:text-white">
                             <Smartphone className="h-4 w-4" />
-                            <span className="text-xs">UPI</span>
+                            <span className="text-xs">{t?.payment?.upi || "UPI"}</span>
                         </TabsTrigger>
                         <TabsTrigger value="cod" className="flex flex-col gap-1 py-3 data-[state=active]:bg-primary data-[state=active]:text-white">
                             <Banknote className="h-4 w-4" />
-                            <span className="text-xs">COD</span>
+                            <span className="text-xs">{t?.payment?.cod || "COD"}</span>
                         </TabsTrigger>
                         <TabsTrigger value="card" className="flex flex-col gap-1 py-3 data-[state=active]:bg-primary data-[state=active]:text-white">
                             <CreditCard className="h-4 w-4" />
-                            <span className="text-xs">Card</span>
+                            <span className="text-xs">{t?.payment?.card || "Card"}</span>
                         </TabsTrigger>
                         <TabsTrigger value="netbanking" className="flex flex-col gap-1 py-3 data-[state=active]:bg-primary data-[state=active]:text-white">
-                            <div className="h-4 w-4 font-bold text-xs">NB</div>
-                            <span className="text-xs">Net</span>
+                            <div className="h-4 w-4 font-bold text-xs">{t?.payment?.nb || "NB"}</div>
+                            <span className="text-xs">{t?.payment?.net || "Net"}</span>
                         </TabsTrigger>
                         <TabsTrigger value="wallet" className="flex flex-col gap-1 py-3 data-[state=active]:bg-primary data-[state=active]:text-white">
                             <Wallet className="h-4 w-4" />
-                            <span className="text-xs">Wallet</span>
+                            <span className="text-xs">{t?.payment?.wallet || "Wallet"}</span>
                         </TabsTrigger>
                     </TabsList>
 
                     <div className="mt-6">
                         <TabsContent value="upi" className="space-y-4">
-                            <p className="text-sm text-gray-500 mb-4">Pay using PhonePe, Paytm, or Google Pay</p>
+                            <p className="text-sm text-gray-500 mb-4">{t?.payment?.upiDesc || "Pay using PhonePe, Paytm, or Google Pay"}</p>
                             <div className="flex gap-2">
-                                <Input placeholder="Enter UPI ID (e.g. 9876543210@upi)" />
-                                <Button>Verify</Button>
+                                <Input placeholder={t?.payment?.upiPlaceholder || "Enter UPI ID (e.g. 9876543210@upi)"} />
+                                <Button type="button" onClick={() => toast.success("UPI ID Verified!")}>
+                                    {t?.payment?.verify || "Verify"}
+                                </Button>
                             </div>
                         </TabsContent>
 
                         <TabsContent value="cod" className="space-y-4">
                             <div className="border border-green-200 bg-green-50 p-4 rounded-lg flex gap-3 text-green-800 text-sm">
                                 <Truck className="h-5 w-5 flex-shrink-0" />
-                                <p>Pay cash when your order is delivered to your doorstep. No extra charges.</p>
+                                <p>{t?.payment?.codDesc || "Pay cash when your order is delivered to your doorstep. No extra charges."}</p>
                             </div>
                         </TabsContent>
 

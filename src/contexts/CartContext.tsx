@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Product } from '../data/categories';
 import { toast } from 'sonner';
+import { useLanguage } from './LanguageContext';
 
 export interface CartItem extends Product {
     cartQuantity: number;
@@ -9,7 +10,8 @@ export interface CartItem extends Product {
 
 type CartContextType = {
     items: CartItem[];
-    addToCart: (product: Product) => void;
+    addToCart: (product: Product, quantity?: number) => void;
+    buyNow: (product: Product) => void;
     removeFromCart: (productId: string) => void;
     updateQuantity: (productId: string, quantity: number) => void;
     clearCart: () => void;
@@ -20,22 +22,35 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-    const [items, setItems] = useState<CartItem[]>([]);
+    const { t } = useLanguage();
+    const [items, setItems] = useState<CartItem[]>(() => {
+        const savedCart = localStorage.getItem('cartItems');
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
 
-    const addToCart = (product: Product) => {
+    React.useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(items));
+    }, [items]);
+
+    const addToCart = (product: Product, quantity: number = 1) => {
         setItems((currentItems) => {
             const existingItem = currentItems.find((item) => item.id === product.id);
             if (existingItem) {
-                toast.info("Item quantity updated");
+                toast.info(t.products.quantityUpdated);
                 return currentItems.map((item) =>
                     item.id === product.id
-                        ? { ...item, cartQuantity: item.cartQuantity + 1 }
+                        ? { ...item, cartQuantity: item.cartQuantity + quantity }
                         : item
                 );
             }
-            toast.success("Added to cart");
-            return [...currentItems, { ...product, cartQuantity: 1 }];
+            toast.success(t.products.addedToCart);
+            return [...currentItems, { ...product, cartQuantity: quantity }];
         });
+    };
+
+    const buyNow = (product: Product) => {
+        setItems([{ ...product, cartQuantity: 1 }]);
+        toast.success(t.products.proceedingToCheckout);
     };
 
     const updateQuantity = (productId: string, quantity: number) => {
@@ -66,7 +81,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <CartContext.Provider
-            value={{ items, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal, itemsCount }}
+            value={{ items, addToCart, buyNow, removeFromCart, updateQuantity, clearCart, cartTotal, itemsCount }}
         >
             {children}
         </CartContext.Provider>

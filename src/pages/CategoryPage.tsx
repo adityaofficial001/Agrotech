@@ -7,21 +7,30 @@ import CategoryBanner from '@/components/sections/CategoryBanner';
 import ProductSlider from '@/components/products/ProductSlider';
 import ProductGrid from '@/components/products/ProductGrid';
 import FilterSidebar from '@/components/products/FilterSidebar';
-import { Product } from '@/components/products/ProductCard';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Product } from '@/data/categories';
 import { Button } from '@/components/ui/button';
 import { SlidersHorizontal } from 'lucide-react';
 import {
   insecticideProducts,
   seedProducts,
   fertilizerProducts,
-  herbicideProducts
+  herbicideProducts,
+  implementsProducts,
+  growthProducts,
+  bioproductsProducts,
+  alliedProducts,
+  cropscienceProducts,
+  offersProducts
 } from '@/data/products';
 import { toast } from '@/hooks/use-toast';
 
 const CategoryPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi'>('en');
+  const { t, language } = useLanguage();
+  const currentLanguage = language === 'HI' ? 'hi' : 'en';
 
   // Filter States
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
@@ -39,48 +48,10 @@ const CategoryPage = () => {
     setIsMobileFilterOpen(false);
   }, [categoryId]);
 
-  const translations = {
-    en: {
-      insecticides: 'Insecticides',
-      seeds: 'Seeds & Saplings',
-      fertilizers: 'Fertilizers',
-      herbicides: 'Herbicides',
-      implements: 'Implements',
-      growth: 'Plant Growth Promoters',
-      bioproducts: 'Bioproducts',
-      allied: 'Allied Products',
-      cropscience: 'Crop Science',
-      offers: 'Services & Offers',
-      addedToCart: 'Added to cart!',
-      comingSoon: 'Coming Soon',
-      comingSoonDesc: 'We are working on adding products to this category. Please check back soon!',
-      relatedProducts: 'You might also like',
-      filterBtn: 'Filters',
-    },
-    hi: {
-      insecticides: 'कीटनाशक',
-      seeds: 'बीज और पौधे',
-      fertilizers: 'उर्वरक',
-      herbicides: 'खरपतवारनाशी',
-      implements: 'उपकरण',
-      growth: 'पौधा विकास प्रवर्तक',
-      bioproducts: 'जैव उत्पाद',
-      allied: 'संबद्ध उत्पाद',
-      cropscience: 'फसल विज्ञान',
-      offers: 'सेवाएं और ऑफर',
-      addedToCart: 'कार्ट में जोड़ा गया!',
-      comingSoon: 'जल्द आ रहा है',
-      comingSoonDesc: 'हम इस श्रेणी में उत्पाद जोड़ने पर काम कर रहे हैं। कृपया जल्द ही वापस आएं!',
-      relatedProducts: 'आपको यह भी पसंद आ सकता है',
-      filterBtn: 'फिल्टर',
-    }
-  };
-
-  const t = translations[currentLanguage];
 
   const handleAddToCart = (product: Product) => {
     toast({
-      title: t.addedToCart,
+      title: t.products.addedToCart,
       description: product.name,
     });
   };
@@ -94,79 +65,79 @@ const CategoryPage = () => {
       case 'insecticides':
         return {
           products: insecticideProducts,
-          title: t.insecticides,
+          title: t.categories.insecticides,
           relatedProducts: seedProducts.slice(0, 4),
-          relatedTitle: t.seeds
+          relatedTitle: t.categories.seeds
         };
       case 'seeds':
         return {
           products: seedProducts,
-          title: t.seeds,
+          title: t.categories.seeds,
           relatedProducts: fertilizerProducts.slice(0, 4),
-          relatedTitle: t.fertilizers
+          relatedTitle: t.categories.fertilizers
         };
       case 'fertilizers':
         return {
           products: fertilizerProducts,
-          title: t.fertilizers,
+          title: t.categories.fertilizers,
           relatedProducts: herbicideProducts.slice(0, 4),
-          relatedTitle: t.herbicides
+          relatedTitle: t.categories.herbicides
         };
       case 'herbicides':
         return {
           products: herbicideProducts,
-          title: t.herbicides,
+          title: t.categories.herbicides,
           relatedProducts: insecticideProducts.slice(0, 4),
-          relatedTitle: t.insecticides
+          relatedTitle: t.categories.insecticides
         };
       case 'implements':
         return {
-          products: [],
-          title: t.implements,
+          products: implementsProducts,
+          title: t.categories.implements,
           relatedProducts: fertilizerProducts.slice(0, 4),
-          relatedTitle: t.fertilizers
+          relatedTitle: t.categories.fertilizers
         };
       case 'growth':
         return {
-          products: [],
-          title: t.growth,
+          products: growthProducts,
+          title: t.categories.growth,
           relatedProducts: seedProducts.slice(0, 4),
-          relatedTitle: t.seeds
+          relatedTitle: t.categories.seeds
         };
       case 'bioproducts':
         return {
-          products: [],
-          title: t.bioproducts,
+          products: bioproductsProducts,
+          title: t.categories.bio,
           relatedProducts: insecticideProducts.slice(0, 4),
-          relatedTitle: t.insecticides
+          relatedTitle: t.categories.insecticides
         };
       case 'allied':
         return {
-          products: [],
-          title: t.allied,
+          products: alliedProducts,
+          title: t.categories.allied,
           relatedProducts: herbicideProducts.slice(0, 4),
-          relatedTitle: t.herbicides
+          relatedTitle: t.categories.herbicides
         };
       case 'cropscience':
         return {
-          products: [],
-          title: t.cropscience,
+          products: cropscienceProducts,
+          title: t.categories.cropScience,
           relatedProducts: seedProducts.slice(0, 4),
-          relatedTitle: t.seeds
+          relatedTitle: t.categories.seeds
         };
       case 'offers':
         return {
-          products: [],
-          title: t.offers,
+          products: offersProducts || [],
+          title: language === 'HI' ? 'विशेष ऑफर' : 'Special Offers',
           relatedProducts: insecticideProducts.slice(0, 4),
-          relatedTitle: t.insecticides
+          relatedTitle: t.categories.insecticides
         };
       default:
         return {
           products: insecticideProducts,
-          title: t.insecticides,
+          title: t.categories.insecticides,
           relatedProducts: seedProducts.slice(0, 4),
-          relatedTitle: t.seeds
+          relatedTitle: t.categories.seeds
         };
     }
   };
@@ -249,19 +220,19 @@ const CategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <TopHeader
-        currentLanguage={currentLanguage}
-        onLanguageChange={setCurrentLanguage}
-      />
+      <TopHeader />
 
       <CategoryNav
-        currentLanguage={currentLanguage}
         activeCategory={categoryId || 'insecticides'}
-        onCategoryChange={handleCategoryChange}
       />
 
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8">
+          <Breadcrumbs
+            items={[
+              { label: title }
+            ]}
+          />
           <CategoryBanner
             category={categoryId || 'insecticides'}
             currentLanguage={currentLanguage}
@@ -277,7 +248,7 @@ const CategoryPage = () => {
                   onClick={() => setIsMobileFilterOpen(true)}
                 >
                   <SlidersHorizontal className="w-4 h-4" />
-                  {t.filterBtn}
+                  {t.categories.filterBtn}
                 </Button>
               </div>
 
@@ -297,6 +268,12 @@ const CategoryPage = () => {
                 onPriceChange={setPriceRange}
                 onlyInStock={onlyInStock}
                 onStockChange={setOnlyInStock}
+                onClearAll={() => {
+                  setSelectedBrands([]);
+                  setSelectedCrops([]);
+                  setPriceRange([minPrice, maxPrice]);
+                  setOnlyInStock(false);
+                }}
                 currentLanguage={currentLanguage}
               />
 
@@ -305,7 +282,6 @@ const CategoryPage = () => {
                 <ProductGrid
                   products={filteredProducts}
                   currentLanguage={currentLanguage}
-                  onAddToCart={handleAddToCart}
                 />
               </div>
             </div>
@@ -315,29 +291,26 @@ const CategoryPage = () => {
                 <span className="text-4xl">🌱</span>
               </div>
               <h2 className="text-2xl font-display font-bold text-foreground mb-3">
-                {t.comingSoon}
+                {t.categories.comingSoon}
               </h2>
               <p className="text-muted-foreground max-w-md mx-auto">
-                {t.comingSoonDesc}
+                {t.categories.comingSoonDesc}
               </p>
             </div>
           )}
 
-          {/* Related Products */}
           {relatedProducts.length > 0 && (
             <div className="mt-12 border-t border-border pt-12">
               <ProductSlider
                 products={relatedProducts}
-                title={t.relatedProducts}
-                currentLanguage={currentLanguage}
-                onAddToCart={handleAddToCart}
+                title={t.productDetail.relatedProducts}
               />
             </div>
           )}
         </div>
       </main>
 
-      <Footer currentLanguage={currentLanguage} />
+      <Footer />
     </div>
   );
 };

@@ -5,13 +5,15 @@ import { AgriButton } from '@/components/ui/AgriButton';
 import TopHeader from '@/components/layout/TopHeader';
 import CategoryNav from '@/components/layout/CategoryNav';
 import Footer from '@/components/layout/Footer';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const GetApp = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi'>('en');
+  const { language } = useLanguage();
+  const currentLanguageCode = language.toLowerCase() as 'en' | 'hi';
 
   const translations = {
     en: {
-      title: 'Get the AgriCare App',
+      title: 'Get the Vartman App',
       subtitle: 'Shop smarter, faster, and save more!',
       description: 'Download our mobile app for the best shopping experience. Get exclusive app-only deals, track orders in real-time, and access expert farming advice.',
       downloadAndroid: 'Download for Android',
@@ -32,7 +34,7 @@ const GetApp = () => {
       backToHome: 'Back to Home',
     },
     hi: {
-      title: 'एग्रीकेयर ऐप डाउनलोड करें',
+      title: 'वर्तमान ऐप डाउनलोड करें',
       subtitle: 'स्मार्ट खरीदारी करें, तेजी से करें, और अधिक बचाएं!',
       description: 'सर्वोत्तम खरीदारी अनुभव के लिए हमारा मोबाइल ऐप डाउनलोड करें। ऐप-ओनली विशेष सौदे प्राप्त करें, रीयल-टाइम में ऑर्डर ट्रैक करें, और विशेषज्ञ कृषि सलाह प्राप्त करें।',
       downloadAndroid: 'एंड्रॉइड के लिए डाउनलोड करें',
@@ -54,20 +56,13 @@ const GetApp = () => {
     }
   };
 
-  const t = translations[currentLanguage];
+  const t = translations[currentLanguageCode];
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <TopHeader 
-        currentLanguage={currentLanguage}
-        onLanguageChange={setCurrentLanguage}
-      />
+      <TopHeader />
 
-      <CategoryNav 
-        currentLanguage={currentLanguage}
-        activeCategory=""
-        onCategoryChange={() => {}}
-      />
+      <CategoryNav activeCategory="" />
 
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">
@@ -113,8 +108,8 @@ const GetApp = () => {
             {t.features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="bg-card border border-border rounded-2xl p-6 text-center hover:shadow-agri-md transition-shadow"
                 >
                   <div className="w-12 h-12 mx-auto mb-4 bg-primary/10 rounded-xl flex items-center justify-center">
@@ -139,11 +134,10 @@ const GetApp = () => {
             <div className="w-40 h-40 mx-auto bg-card rounded-xl border-2 border-border flex items-center justify-center mb-6">
               <div className="grid grid-cols-5 gap-1 p-3">
                 {Array.from({ length: 25 }).map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`w-4 h-4 rounded-sm ${
-                      Math.random() > 0.4 ? 'bg-foreground' : 'bg-transparent'
-                    }`}
+                  <div
+                    key={i}
+                    className={`w-4 h-4 rounded-sm ${Math.random() > 0.4 ? 'bg-foreground' : 'bg-transparent'
+                      }`}
                   />
                 ))}
               </div>
@@ -162,7 +156,7 @@ const GetApp = () => {
         </div>
       </main>
 
-      <Footer currentLanguage={currentLanguage} />
+      <Footer />
     </div>
   );
 };

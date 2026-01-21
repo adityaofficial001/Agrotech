@@ -58,7 +58,7 @@ export const CategoryShowcase = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 -mt-16 relative z-20 mb-12">
+        <div id="categories-section" className="container mx-auto px-4 -mt-16 relative z-20 mb-12">
             <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
                 {CATEGORIES.map((category, index) => {
                     const Icon = getIcon(index);

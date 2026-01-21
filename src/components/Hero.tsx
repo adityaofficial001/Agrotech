@@ -2,14 +2,16 @@
 import { Button } from "./ui/button";
 import { ArrowRight, ShieldCheck, Truck, Headphones, Users } from "lucide-react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 export const Hero = () => {
     const { t } = useLanguage();
+    const navigate = useNavigate();
 
     const scrollToProducts = () => {
-        const productsSection = document.getElementById('insecticides');
-        if (productsSection) {
-            productsSection.scrollIntoView({ behavior: 'smooth' });
+        const categoriesSection = document.getElementById('categories-section');
+        if (categoriesSection) {
+            categoriesSection.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
@@ -26,8 +28,7 @@ export const Hero = () => {
             {/* Deep Green Gradient Overlay: Dark Green (Left) -> Transparent (Right) */}
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-transparent/20" />
 
-            {/* Subtle White Grading Overlay: Starts at 20% */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent from-0% via-transparent via-20% to-white/100" />
+
 
             {/* Content */}
             <div className="relative container mx-auto px-4 h-full flex flex-col justify-center text-white z-10 pt-10 font-roboto">
@@ -82,6 +83,7 @@ export const Hero = () => {
                         <Button
                             size="lg"
                             variant="outline"
+                            onClick={() => navigate('/category/insecticides')}
                             className="bg-transparent text-white border-white hover:bg-white hover:text-primary text-lg px-8 py-6 rounded-md font-semibold backdrop-blur-sm transition-all duration-300"
                         >
                             {t.hero.viewAll}

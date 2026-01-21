@@ -32,6 +32,7 @@ interface FilterSidebarProps {
     onPriceChange: (range: [number, number]) => void;
     onlyInStock: boolean;
     onStockChange: (inStock: boolean) => void;
+    onClearAll?: () => void;
 
     currentLanguage?: 'en' | 'hi';
 }
@@ -51,6 +52,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onPriceChange,
     onlyInStock,
     onStockChange,
+    onClearAll,
     currentLanguage = 'en'
 }) => {
     const translations = {
@@ -95,7 +97,18 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="font-display font-bold text-xl">{t.filters}</h3>
+                    <div className="flex items-center gap-2">
+                        <h3 className="font-display font-bold text-xl">{t.filters}</h3>
+                        {onClearAll && (
+                            <Button
+                                variant="link"
+                                className="text-xs text-primary px-0 h-auto font-normal underline"
+                                onClick={onClearAll}
+                            >
+                                {t.clearAll}
+                            </Button>
+                        )}
+                    </div>
                     <Button
                         variant="ghost"
                         size="icon"

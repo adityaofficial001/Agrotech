@@ -1,16 +1,15 @@
 import React from 'react';
-import ProductCard, { Product } from './ProductCard';
+import ProductCard from './ProductCard';
+import { Product } from '@/data/categories';
 
 interface ProductGridProps {
     products: Product[];
     currentLanguage?: 'en' | 'hi';
-    onAddToCart?: (product: Product) => void;
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({
     products,
     currentLanguage = 'en',
-    onAddToCart
 }) => {
     if (products.length === 0) {
         return (
@@ -28,8 +27,6 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                 <ProductCard
                     key={product.id}
                     product={product}
-                    currentLanguage={currentLanguage}
-                    onAddToCart={onAddToCart}
                 />
             ))}
         </div>

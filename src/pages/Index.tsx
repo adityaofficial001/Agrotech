@@ -10,14 +10,23 @@ import {
   insecticideProducts,
   seedProducts,
   fertilizerProducts,
-  herbicideProducts
+  herbicideProducts,
+  implementsProducts,
+  growthProducts,
+  bioproductsProducts,
+  alliedProducts,
+  cropscienceProducts
 } from '@/data/products';
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { ComparisonBar, ComparisonModal } from "@/components/user/ComparisonBar";
+import { NAV_CATEGORIES } from "@/data/categories";
 
 const Index = () => {
   const { t, language } = useLanguage();
   const navigate = useNavigate();
+  const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   // Combine products for showcases
   const allProducts = [
@@ -27,32 +36,38 @@ const Index = () => {
     ...herbicideProducts
   ];
 
-  // Mock "Featured" (mix of items)
-  const featuredProducts = [
-    insecticideProducts[0],
-    seedProducts[0],
-    fertilizerProducts[0],
-    herbicideProducts[0],
-    insecticideProducts[1],
-    seedProducts[1],
-  ].filter(Boolean);
 
-  // Mock "Best Sellers" (sorted by price or random)
-  const bestSellers = [
-    ...stockFilter(seedProducts),
-    ...stockFilter(fertilizerProducts),
-    ...stockFilter(insecticideProducts)
-  ].slice(0, 8);
+  // Sections Configuration - Aligned with Navbar Order
+  const categorySections = [
+    { id: 'insecticides', products: insecticideProducts, title: t.categories.insecticides },
+    { id: 'seeds', products: seedProducts, title: t.categories.seeds },
+    { id: 'implements', products: implementsProducts, title: t.categories.implements },
+    { id: 'herbicides', products: herbicideProducts, title: t.categories.herbicides },
+    { id: 'fertilizers', products: fertilizerProducts, title: t.categories.fertilizers },
+    { id: 'growth', products: growthProducts, title: t.categories.growth },
+    { id: 'bioproducts', products: bioproductsProducts, title: t.categories.bio },
+    { id: 'allied', products: alliedProducts, title: t.categories.allied },
+    { id: 'cropscience', products: cropscienceProducts, title: t.categories.cropScience },
+    { id: 'offers', products: allProducts.slice(0, 6), title: language === 'HI' ? 'विशेष ऑफर' : 'Special Offers' },
+  ];
 
-  function stockFilter(products: any[]) {
-    return products.filter(p => p.inStock);
-  }
 
   const handleAddToCart = (product: any) => {
     toast.success(`${product.name} added to cart`);
   };
 
-  const code = language === 'HI' ? 'hi' : 'en';
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      const id = hash.replace('#', '');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -66,29 +81,27 @@ const Index = () => {
         {/* 2. Category Quick Links */}
         <CategoryShowcase />
 
-        {/* 3. Featured Products Section */}
-        <div className="container mx-auto px-4 mt-8">
-          <ProductSlider
-            products={featuredProducts}
-            title={language === 'HI' ? 'विशेष उत्पाद' : 'Featured Products'}
-            currentLanguage={code}
-            onAddToCart={handleAddToCart}
-          />
-        </div>
 
-        {/* 4. Best-Selling Section */}
-        <div className="container mx-auto px-4 mt-8 mb-12">
-          <ProductSlider
-            products={bestSellers}
-            title={language === 'HI' ? 'सर्वाधिक बिकने वाले' : 'Best Sellers'}
-            currentLanguage={code}
-            onAddToCart={handleAddToCart}
-          />
-        </div>
+        {/* 5. Dynamic Category Sections */}
+        {categorySections.map((section) => (
+          <div key={section.id} id={section.id} className="container mx-auto px-4 mt-8 scroll-mt-44">
+            <ProductSlider
+              products={section.products.slice(0, 8)}
+              title={section.title}
+              categoryId={section.id}
+            />
+          </div>
+        ))}
+
+        <div className="mb-12"></div>
 
       </main>
 
-      <Footer currentLanguage={code} />
+      <Footer />
+
+      {/* Product Comparison Floating UI */}
+      <ComparisonBar onOpenModal={() => setIsCompareModalOpen(true)} />
+      <ComparisonModal open={isCompareModalOpen} onOpenChange={setIsCompareModalOpen} />
     </div>
   );
 };

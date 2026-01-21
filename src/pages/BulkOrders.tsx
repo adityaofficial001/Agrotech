@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Package, Phone, Mail, Building, User, MessageSquare, Send, CheckCircle } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import Footer from '@/components/layout/Footer';
 import { useLanguage } from "../contexts/LanguageContext";
 import { toast } from '@/hooks/use-toast';
 

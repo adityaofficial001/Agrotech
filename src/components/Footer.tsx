@@ -10,7 +10,7 @@ export const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                     {/* Brand Info */}
                     <div className="space-y-4">
-                        <h3 className="text-2xl font-bold text-primary-light">AgriCare</h3>
+                        <h3 className="text-2xl font-bold text-primary-light">Vartman</h3>
                         <p className="text-gray-400">
                             {t.footer.description}
                         </p>
@@ -48,7 +48,7 @@ export const Footer = () => {
                             </li>
                             <li className="flex items-center gap-2">
                                 <Mail className="h-5 w-5 text-primary-light" />
-                                <span>support@agricare.com</span>
+                                <span>support@vartman.com</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <MapPin className="h-5 w-5 text-primary-light" />

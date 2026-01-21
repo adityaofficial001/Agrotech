@@ -1,24 +1,14 @@
-import React from 'react';
-import { Tractor, ShoppingCart, Wheat, Bug, Droplets } from 'lucide-react';
+import { Tractor, ShoppingCart, Wheat, Bug, Droplets, Heart, GitCompare } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
+import { useCart } from '@/contexts/CartContext';
+import { useUserPreferences } from '@/contexts/UserPreferencesContext';
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-export interface Product {
-  id: string;
-  name: string;
-  brand: string;
-  image?: string;
-  priceMin: number;
-  priceMax: number;
-  quantity: string;
-  inStock: boolean;
-  crops?: string[];
-  pests?: string[];
-}
+import { Product } from '@/data/categories';
 
 interface ProductCardProps {
   product: Product;
-  currentLanguage?: 'en' | 'hi';
-  onAddToCart?: (product: Product) => void;
 }
 
 const cropIcons: Record<string, React.ElementType> = {
@@ -27,30 +17,60 @@ const cropIcons: Record<string, React.ElementType> = {
   pest: Bug,
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ 
-  product, 
-  currentLanguage = 'en',
-  onAddToCart 
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
 }) => {
-  const translations = {
-    en: {
-      outOfStock: "Out of Stock",
-      addToCart: "Add to Cart",
-      shopNow: "Shop Now",
-    },
-    hi: {
-      outOfStock: "स्टॉक में नहीं",
-      addToCart: "कार्ट में जोड़ें",
-      shopNow: "अभी खरीदें",
-    }
+  const { t } = useLanguage();
+  const { addToCart, buyNow } = useCart();
+  const { toggleWishlist, isInWishlist, addToComparison } = useUserPreferences();
+  const navigate = useNavigate();
+
+  const handleProductClick = () => {
+    navigate(`/product/${product.id}`);
   };
 
-  const t = translations[currentLanguage];
-
   return (
-    <div className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-lg transition-all duration-300 flex flex-col">
+    <div
+      className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-lg transition-all duration-300 flex flex-col cursor-pointer h-full"
+      onClick={handleProductClick}
+    >
       {/* Image Section with Pattern Background */}
       <div className="relative h-48 bg-gradient-to-br from-agri-cream to-muted overflow-hidden">
+        {/* Wishlist Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleWishlist(product.id);
+          }}
+          className="absolute top-3 left-3 z-30 p-2 rounded-full bg-white/80 hover:bg-white text-gray-400 hover:text-red-500 transition-all duration-200 shadow-sm"
+        >
+          <Heart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
+        </button>
+
+        {/* Comparison Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            addToComparison(product);
+          }}
+          className="absolute top-14 left-3 z-30 p-2 rounded-full bg-white/80 hover:bg-white text-gray-400 hover:text-primary transition-all duration-200 shadow-sm"
+          title="Compare Product"
+        >
+          <GitCompare className="w-5 h-5" />
+        </button>
+
+        {/* ... decorative pattern ... */}
+
+        {/* Shop Now Overlay Button */}
+        <div className="absolute inset-0 z-10 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+          <AgriButton
+            className="bg-white text-primary hover:bg-agri-yellow hover:text-agri-brown font-bold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg"
+            size="sm"
+          >
+            {t.products.buyNow}
+          </AgriButton>
+        </div>
+
         {/* Decorative Pattern */}
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -64,8 +84,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {/* Product Image */}
         <div className="absolute inset-0 flex items-center justify-center p-4">
           {product.image ? (
-            <img 
-              src={product.image} 
+            <img
+              src={product.image}
               alt={product.name}
               className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
             />
@@ -78,15 +98,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Stock Badge */}
         {!product.inStock && (
-          <div className="absolute top-3 right-3">
+          <div className="absolute top-3 right-3 z-20">
             <span className="px-3 py-1 bg-destructive text-destructive-foreground text-xs font-bold rounded-full">
-              {t.outOfStock}
+              {t.products.outOfStock}
             </span>
           </div>
         )}
 
         {/* Quantity Badge */}
-        <div className="absolute bottom-3 left-3">
+        <div className="absolute bottom-3 left-3 z-20">
           <span className="px-2 py-1 bg-primary text-primary-foreground text-xs font-medium rounded">
             {product.quantity}
           </span>
@@ -112,7 +132,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         {(product.crops || product.pests) && (
           <div className="flex items-center gap-1.5 mb-3">
             {product.crops?.map((crop, idx) => (
-              <div 
+              <div
                 key={`crop-${idx}`}
                 className="w-7 h-7 rounded-full bg-agri-green-light/20 flex items-center justify-center"
                 title={crop}
@@ -121,7 +141,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             ))}
             {product.pests?.map((pest, idx) => (
-              <div 
+              <div
                 key={`pest-${idx}`}
                 className="w-7 h-7 rounded-full bg-destructive/10 flex items-center justify-center"
                 title={pest}
@@ -148,17 +168,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </div>
 
-          {/* Action Button */}
-          <AgriButton 
-            variant={product.inStock ? "cart" : "outline"}
-            size="sm"
-            className="w-full"
-            disabled={!product.inStock}
-            onClick={() => onAddToCart?.(product)}
-          >
-            <ShoppingCart className="w-4 h-4" />
-            {product.inStock ? t.shopNow : t.outOfStock}
-          </AgriButton>
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <AgriButton
+              variant="default"
+              size="sm"
+              className="flex-1 bg-agri-yellow text-agri-brown hover:bg-agri-yellow/90 font-bold"
+              disabled={!product.inStock}
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(product, 1);
+              }}
+            >
+              <ShoppingCart className="w-4 h-4 mr-1" />
+              {product.category === 'Services' || product.category === 'Offers' ? t.products.buyNow : t.products.addToCart}
+            </AgriButton>
+
+            <AgriButton
+              variant="secondary"
+              size="sm"
+              className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold"
+              disabled={!product.inStock}
+              onClick={(e) => {
+                e.stopPropagation();
+                buyNow(product);
+                navigate('/checkout');
+              }}
+            >
+              {t.products.buyNow}
+            </AgriButton>
+          </div>
         </div>
       </div>
     </div>
