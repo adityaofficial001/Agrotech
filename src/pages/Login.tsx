@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tractor, Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 import TopHeader from '@/components/layout/TopHeader';
 import CategoryNav from '@/components/layout/CategoryNav';
 import Footer from '@/components/layout/Footer';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -14,6 +15,7 @@ const Login = () => {
   const currentLanguageCode = language.toLowerCase() as 'en' | 'hi';
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,6 +23,16 @@ const Login = () => {
     password: '',
     confirmPassword: ''
   });
+
+  const { signIn, signUp, user } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if already logged in
+  React.useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const translations = {
     en: {
@@ -44,6 +56,8 @@ const Login = () => {
       signupSuccess: 'Account Created!',
       welcomeMsg: 'Welcome to Vartman',
       backToHome: 'Back to Home',
+      passwordMismatch: 'Passwords do not match',
+      error: 'Error',
     },
     hi: {
       login: 'लॉग इन',
@@ -66,17 +80,64 @@ const Login = () => {
       signupSuccess: 'खाता बनाया गया!',
       welcomeMsg: 'वर्तमान में आपका स्वागत है',
       backToHome: 'होम पर वापस जाएं',
+      passwordMismatch: 'पासवर्ड मेल नहीं खाते',
+      error: 'त्रुटि',
     }
   };
 
   const t = translations[currentLanguageCode];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: isLogin ? t.loginSuccess : t.signupSuccess,
-      description: t.welcomeMsg,
-    });
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        const { error } = await signIn(formData.email, formData.password);
+        if (error) {
+          toast({
+            title: t.error,
+            description: error.message,
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: t.loginSuccess,
+            description: t.welcomeMsg,
+          });
+          navigate('/');
+        }
+      } else {
+        if (formData.password !== formData.confirmPassword) {
+          toast({
+            title: t.error,
+            description: t.passwordMismatch,
+            variant: 'destructive',
+          });
+          setLoading(false);
+          return;
+        }
+
+        const { error } = await signUp(formData.email, formData.password, formData.name);
+        if (error) {
+          toast({
+            title: t.error,
+            description: error.message,
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: t.signupSuccess,
+            description: t.welcomeMsg,
+          });
+          navigate('/');
+        }
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -157,7 +218,6 @@ const Login = () => {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                      required
                     />
                   </div>
                 </div>
@@ -176,6 +236,7 @@ const Login = () => {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="w-full pl-10 pr-12 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
                     required
+                    minLength={6}
                   />
                   <button
                     type="button"
@@ -201,6 +262,7 @@ const Login = () => {
                       onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                       className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
                       required
+                      minLength={6}
                     />
                   </div>
                 </div>
@@ -216,8 +278,8 @@ const Login = () => {
               )}
 
               {/* Submit Button */}
-              <AgriButton type="submit" className="w-full" size="lg">
-                {isLogin ? t.login : t.signup}
+              <AgriButton type="submit" className="w-full" size="lg" disabled={loading}>
+                {loading ? '...' : (isLogin ? t.login : t.signup)}
               </AgriButton>
             </form>
 
@@ -229,7 +291,7 @@ const Login = () => {
             </div>
 
             {/* Google Button */}
-            <AgriButton variant="outline" className="w-full gap-2">
+            <AgriButton variant="outline" className="w-full gap-2" disabled>
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />

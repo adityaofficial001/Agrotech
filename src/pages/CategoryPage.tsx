@@ -49,6 +49,13 @@ const CategoryPage = () => {
   }, [categoryId]);
 
 
+  const getProductCountText = (filtered: number, total: number) => {
+    if (currentLanguage === 'hi') {
+      return `${total} में से ${filtered} उत्पाद दिखा रहे हैं`;
+    }
+    return `Showing ${filtered} of ${total} products`;
+  };
+
   const handleAddToCart = (product: Product) => {
     toast({
       title: t.products.addedToCart,
@@ -279,6 +286,9 @@ const CategoryPage = () => {
 
               {/* Product Grid */}
               <div className="flex-1">
+                <div className="mb-4 text-sm text-muted-foreground">
+                  {getProductCountText(filteredProducts.length, products.length)}
+                </div>
                 <ProductGrid
                   products={filteredProducts}
                   currentLanguage={currentLanguage}

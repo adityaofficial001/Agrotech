@@ -1,9 +1,11 @@
-import { Tractor, ShoppingCart, Wheat, Bug, Droplets, Heart, GitCompare } from 'lucide-react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Tractor, ShoppingCart, Wheat, Bug, Droplets, Heart, Scale } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 import { useCart } from '@/contexts/CartContext';
-import { useUserPreferences } from '@/contexts/UserPreferencesContext';
-import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useComparison } from '@/contexts/ComparisonContext';
 
 import { Product } from '@/data/categories';
 
@@ -22,13 +24,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { t } = useLanguage();
   const { addToCart, buyNow } = useCart();
-  const { toggleWishlist, isInWishlist, addToComparison } = useUserPreferences();
   const navigate = useNavigate();
+
+  // Use new context hooks
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isInComparison, toggleComparison } = useComparison();
 
   const handleProductClick = () => {
     navigate(`/product/${product.id}`);
   };
-
   return (
     <div
       className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-lg transition-all duration-300 flex flex-col cursor-pointer h-full"
@@ -36,28 +40,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Image Section with Pattern Background */}
       <div className="relative h-48 bg-gradient-to-br from-agri-cream to-muted overflow-hidden">
-        {/* Wishlist Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleWishlist(product.id);
-          }}
-          className="absolute top-3 left-3 z-30 p-2 rounded-full bg-white/80 hover:bg-white text-gray-400 hover:text-red-500 transition-all duration-200 shadow-sm"
-        >
-          <Heart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
-        </button>
 
-        {/* Comparison Button */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            addToComparison(product);
-          }}
-          className="absolute top-14 left-3 z-30 p-2 rounded-full bg-white/80 hover:bg-white text-gray-400 hover:text-primary transition-all duration-200 shadow-sm"
-          title="Compare Product"
-        >
-          <GitCompare className="w-5 h-5" />
-        </button>
+
+
 
         {/* ... decorative pattern ... */}
 
@@ -79,6 +64,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </pattern>
             <rect width="100" height="100" fill="url(#farm-pattern)" />
           </svg>
+        </div>
+
+        {/* Wishlist & Compare Buttons */}
+        <div className="absolute top-3 left-3 flex gap-2 z-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist(product.id);
+            }}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isInWishlist(product.id)
+              ? 'bg-destructive text-destructive-foreground'
+              : 'bg-background/80 text-muted-foreground hover:bg-background hover:text-destructive'
+              }`}
+            title={isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleComparison(product.id);
+            }}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isInComparison(product.id)
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-background/80 text-muted-foreground hover:bg-background hover:text-primary'
+              }`}
+            title={isInComparison(product.id) ? 'Remove from comparison' : 'Add to comparison'}
+          >
+            <Scale className="w-4 h-4" />
+          </button>
         </div>
 
         {/* Product Image */}
@@ -198,9 +213,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {t.products.buyNow}
             </AgriButton>
           </div>
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 };
 
