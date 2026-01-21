@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tractor, ShoppingCart, Wheat, Bug, Droplets } from 'lucide-react';
+import { Tractor, ShoppingCart, Wheat, Bug, Droplets, Heart, Scale } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useComparison } from '@/contexts/ComparisonContext';
 
 export interface Product {
   id: string;
@@ -34,7 +36,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart 
 }) => {
   const navigate = useNavigate();
+  const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isInComparison, toggleComparison } = useComparison();
   
+  const inWishlist = isInWishlist(product.id);
+  const inComparison = isInComparison(product.id);
+
   const translations = {
     en: {
       outOfStock: "Out of Stock",
@@ -56,6 +63,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
     }
   };
 
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleWishlist(product.id);
+  };
+
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleComparison(product.id);
+  };
+
   return (
     <div className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-lg transition-all duration-300 flex flex-col">
       {/* Image Section with Pattern Background */}
@@ -68,6 +85,32 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </pattern>
             <rect width="100" height="100" fill="url(#farm-pattern)" />
           </svg>
+        </div>
+
+        {/* Wishlist & Compare Buttons */}
+        <div className="absolute top-3 left-3 flex gap-2 z-10">
+          <button
+            onClick={handleWishlistClick}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+              inWishlist 
+                ? 'bg-destructive text-destructive-foreground' 
+                : 'bg-background/80 text-muted-foreground hover:bg-background hover:text-destructive'
+            }`}
+            title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+          </button>
+          <button
+            onClick={handleCompareClick}
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+              inComparison 
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-background/80 text-muted-foreground hover:bg-background hover:text-primary'
+            }`}
+            title={inComparison ? 'Remove from comparison' : 'Add to comparison'}
+          >
+            <Scale className="w-4 h-4" />
+          </button>
         </div>
 
         {/* Product Image */}
