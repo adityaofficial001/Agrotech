@@ -12,6 +12,24 @@ import {
 } from 'lucide-react';
 import React from 'react';
 
+export interface ProductVariant {
+    id: string;
+    size: string;
+    sizeHi?: string;
+    price: number;
+    originalPrice?: number;
+    inStock: boolean;
+}
+
+export interface Review {
+    id: string;
+    user: string;
+    rating: number; // 1-5
+    comment: string;
+    date: string;
+    image?: string;
+}
+
 export interface Product {
     id: string;
     name: string;
@@ -29,6 +47,20 @@ export interface Product {
     priceMax?: number;
     crops?: string[];
     pests?: string[];
+    // New Filter Fields
+    type?: string[]; // e.g. Organic, Bio-based
+    applicationMethod?: string[]; // e.g. Foliar Spray, Soil Application
+    growthStage?: string[]; // e.g. Vegetative, Flowering
+    packSize?: string; // e.g. 250 ml, 1 L
+    rating?: number; // 1-5
+
+    // Advanced Product Details
+    variants?: ProductVariant[];
+    reviews?: Review[];
+    description?: string;
+    descriptionHi?: string;
+    benefits?: string[];
+    usageInstructions?: string[];
 }
 
 export const CATEGORIES = [
@@ -62,7 +94,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     { id: 'bioproducts', name: { en: 'Bioproducts', hi: 'जैव उत्पाद' }, icon: Microscope },
     { id: 'allied', name: { en: 'Allied Products', hi: 'संबद्ध उत्पाद' }, icon: ShoppingBag },
     { id: 'cropscience', name: { en: 'Crop Science', hi: 'फसल विज्ञान' }, icon: BookOpen },
-    { id: 'offers', name: { en: 'Services & Offers', hi: 'सेवाएं और ऑफर' }, icon: Gift },
+    { id: 'offers', name: { en: 'Special Offers', hi: 'विशेष ऑफर' }, icon: Gift },
 ];
 
 const generateProducts = () => {

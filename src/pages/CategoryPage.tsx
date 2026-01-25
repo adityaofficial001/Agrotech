@@ -32,19 +32,33 @@ const CategoryPage = () => {
   const { t, language } = useLanguage();
   const currentLanguage = language === 'HI' ? 'hi' : 'en';
 
+  const GLOBAL_CROP_FILTERS = ['Cotton', 'Maize', 'Rice', 'Tomato', 'Wheat'];
+
+  // Filter States
   // Filter States
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedCrops, setSelectedCrops] = useState<string[]>([]);
+
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+  const [selectedStages, setSelectedStages] = useState<string[]>([]);
+  const [selectedPackSizes, setSelectedPackSizes] = useState<string[]>([]);
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [onlyInStock, setOnlyInStock] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // Reset filters when category changes
-  // Reset filters when category changes
   useEffect(() => {
     window.scrollTo(0, 0);
     setSelectedBrands([]);
     setSelectedCrops([]);
+    setSelectedTypes([]);
+    setSelectedMethods([]);
+    setSelectedStages([]);
+    setSelectedPackSizes([]);
+    setSelectedRatings([]);
     setPriceRange([0, 10000]);
     setOnlyInStock(false);
     setIsMobileFilterOpen(false);
@@ -149,16 +163,30 @@ const CategoryPage = () => {
   const { products, title, relatedProducts } = getCategoryData();
 
   // Derived Filter Data
-  const { availableBrands, availableCrops, minPrice, maxPrice } = useMemo(() => {
-    if (products.length === 0) return { availableBrands: [], availableCrops: [], minPrice: 0, maxPrice: 10000 };
+  const { availableBrands, availableCrops, availableTypes, availableMethods, availableStages, availablePackSizes, minPrice, maxPrice } = useMemo(() => {
+    if (products.length === 0) return { availableBrands: [], availableCrops: [], availableTypes: [], availableMethods: [], availableStages: [], availablePackSizes: [], minPrice: 0, maxPrice: 10000 };
 
     const brands = Array.from(new Set(products.map(p => p.brand))).sort();
 
     const cropsSet = new Set<string>();
+    const typesSet = new Set<string>();
+    const methodsSet = new Set<string>();
+    const stagesSet = new Set<string>();
+    const packSizesSet = new Set<string>();
+
     products.forEach(p => {
       p.crops?.forEach(c => cropsSet.add(c));
+      p.type?.forEach(t => typesSet.add(t));
+      p.applicationMethod?.forEach(m => methodsSet.add(m));
+      p.growthStage?.forEach(s => stagesSet.add(s));
+      if (p.packSize) packSizesSet.add(p.packSize);
     });
-    const crops = Array.from(cropsSet).sort();
+
+    const crops = GLOBAL_CROP_FILTERS;
+    const types = Array.from(typesSet).sort();
+    const methods = Array.from(methodsSet).sort();
+    const stages = Array.from(stagesSet).sort();
+    const packSizes = Array.from(packSizesSet).sort();
 
     const prices = products.flatMap(p => [p.priceMin, p.priceMax]);
     const min = Math.min(...prices);
@@ -167,6 +195,10 @@ const CategoryPage = () => {
     return {
       availableBrands: brands,
       availableCrops: crops,
+      availableTypes: types,
+      availableMethods: methods,
+      availableStages: stages,
+      availablePackSizes: packSizes,
       minPrice: Math.floor(min / 100) * 100, // Round down to nearest 100
       maxPrice: Math.ceil(max / 100) * 100, // Round up to nearest 100
     };
@@ -190,9 +222,45 @@ const CategoryPage = () => {
 
       // Crop Filter
       if (selectedCrops.length > 0) {
-        const productCrops = product.crops || [];
-        const hasMatchingCrop = selectedCrops.some(crop => productCrops.includes(crop));
+        const productCrops = (product.crops || []).map(c => c.toLowerCase());
+        const hasMatchingCrop = selectedCrops.some(crop => productCrops.includes(crop.toLowerCase()));
         if (!hasMatchingCrop) return false;
+      }
+
+      // Type Filter
+      if (selectedTypes.length > 0) {
+        const productTypes = product.type || [];
+        const hasMatchingType = selectedTypes.some(type => productTypes.includes(type));
+        if (!hasMatchingType) return false;
+      }
+
+      // Application Method Filter
+      if (selectedMethods.length > 0) {
+        const productMethods = product.applicationMethod || [];
+        const hasMatchingMethod = selectedMethods.some(method => productMethods.includes(method));
+        if (!hasMatchingMethod) return false;
+      }
+
+      // Growth Stage Filter
+      if (selectedStages.length > 0) {
+        const productStages = product.growthStage || [];
+        const hasMatchingStage = selectedStages.some(stage => productStages.includes(stage));
+        if (!hasMatchingStage) return false;
+      }
+
+      // Pack Size Filter
+      if (selectedPackSizes.length > 0) {
+        if (!product.packSize || !selectedPackSizes.includes(product.packSize)) {
+          return false;
+        }
+      }
+
+      // Rating Filter
+      if (selectedRatings.length > 0) {
+        const productRating = product.rating || 0;
+        // Show if product rating is >= ANY of the selected ratings
+        const meetsRating = selectedRatings.some(rating => productRating >= rating);
+        if (!meetsRating) return false;
       }
 
       // Price Filter
@@ -207,7 +275,7 @@ const CategoryPage = () => {
 
       return true;
     });
-  }, [products, selectedBrands, selectedCrops, priceRange, onlyInStock]);
+  }, [products, selectedBrands, selectedCrops, selectedTypes, selectedMethods, selectedStages, selectedPackSizes, selectedRatings, priceRange, onlyInStock]);
 
   // Handle Filter Changes
   const handleBrandChange = (brand: string) => {
@@ -219,6 +287,36 @@ const CategoryPage = () => {
   const handleCropChange = (crop: string) => {
     setSelectedCrops(prev =>
       prev.includes(crop) ? prev.filter(c => c !== crop) : [...prev, crop]
+    );
+  };
+
+  const handleTypeChange = (type: string) => {
+    setSelectedTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
+  };
+
+  const handleMethodChange = (method: string) => {
+    setSelectedMethods(prev =>
+      prev.includes(method) ? prev.filter(m => m !== method) : [...prev, method]
+    );
+  };
+
+  const handleStageChange = (stage: string) => {
+    setSelectedStages(prev =>
+      prev.includes(stage) ? prev.filter(s => s !== stage) : [...prev, stage]
+    );
+  };
+
+  const handlePackSizeChange = (size: string) => {
+    setSelectedPackSizes(prev =>
+      prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]
+    );
+  };
+
+  const handleRatingChange = (rating: number) => {
+    setSelectedRatings(prev =>
+      prev.includes(rating) ? prev.filter(r => r !== rating) : [...prev, rating]
     );
   };
 
@@ -262,13 +360,30 @@ const CategoryPage = () => {
                 isOpen={isMobileFilterOpen}
                 onClose={() => setIsMobileFilterOpen(false)}
                 brands={availableBrands}
-                crops={availableCrops}
+                crops={GLOBAL_CROP_FILTERS}
+                productTypes={availableTypes}
+                applicationMethods={availableMethods}
+                growthStages={availableStages}
+                packSizes={availablePackSizes}
                 minPrice={minPrice}
                 maxPrice={maxPrice}
+
                 selectedBrands={selectedBrands}
                 onBrandChange={handleBrandChange}
                 selectedCrops={selectedCrops}
                 onCropChange={handleCropChange}
+
+                selectedTypes={selectedTypes}
+                onTypeChange={handleTypeChange}
+                selectedMethods={selectedMethods}
+                onMethodChange={handleMethodChange}
+                selectedStages={selectedStages}
+                onStageChange={handleStageChange}
+                selectedPackSizes={selectedPackSizes}
+                onPackSizeChange={handlePackSizeChange}
+                selectedRatings={selectedRatings}
+                onRatingChange={handleRatingChange}
+
                 priceRange={priceRange}
                 onPriceChange={setPriceRange}
                 onlyInStock={onlyInStock}
@@ -276,10 +391,14 @@ const CategoryPage = () => {
                 onClearAll={() => {
                   setSelectedBrands([]);
                   setSelectedCrops([]);
+                  setSelectedTypes([]);
+                  setSelectedMethods([]);
+                  setSelectedStages([]);
+                  setSelectedPackSizes([]);
+                  setSelectedRatings([]);
                   setPriceRange([minPrice, maxPrice]);
                   setOnlyInStock(false);
                 }}
-                currentLanguage={currentLanguage}
               />
 
               {/* Product Grid */}

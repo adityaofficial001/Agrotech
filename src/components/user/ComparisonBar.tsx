@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Product } from '@/data/categories';
-import { useUserPreferences } from '@/contexts/UserPreferencesContext';
+import { useComparison } from '@/contexts/ComparisonContext';
+import { allProductsArray } from '@/data/products';
 import { X, GitCompare, ChevronRight, Check, Minus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +14,11 @@ import {
 
 // Floating Bar Component
 export const ComparisonBar: React.FC<{ onOpenModal: () => void }> = ({ onOpenModal }) => {
-    const { comparisons, removeFromComparison, clearComparison } = useUserPreferences();
+    const { comparisonIds, toggleComparison, clearComparison } = useComparison();
+
+    const comparisons = React.useMemo(() => {
+        return comparisonIds.map(id => allProductsArray.find(p => p.id === id)).filter((p): p is Product => !!p);
+    }, [comparisonIds]);
 
     if (comparisons.length === 0) return null;
 
@@ -27,7 +32,7 @@ export const ComparisonBar: React.FC<{ onOpenModal: () => void }> = ({ onOpenMod
                                 <img src={product.image} alt={product.name} className="w-full h-full object-contain" />
                             </div>
                             <button
-                                onClick={() => removeFromComparison(product.id)}
+                                onClick={() => toggleComparison(product.id)}
                                 className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-0.5 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                                 <X className="w-3 h-3" />
@@ -61,7 +66,11 @@ export const ComparisonBar: React.FC<{ onOpenModal: () => void }> = ({ onOpenMod
 
 // Full Modal Comparison Component
 export const ComparisonModal: React.FC<{ open: boolean, onOpenChange: (open: boolean) => void }> = ({ open, onOpenChange }) => {
-    const { comparisons } = useUserPreferences();
+    const { comparisonIds } = useComparison();
+
+    const comparisons = React.useMemo(() => {
+        return comparisonIds.map(id => allProductsArray.find(p => p.id === id)).filter((p): p is Product => !!p);
+    }, [comparisonIds]);
 
     const comparisonRows = [
         { label: 'Brand', key: 'brand' },

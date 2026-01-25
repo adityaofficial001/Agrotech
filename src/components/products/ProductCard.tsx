@@ -4,6 +4,7 @@ import { Tractor, ShoppingCart, Wheat, Bug, Droplets, Heart, Scale } from 'lucid
 import { AgriButton } from '@/components/ui/AgriButton';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useProductModal } from '@/contexts/ProductModalContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useComparison } from '@/contexts/ComparisonContext';
 
@@ -24,6 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { t } = useLanguage();
   const { addToCart, buyNow } = useCart();
+  const { openModal } = useProductModal();
   const navigate = useNavigate();
 
   // Use new context hooks
@@ -80,19 +82,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
             title={isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleComparison(product.id);
-            }}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isInComparison(product.id)
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-background/80 text-muted-foreground hover:bg-background hover:text-primary'
-              }`}
-            title={isInComparison(product.id) ? 'Remove from comparison' : 'Add to comparison'}
-          >
-            <Scale className="w-4 h-4" />
           </button>
         </div>
 
@@ -192,7 +181,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               disabled={!product.inStock}
               onClick={(e) => {
                 e.stopPropagation();
-                addToCart(product, 1);
+                openModal(product);
               }}
             >
               <ShoppingCart className="w-4 h-4 mr-1" />

@@ -9,6 +9,7 @@ import {
     SheetFooter
 } from "@/components/ui/sheet";
 import { useCart } from '@/contexts/CartContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ interface CartDrawerProps {
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) => {
     const { items, updateQuantity, removeFromCart, cartTotal, itemsCount } = useCart();
+    const { t } = useLanguage();
     const navigate = useNavigate();
 
     const handleCheckout = () => {
@@ -34,10 +36,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) =>
                 <SheetHeader className="mb-6">
                     <div className="flex items-center gap-2">
                         <ShoppingBag className="w-6 h-6 text-primary" />
-                        <SheetTitle>Your Shopping Cart</SheetTitle>
+                        <SheetTitle>{t.cart?.title || 'Your Shopping Cart'}</SheetTitle>
                     </div>
                     <SheetDescription>
-                        You have {itemsCount} item{itemsCount !== 1 ? 's' : ''} in your cart.
+                        {t.cart?.itemCount?.replace('{count}', itemsCount.toString()).replace('{plural}', itemsCount !== 1 ? 's' : '') || `You have ${itemsCount} item${itemsCount !== 1 ? 's' : ''} in your cart.`}
                     </SheetDescription>
                 </SheetHeader>
 
@@ -45,8 +47,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) =>
                     {items.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
                             <ShoppingBag className="w-16 h-16 mb-4 opacity-20" />
-                            <p className="text-lg font-medium">Your cart is empty</p>
-                            <Button variant="link" onClick={() => onOpenChange(false)} className="mt-2 text-primary">Start Shopping</Button>
+                            <p className="text-lg font-medium">{t.cart?.empty || 'Your cart is empty'}</p>
+                            <Button variant="link" onClick={() => onOpenChange(false)} className="mt-2 text-primary">{t.cart?.startShopping || 'Start Shopping'}</Button>
                         </div>
                     ) : (
                         <div className="flex flex-col gap-6">
@@ -66,6 +68,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) =>
                                                 variant="ghost"
                                                 className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/5 -mt-1 -mr-1"
                                                 onClick={() => removeFromCart(item.id)}
+                                                title={t.cart?.removeItem || 'Remove item'}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>
@@ -80,6 +83,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) =>
                                                     variant="ghost"
                                                     className="h-7 w-7 rounded-md hover:bg-white"
                                                     onClick={() => updateQuantity(item.id, item.cartQuantity - 1)}
+                                                    title={t.cart?.decreaseQty || 'Decrease quantity'}
                                                 >
                                                     <Minus className="w-3 h-3" />
                                                 </Button>
@@ -89,6 +93,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) =>
                                                     variant="ghost"
                                                     className="h-7 w-7 rounded-md hover:bg-white"
                                                     onClick={() => updateQuantity(item.id, item.cartQuantity + 1)}
+                                                    title={t.cart?.increaseQty || 'Increase quantity'}
                                                 >
                                                     <Plus className="w-3 h-3" />
                                                 </Button>
@@ -105,26 +110,26 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ open, onOpenChange }) =>
                     <div className="pt-6 border-t mt-auto">
                         <div className="flex flex-col gap-4 mb-6">
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-muted-foreground">Subtotal</span>
+                                <span className="text-muted-foreground">{t.cart?.subtotal || 'Subtotal'}</span>
                                 <span className="font-semibold text-gray-900">₹{cartTotal.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-muted-foreground">Shipping</span>
-                                <span className="text-green-600 font-bold uppercase text-[10px] tracking-widest bg-green-50 px-2 py-0.5 rounded border border-green-100">Calculated at checkout</span>
+                                <span className="text-muted-foreground">{t.cart?.shipping || 'Shipping'}</span>
+                                <span className="text-green-600 font-bold uppercase text-[10px] tracking-widest bg-green-50 px-2 py-0.5 rounded border border-green-100">{t.cart?.calculatedAtCheckout || 'Calculated at checkout'}</span>
                             </div>
                             <Separator />
                             <div className="flex justify-between items-center">
-                                <span className="font-bold text-gray-900">Estimated Total</span>
+                                <span className="font-bold text-gray-900">{t.cart?.estimatedTotal || 'Estimated Total'}</span>
                                 <span className="text-2xl font-black text-primary">₹{cartTotal.toLocaleString()}</span>
                             </div>
                         </div>
 
                         <Button className="w-full h-12 text-base font-bold gap-2 rounded-xl shadow-lg shadow-primary/20" onClick={handleCheckout}>
-                            Proceed to Checkout
+                            {t.cart?.proceedToCheckout || 'Proceed to Checkout'}
                             <ArrowRight className="w-5 h-5" />
                         </Button>
                         <p className="text-center text-[10px] text-muted-foreground mt-4 uppercase tracking-tighter">
-                            By proceeding, you agree to our terms and conditions.
+                            {t.cart?.termsAgreement || 'By proceeding, you agree to our terms and conditions.'}
                         </p>
                     </div>
                 )}

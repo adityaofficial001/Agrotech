@@ -23,7 +23,12 @@ export const insecticideProducts: Product[] = [
     inStock: true,
     crops: ['wheat', 'rice', 'cotton'],
     pests: ['aphids', 'whitefly'],
-    category: 'Insecticides'
+    category: 'Insecticides',
+    type: ['Chemical'],
+    applicationMethod: ['Foliar Spray'],
+    growthStage: ['Vegetative Growth', 'Flowering'],
+    packSize: '1 L',
+    rating: 4.5
   },
   {
     id: 'ins-002',
@@ -37,7 +42,12 @@ export const insecticideProducts: Product[] = [
     inStock: true,
     crops: ['tomato', 'brinjal'],
     pests: ['caterpillar'],
-    category: 'Insecticides'
+    category: 'Insecticides',
+    type: ['Chemical'],
+    applicationMethod: ['Foliar Spray'],
+    growthStage: ['Fruiting'],
+    packSize: '500 ml',
+    rating: 4.2
   },
   {
     id: 'ins-003',
@@ -50,7 +60,12 @@ export const insecticideProducts: Product[] = [
     quantity: '1L',
     inStock: true,
     crops: ['vegetables'],
-    category: 'Insecticides'
+    category: 'Insecticides',
+    type: ['Organic', 'Eco-friendly'],
+    applicationMethod: ['Soil Application'],
+    growthStage: ['Vegetative Growth'],
+    packSize: '1 L',
+    rating: 4.8
   },
   {
     id: 'ins-004',
@@ -63,7 +78,12 @@ export const insecticideProducts: Product[] = [
     quantity: '5L',
     inStock: false,
     pests: ['termite'],
-    category: 'Insecticides'
+    category: 'Insecticides',
+    type: ['Chemical'],
+    applicationMethod: ['Soil Application'],
+    growthStage: ['Germination'],
+    packSize: '5 L',
+    rating: 4.0
   },
   {
     id: 'ins-005',
@@ -132,6 +152,11 @@ export const seedProducts: Product[] = [
     quantity: '5KG',
     inStock: true,
     crops: ['wheat'],
+    type: ['Hybrid'],
+    applicationMethod: ['Seed Treatment'],
+    growthStage: ['Germination'],
+    packSize: '5 KG',
+    rating: 4.6
   },
   {
     id: 'seed-002',
@@ -158,6 +183,11 @@ export const seedProducts: Product[] = [
     quantity: '100g',
     inStock: true,
     crops: ['tomato'],
+    type: ['Organic'],
+    applicationMethod: ['Seed Treatment'],
+    growthStage: ['Germination'],
+    packSize: '100 g',
+    rating: 4.9
   },
   {
     id: 'seed-004',
@@ -378,6 +408,11 @@ export const growthProducts: Product[] = [
     priceMax: 700,
     quantity: '500ml',
     inStock: true,
+    type: ['Bio-based'],
+    applicationMethod: ['Foliar Spray'],
+    growthStage: ['Vegetative Growth'],
+    packSize: '500 ml',
+    rating: 4.7
   },
   {
     id: 'growth-002',
@@ -450,6 +485,11 @@ export const bioproductsProducts: Product[] = [
     priceMax: 350,
     quantity: '1KG',
     inStock: true,
+    type: ['Organic', 'Bio-based'],
+    applicationMethod: ['Soil Application', 'Seed Treatment'],
+    growthStage: ['Germination', 'Vegetative Growth'],
+    packSize: '1 KG',
+    rating: 4.8
   },
   {
     id: 'bio-002',

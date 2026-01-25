@@ -44,7 +44,7 @@ const PrivacyPolicy = () => {
                                 </p>
                             </div>
 
-                            {t.privacy.sections.map((section: any, index: number) => (
+                            {t.privacy.sections.map((section, index) => (
                                 <div key={index} className="mb-10 last:mb-0">
                                     <h2 className="text-xl font-display font-bold text-foreground mb-4 flex items-center gap-2">
                                         <span className="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center text-sm">

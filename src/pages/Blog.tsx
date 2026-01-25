@@ -27,7 +27,7 @@ const Blog = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                        {t.blog.posts.map((post: any, index: number) => (
+                        {t.blog.posts.map((post, index) => (
                             <Link key={index} to={`/blog/${post.id}`}>
                                 <article className="h-full bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow group flex flex-col">
                                     <div className="aspect-[16/9] bg-muted relative overflow-hidden">

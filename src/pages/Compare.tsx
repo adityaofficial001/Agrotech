@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Scale, X, ShoppingBag, Tractor, Wheat, Bug, ShoppingCart } from 'lucide-react';
+import { Scale, X, ShoppingBag, CheckCircle, AlertOctagon, TrendingDown, HelpCircle } from 'lucide-react';
 import TopHeader from '@/components/layout/TopHeader';
 import CategoryNav from '@/components/layout/CategoryNav';
 import Footer from '@/components/layout/Footer';
@@ -9,11 +9,22 @@ import { getAllProducts } from '@/data/products';
 import { AgriButton } from '@/components/ui/AgriButton';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { Switch } from '@/components/ui/switch';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const Compare = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'hi'>('en');
+
+  const { language, t: globalT } = useLanguage();
+  const t = globalT.compare;
   const { comparisonIds, toggleComparison, clearComparison } = useComparison();
   const navigate = useNavigate();
+  const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
 
   const allProducts = getAllProducts();
   const allProductsFlat = [
@@ -21,50 +32,17 @@ const Compare = () => {
     ...allProducts.seeds,
     ...allProducts.fertilizers,
     ...allProducts.herbicides,
+    ...allProducts.implements,
+    ...allProducts.growth,
+    ...allProducts.bioproducts,
+    ...allProducts.allied,
+    ...allProducts.cropscience,
+    ...allProducts.offers
   ];
 
-  const comparisonProducts = allProductsFlat.filter(product => 
+  const comparisonProducts = allProductsFlat.filter(product =>
     comparisonIds.includes(product.id)
   );
-
-  const translations = {
-    en: {
-      title: 'Compare Products',
-      empty: 'No products to compare',
-      emptyDesc: 'Add products to compare by clicking the compare icon on product cards',
-      browse: 'Browse Products',
-      clearAll: 'Clear All',
-      brand: 'Brand',
-      price: 'Price Range',
-      quantity: 'Quantity',
-      availability: 'Availability',
-      inStock: 'In Stock',
-      outOfStock: 'Out of Stock',
-      crops: 'Suitable Crops',
-      pests: 'Target Pests',
-      shopNow: 'Shop Now',
-      items: 'products',
-    },
-    hi: {
-      title: 'उत्पादों की तुलना करें',
-      empty: 'तुलना करने के लिए कोई उत्पाद नहीं',
-      emptyDesc: 'उत्पाद कार्ड पर तुलना आइकन पर क्लिक करके तुलना के लिए उत्पाद जोड़ें',
-      browse: 'उत्पाद देखें',
-      clearAll: 'सभी हटाएं',
-      brand: 'ब्रांड',
-      price: 'मूल्य सीमा',
-      quantity: 'मात्रा',
-      availability: 'उपलब्धता',
-      inStock: 'स्टॉक में',
-      outOfStock: 'स्टॉक में नहीं',
-      crops: 'उपयुक्त फसलें',
-      pests: 'लक्षित कीट',
-      shopNow: 'अभी खरीदें',
-      items: 'उत्पाद',
-    }
-  };
-
-  const t = translations[currentLanguage];
 
   const handleRemove = (productId: string) => {
     toggleComparison(productId);
@@ -74,23 +52,100 @@ const Compare = () => {
     navigate(`/product/${productId}`);
   };
 
+  // Helper to standardise units for calculation
+  const getStandardizedPrice = (price: number, quantity: string) => {
+    const qtyStr = quantity.toLowerCase();
+    let unitValue = 1;
+    if (qtyStr.includes('kg')) {
+      unitValue = parseFloat(qtyStr) * 1000; // convert to grams
+    } else if (qtyStr.includes('g') && !qtyStr.includes('kg')) {
+      unitValue = parseFloat(qtyStr);
+    } else if (qtyStr.includes('l') && !qtyStr.includes('ml')) {
+      unitValue = parseFloat(qtyStr) * 1000; // convert to ml
+    } else if (qtyStr.includes('ml')) {
+      unitValue = parseFloat(qtyStr);
+    } else {
+      // numeric only fallback
+      unitValue = parseFloat(qtyStr) || 1;
+    }
+    return price / unitValue;
+  };
+
+  // Find Best Value product (lowest price per unit)
+  const bestValueProductId = comparisonProducts.reduce((bestId, current) => {
+    if (!bestId) return current.id;
+    const bestProd = comparisonProducts.find(p => p.id === bestId);
+    if (!bestProd) return current.id;
+
+    const currentRate = getStandardizedPrice(current.price, current.quantity);
+    const bestRate = getStandardizedPrice(bestProd.price, bestProd.quantity);
+
+    return currentRate < bestRate ? current.id : bestId;
+  }, '');
+
+  // Intelligent "Best for [Crop]" Recommendation
+  // Logic: Find a crop that this product has which is mostly unique or first in list
+  // Intelligent "Best for [Crop]" Recommendation
+  // Logic: Find a crop that this product has which is mostly unique or first in list
+  const getProductBadge = (product: typeof comparisonProducts[0]) => {
+    if (!product.crops || product.crops.length === 0) return null;
+
+    if (product.crops.length > 2) {
+      return { type: 'multi', label: t.multiCrop };
+    }
+
+    // Simple heuristic: Pick the first crop as the "Best for" highlight
+    return { type: 'specific', label: `${t.bestFor} ${product.crops[0]}` };
+  };
+
+  // Helper to check if row has differences
+  const hasDifference = (key: keyof typeof comparisonProducts[0]) => {
+    const values = comparisonProducts.map(p => {
+      const val = p[key];
+      // Handle arrays like crops and pests
+      if (Array.isArray(val)) {
+        return JSON.stringify([...val].sort());
+      }
+      return val;
+    });
+    return new Set(values).size > 1;
+  };
+
+  const currentLangCode = language === 'HI' ? 'hi' : 'en';
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <TopHeader currentLanguage={currentLanguage} onLanguageChange={setCurrentLanguage} />
-      <CategoryNav currentLanguage={currentLanguage} activeCategory="" onCategoryChange={() => {}} />
+    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+      <TopHeader />
+      <CategoryNav currentLanguage={currentLangCode} activeCategory="" onCategoryChange={() => { }} />
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-display font-bold text-foreground flex items-center gap-2">
-            <Scale className="w-6 h-6 text-primary" />
+
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+          <h1 className="text-3xl font-display font-black text-gray-900 flex items-center gap-3">
+            <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <Scale className="w-6 h-6 text-primary" />
+            </div>
             {t.title}
           </h1>
           {comparisonProducts.length > 0 && (
-            <div className="flex items-center gap-4">
-              <span className="text-muted-foreground">
-                {comparisonProducts.length} {t.items}
+            <div className="flex items-center gap-4 flex-wrap justify-center">
+              {/* Differences Only Toggle */}
+              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm">
+                <Switch
+                  checked={showDifferencesOnly}
+                  onCheckedChange={setShowDifferencesOnly}
+                  id="diff-mode"
+                />
+                <label htmlFor="diff-mode" className="text-sm font-bold text-gray-700 cursor-pointer select-none">
+                  {t.differencesOnly}
+                </label>
+              </div>
+
+              <span className="text-sm font-bold text-gray-500 bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+                {comparisonProducts.length} / 2 {t.items}
               </span>
-              <Button variant="outline" size="sm" onClick={clearComparison}>
+              <Button variant="ghost" size="sm" onClick={clearComparison} className="text-destructive hover:text-destructive hover:bg-destructive/10">
                 {t.clearAll}
               </Button>
             </div>
@@ -98,178 +153,214 @@ const Compare = () => {
         </div>
 
         {comparisonProducts.length === 0 ? (
-          <div className="bg-card rounded-2xl p-12 text-center border border-border">
-            <div className="w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
-              <Scale className="w-10 h-10 text-primary" />
+          <div className="bg-white rounded-3xl p-16 text-center border-2 border-dashed border-gray-200 shadow-sm max-w-2xl mx-auto">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gray-50 rounded-full flex items-center justify-center animate-pulse">
+              <Scale className="w-10 h-10 text-gray-300" />
             </div>
-            <h2 className="text-xl font-display font-bold text-foreground mb-2">
+            <h2 className="text-2xl font-black text-gray-900 mb-3">
               {t.empty}
             </h2>
-            <p className="text-muted-foreground mb-6">{t.emptyDesc}</p>
+            <p className="text-gray-500 mb-8 max-w-md mx-auto">{t.emptyDesc}</p>
             <Link to="/">
-              <AgriButton>
-                <ShoppingBag className="w-4 h-4 mr-2" />
+              <AgriButton size="xl" className="shadow-xl shadow-primary/20">
+                <ShoppingBag className="w-5 h-5 mr-2" />
                 {t.browse}
               </AgriButton>
             </Link>
           </div>
         ) : (
-          <div className="bg-card rounded-xl border border-border overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr>
-                    <th className="text-left p-4 bg-muted/30 border-b border-border min-w-[150px]"></th>
-                    {comparisonProducts.map((product) => (
-                      <th key={product.id} className="p-4 bg-muted/30 border-b border-border min-w-[250px]">
-                        <div className="relative">
-                          <button
-                            onClick={() => handleRemove(product.id)}
-                            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center hover:bg-destructive/90"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                          <div className="h-32 bg-gradient-to-br from-agri-cream to-muted rounded-lg flex items-center justify-center mb-3">
-                            {product.image ? (
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                className="max-h-full max-w-full object-contain p-2"
-                              />
-                            ) : (
-                              <Tractor className="w-12 h-12 text-primary" />
+          <div className="bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden relative">
+
+            {/* Scrollable Container */}
+            <TooltipProvider delayDuration={300}>
+              <div className="overflow-x-auto pb-4 scrollbar-hide">
+                <div className="min-w-[800px] md:min-w-0">
+
+                  {/* Grid Layout */}
+                  <div
+                    className="grid divide-x divide-gray-100 transition-all duration-500 ease-in-out"
+                    style={{
+                      gridTemplateColumns: `200px repeat(${comparisonProducts.length}, minmax(0, 1fr))`
+                    }}
+                  >
+
+                    {/* Sticky Header Row for Titles/Images */}
+                    <div className="sticky top-0 z-20 bg-white p-6 flex items-end font-bold text-xl text-gray-400 border-b border-gray-100 shadow-sm">
+                      {t.specifications}
+                    </div>
+
+                    {comparisonProducts.map((product) => {
+                      const recommendationCrop = getProductBadge(product);
+
+                      return (
+                        <div key={product.id} className="sticky top-0 z-20 bg-white p-6 border-b border-gray-100 relative group transition-all hover:bg-gray-50/50 shadow-sm">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                onClick={() => handleRemove(product.id)}
+                                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-destructive hover:text-white transition-all opacity-0 group-hover:opacity-100 z-30"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{t.remove}</p>
+                            </TooltipContent>
+                          </Tooltip>
+
+                          <div className="aspect-[4/3] mb-4 flex items-center justify-center p-4">
+                            <img src={product.image} alt={product.name} className="max-w-full max-h-full object-contain drop-shadow-lg" />
+                          </div>
+                          <Link to={`/product/${product.id}`} className="block">
+                            <h3 className="font-bold text-gray-900 leading-tight hover:text-primary transition-colors text-lg mb-2 line-clamp-2 min-h-[3.5rem]">
+                              {product.name}
+                            </h3>
+                          </Link>
+
+                          {/* Intelligent Badges */}
+                          <div className="flex flex-wrap gap-2 mb-4 min-h-[52px]">
+                            <span className="text-xs font-bold bg-primary/10 text-primary px-2 py-1 rounded-md h-fit">
+                              {product.brand}
+                            </span>
+
+                            {/* Best Value Badge */}
+                            {product.id === bestValueProductId && comparisonProducts.length > 1 && (
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded-md flex items-center gap-1 cursor-help h-fit animate-pulse">
+                                    <TrendingDown className="w-3 h-3" /> {t.bestValue}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{t.bestValue} (Price/Unit)</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            )}
+
+                            {/* Recommendation Badge */}
+                            {recommendationCrop && (
+                              <span className={`text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1 h-fit ${recommendationCrop.type === 'multi' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+                                <CheckCircle className="w-3 h-3" /> {recommendationCrop.label}
+                              </span>
                             )}
                           </div>
-                          <p className="font-semibold text-foreground text-sm line-clamp-2">
-                            {product.name}
-                          </p>
+
+                          <AgriButton
+                            className="w-full"
+                            variant={product.inStock ? 'cart' : 'outline'}
+                            disabled={!product.inStock}
+                            onClick={() => handleShopNow(product.id)}
+                          >
+                            {product.inStock ? t.shopNow : t.outOfStock}
+                          </AgriButton>
                         </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Brand */}
-                  <tr className="border-b border-border">
-                    <td className="p-4 font-medium text-muted-foreground bg-muted/20">{t.brand}</td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        <div className="flex items-center justify-center gap-2">
-                          <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                            <Tractor className="w-3.5 h-3.5 text-primary-foreground" />
+                      );
+                    })}
+
+                    {/* Attribute Rows */}
+
+                    {/* Price */}
+                    {(showDifferencesOnly ? hasDifference('price') : true) && (
+                      <>
+                        <div className={`p-4 text-sm font-bold text-gray-500 bg-gray-50 flex items-center border-b border-gray-100`}>{t.price}</div>
+                        {comparisonProducts.map(product => (
+                          <div key={`${product.id}-price`} className={`p-4 text-center flex items-center justify-center border-b border-gray-100 ${hasDifference('price') ? 'bg-yellow-50/30' : ''}`}>
+                            <span className="font-black text-xl text-gray-900">₹{product.price.toLocaleString()}</span>
                           </div>
-                          <span className="font-medium text-primary">{product.brand}</span>
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
+                        ))}
+                      </>
+                    )}
 
-                  {/* Price */}
-                  <tr className="border-b border-border">
-                    <td className="p-4 font-medium text-muted-foreground bg-muted/20">{t.price}</td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        <span className="text-lg font-bold text-primary">
-                          ₹{product.priceMin.toLocaleString()}
-                          {product.priceMax !== product.priceMin && (
-                            <> – ₹{product.priceMax.toLocaleString()}</>
-                          )}
-                        </span>
-                      </td>
-                    ))}
-                  </tr>
+                    {/* Category */}
+                    {(showDifferencesOnly ? hasDifference('category') : true) && (
+                      <>
+                        <div className={`p-4 text-sm font-bold text-gray-500 bg-gray-50 flex items-center border-b border-gray-100`}>{t.category}</div>
+                        {comparisonProducts.map(product => (
+                          <div key={`${product.id}-cat`} className={`p-4 text-center flex items-center justify-center border-b border-gray-100 ${hasDifference('category') ? 'bg-yellow-50/30' : ''}`}>
+                            <span className="text-sm font-medium text-gray-700">{product.category}</span>
+                          </div>
+                        ))}
+                      </>
+                    )}
 
-                  {/* Quantity */}
-                  <tr className="border-b border-border">
-                    <td className="p-4 font-medium text-muted-foreground bg-muted/20">{t.quantity}</td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                          {product.quantity}
-                        </span>
-                      </td>
-                    ))}
-                  </tr>
+                    {/* Pack Size */}
+                    {(showDifferencesOnly ? hasDifference('quantity') : true) && (
+                      <>
+                        <div className={`p-4 text-sm font-bold text-gray-500 bg-gray-50 flex items-center border-b border-gray-100`}>{t.quantity}</div>
+                        {comparisonProducts.map(product => (
+                          <div key={`${product.id}-qty`} className={`p-4 text-center flex items-center justify-center border-b border-gray-100 ${hasDifference('quantity') ? 'bg-yellow-50/30' : ''}`}>
+                            <span className="text-sm font-bold bg-gray-100 px-3 py-1 rounded-full text-gray-700">{product.quantity}</span>
+                          </div>
+                        ))}
+                      </>
+                    )}
 
-                  {/* Availability */}
-                  <tr className="border-b border-border">
-                    <td className="p-4 font-medium text-muted-foreground bg-muted/20">{t.availability}</td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        {product.inStock ? (
-                          <span className="text-green-600 font-medium">{t.inStock}</span>
-                        ) : (
-                          <span className="text-destructive font-medium">{t.outOfStock}</span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
+                    {/* Availability */}
+                    {(showDifferencesOnly ? hasDifference('inStock') : true) && (
+                      <>
+                        <div className={`p-4 text-sm font-bold text-gray-500 bg-gray-50 flex items-center border-b border-gray-100`}>{t.availability}</div>
+                        {comparisonProducts.map(product => (
+                          <div key={`${product.id}-stock`} className={`p-4 text-center flex items-center justify-center border-b border-gray-100 ${hasDifference('inStock') ? 'bg-yellow-50/30' : ''}`}>
+                            {product.inStock ? (
+                              <div className="flex items-center gap-1.5 text-green-600 font-bold text-sm">
+                                <CheckCircle className="w-4 h-4 fill-green-100" /> {t.inStock}
+                              </div>
+                            ) : (
+                              <div className="flex items-center gap-1.5 text-red-500 font-bold text-sm">
+                                <AlertOctagon className="w-4 h-4" /> {t.outOfStock}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </>
+                    )}
 
-                  {/* Crops */}
-                  <tr className="border-b border-border">
-                    <td className="p-4 font-medium text-muted-foreground bg-muted/20">{t.crops}</td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        <div className="flex flex-wrap justify-center gap-2">
-                          {product.crops?.map((crop, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-center gap-1 px-2 py-1 bg-agri-green-light/20 rounded-full text-xs"
-                            >
-                              <Wheat className="w-3 h-3 text-agri-green" />
-                              <span>{crop}</span>
+                    {/* Crops */}
+                    {(showDifferencesOnly ? hasDifference('crops') : true) && (
+                      <>
+                        <div className={`p-4 text-sm font-bold text-gray-500 bg-gray-50 flex items-center border-b border-gray-100`}>{t.crops}</div>
+                        {comparisonProducts.map(product => (
+                          <div key={`${product.id}-crops`} className={`p-4 text-center flex items-center justify-center border-b border-gray-100 ${hasDifference('crops') ? 'bg-yellow-50/30' : ''}`}>
+                            <div className="flex flex-wrap gap-2 justify-center">
+                              {product.crops?.map(crop => (
+                                <div key={crop} className="text-[10px] uppercase font-bold tracking-wider bg-green-50 text-green-700 px-2 py-1 rounded-md border border-green-100">
+                                  {crop}
+                                </div>
+                              )) || '-'}
                             </div>
-                          )) || <span className="text-muted-foreground">—</span>}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
+                          </div>
+                        ))}
+                      </>
+                    )}
 
-                  {/* Pests */}
-                  <tr className="border-b border-border">
-                    <td className="p-4 font-medium text-muted-foreground bg-muted/20">{t.pests}</td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        <div className="flex flex-wrap justify-center gap-2">
-                          {product.pests?.map((pest, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-center gap-1 px-2 py-1 bg-destructive/10 rounded-full text-xs"
-                            >
-                              <Bug className="w-3 h-3 text-destructive" />
-                              <span>{pest}</span>
+                    {/* Pests */}
+                    {(showDifferencesOnly ? hasDifference('pests') : true) && (
+                      <>
+                        <div className={`p-4 text-sm font-bold text-gray-500 bg-gray-50 flex items-center border-b border-gray-100`}>{t.pests}</div>
+                        {comparisonProducts.map(product => (
+                          <div key={`${product.id}-pests`} className={`p-4 text-center flex items-center justify-center border-b border-gray-100 ${hasDifference('pests') ? 'bg-yellow-50/30' : ''}`}>
+                            <div className="flex flex-wrap gap-2 justify-center">
+                              {product.pests?.map(pest => (
+                                <div key={pest} className="text-[10px] uppercase font-bold tracking-wider bg-red-50 text-red-700 px-2 py-1 rounded-md border border-red-100">
+                                  {pest}
+                                </div>
+                              )) || '-'}
                             </div>
-                          )) || <span className="text-muted-foreground">—</span>}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
+                          </div>
+                        ))}
+                      </>
+                    )}
 
-                  {/* Action */}
-                  <tr>
-                    <td className="p-4 bg-muted/20"></td>
-                    {comparisonProducts.map((product) => (
-                      <td key={product.id} className="p-4 text-center">
-                        <AgriButton
-                          variant={product.inStock ? "cart" : "outline"}
-                          disabled={!product.inStock}
-                          onClick={() => handleShopNow(product.id)}
-                          className="w-full max-w-[200px]"
-                        >
-                          <ShoppingCart className="w-4 h-4 mr-2" />
-                          {product.inStock ? t.shopNow : t.outOfStock}
-                        </AgriButton>
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                  </div>
+                </div>
+              </div>
+            </TooltipProvider>
+
           </div>
         )}
       </main>
 
-      <Footer currentLanguage={currentLanguage} />
+      <Footer />
     </div>
   );
 };

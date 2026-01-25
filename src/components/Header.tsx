@@ -11,12 +11,14 @@ import {
 import { WishlistDrawer } from "./user/WishlistDrawer";
 import { CartDrawer } from "./user/CartDrawer";
 import { OrderTrackingModal } from "./user/OrderTrackingModal";
-import { useUserPreferences, Order } from "../contexts/UserPreferencesContext";
+import { useOrders, Order } from "../hooks/useOrders";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { toast } from "sonner";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
+import { useWishlist } from "../contexts/WishlistContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Badge } from "./ui/badge";
 import { useState, useEffect, useRef } from "react";
@@ -26,7 +28,10 @@ import { Product } from "@/data/categories";
 export const Header = () => {
     const { language, setLanguage, t } = useLanguage();
     const { itemsCount } = useCart();
-    const { wishlist, orders } = useUserPreferences();
+    const { wishlistIds } = useWishlist();
+
+    const { orders } = useOrders();
+    const { user, signOut } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -105,15 +110,16 @@ export const Header = () => {
                                         }}
                                     >
                                         <div className="flex justify-between w-full">
-                                            <span className="font-bold text-xs">{order.id}</span>
-                                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
+                                            <span className="font-bold text-xs">{order.order_number || order.id.slice(0, 8)}</span>
+                                            <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${order.status === 'delivered' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
                                                 }`}>
-                                                {t.header.orderStatus[order.status]}
+                                                {/* Capitalize first letter */}
+                                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-medium">
                                             <History className="w-3 h-3" />
-                                            {order.date}
+                                            {new Date(order.placed_at).toLocaleDateString()}
                                         </div>
                                     </DropdownMenuItem>
                                 ))}
@@ -137,9 +143,10 @@ export const Header = () => {
                 <div className="flex items-center justify-between gap-4 md:gap-8">
                     {/* Logo */}
                     <div className="flex items-center gap-2 flex-shrink-0 cursor-pointer" onClick={() => navigate('/')}>
-                        <div className="bg-primary p-2 rounded-lg">
+                        {/* <div className="bg-primary p-2 rounded-lg">
                             <Tractor className="h-6 w-6 text-white" />
-                        </div>
+                        </div> */}
+                        <img src="/logo.png" alt="Vartman Logo" className="h-10 w-auto object-contain" />
                         <div className="hidden md:block">
                             <h1 className="text-xl font-bold text-primary leading-none">{t.header.title}</h1>
                             <p className="text-xs text-primary/80">{t.header.tagline}</p>
@@ -205,37 +212,44 @@ export const Header = () => {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-2 md:gap-4">
+                    <div className="flex items-center gap-[10px]">
                         {/* Mobile Search Toggle */}
-                        <Button variant="ghost" size="icon" className="md:hidden text-primary">
+                        <Button variant="ghost" size="icon" className="md:hidden text-primary border border-gray-200 rounded-lg">
                             <Search className="h-5 w-5" />
                         </Button>
 
                         <Button
                             variant="outline"
-                            className="hidden md:flex gap-2 text-primary border-primary/20 hover:bg-primary/5 min-w-[140px]"
+                            className="hidden md:flex gap-2 text-primary border-primary/20 hover:bg-primary/5 min-w-[140px] border border-gray-200 rounded-lg"
                             onClick={toggleLanguage}
                         >
                             <Languages className="h-4 w-4" />
                             <span>{language === 'EN' ? 'हिंदी में पढ़ें' : 'Read in English'}</span>
                         </Button>
 
-                        <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/5 hidden sm:flex" onClick={() => toast.info('Login clicked')}>
-                            <User className="h-5 w-5" />
-                            <span className="ml-2 text-sm font-medium hidden lg:inline">{t.header.login}</span>
-                        </Button>
+                        {user ? (
+                            <Button variant="ghost" className="text-primary hover:bg-primary/5 hidden sm:flex border border-gray-200 rounded-lg w-[100px]" onClick={() => signOut()}>
+                                <User className="h-5 w-5" />
+                                <span className="ml-2 text-sm font-medium hidden lg:inline">{language === 'HI' ? 'लॉगआउट' : 'Logout'}</span>
+                            </Button>
+                        ) : (
+                            <Button variant="ghost" className="text-primary hover:bg-primary/5 hidden sm:flex border border-gray-200 rounded-lg w-[100px]" onClick={() => navigate('/login')}>
+                                <User className="h-5 w-5" />
+                                <span className="ml-2 text-sm font-medium hidden lg:inline">{t.header.login}</span>
+                            </Button>
+                        )}
 
 
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="text-primary hover:bg-primary/5 relative"
+                            className="text-primary hover:bg-primary/5 relative border border-gray-200 rounded-lg"
                             onClick={() => setIsWishlistOpen(true)}
                         >
-                            <Heart className={`h-5 w-5 ${wishlist.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
-                            {wishlist.length > 0 && (
+                            <Heart className={`h-5 w-5 ${wishlistIds.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+                            {wishlistIds.length > 0 && (
                                 <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center bg-red-500 text-[10px]">
-                                    {wishlist.length}
+                                    {wishlistIds.length}
                                 </Badge>
                             )}
                         </Button>
@@ -243,7 +257,7 @@ export const Header = () => {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="text-primary hover:bg-primary/5 relative"
+                            className="text-primary hover:bg-primary/5 relative border border-gray-200 rounded-lg"
                             onClick={() => setIsCartOpen(true)}
                         >
                             <ShoppingBag className="h-5 w-5" />
@@ -254,7 +268,17 @@ export const Header = () => {
                             )}
                         </Button>
 
-                        <Button variant="ghost" size="icon" className="md:hidden text-primary">
+                        {/* My Order Button */}
+                        <Button
+                            variant="ghost"
+                            className="text-primary hover:bg-primary/5 hidden sm:flex gap-2 border border-gray-200 rounded-lg px-3"
+                            onClick={() => navigate('/orders')}
+                        >
+                            <Package className="h-5 w-5" />
+                            <span className="hidden lg:inline">{t.header.myOrders || 'My Orders'}</span>
+                        </Button>
+
+                        <Button variant="ghost" size="icon" className="md:hidden text-primary border border-gray-200 rounded-lg">
                             <Menu className="h-5 w-5" />
                         </Button>
                     </div>

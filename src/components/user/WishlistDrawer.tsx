@@ -7,7 +7,8 @@ import {
     SheetTitle,
     SheetDescription
 } from "@/components/ui/sheet";
-import { useUserPreferences } from '@/contexts/UserPreferencesContext';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useProductModal } from '@/contexts/ProductModalContext';
 import { useCart } from '@/contexts/CartContext';
 import { allProductsArray } from '@/data/products';
 import { ShoppingCart, Trash2, Heart } from 'lucide-react';
@@ -21,15 +22,21 @@ interface WishlistDrawerProps {
 }
 
 export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({ open, onOpenChange }) => {
-    const { wishlist, toggleWishlist } = useUserPreferences();
+    const { wishlistIds, toggleWishlist } = useWishlist();
+    const { openModal } = useProductModal();
     const { addToCart } = useCart();
     const { t } = useLanguage();
 
-    const wishlistProducts = allProductsArray.filter(p => wishlist.includes(p.id));
+    const wishlistProducts = allProductsArray.filter(p => wishlistIds.includes(p.id));
 
     const handleMoveToCart = (product: any) => {
-        addToCart(product, 1);
-        toggleWishlist(product.id);
+        openModal(product);
+        // toggleWishlist(product.id); // Typically we'd remove from wishlist only after adding, but since modal is async/separate, maybe keep it?
+        // Or remove it immediately? If we remove it, and they cancel modal, it's gone.
+        // Better to NOT remove it here. Let them add to cart from modal.
+        // User can manually remove from wishlist. 
+        // Or we could pass a callback to modal? Too complex.
+        // Let's just open modal.
     };
 
     return (
@@ -42,8 +49,8 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({ open, onOpenChan
                     </div>
                     <SheetDescription>
                         {t.wishlist.itemsSaved
-                            .replace('{count}', wishlist.length.toString())
-                            .replace('{plural}', wishlist.length !== 1 ? 's' : '')}
+                            .replace('{count}', wishlistIds.length.toString())
+                            .replace('{plural}', wishlistIds.length !== 1 ? 's' : '')}
                     </SheetDescription>
                 </SheetHeader>
 

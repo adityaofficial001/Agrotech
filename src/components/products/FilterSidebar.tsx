@@ -10,7 +10,8 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import { X } from 'lucide-react';
+import { X, Star } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface FilterSidebarProps {
     // Mobile props
@@ -20,6 +21,11 @@ interface FilterSidebarProps {
     // Data props
     brands: string[];
     crops: string[];
+    productTypes: string[];
+    applicationMethods: string[];
+    growthStages: string[];
+    packSizes: string[];
+
     minPrice: number;
     maxPrice: number;
 
@@ -28,13 +34,23 @@ interface FilterSidebarProps {
     onBrandChange: (brand: string) => void;
     selectedCrops: string[];
     onCropChange: (crop: string) => void;
+
+    selectedTypes: string[];
+    onTypeChange: (type: string) => void;
+    selectedMethods: string[];
+    onMethodChange: (method: string) => void;
+    selectedStages: string[];
+    onStageChange: (stage: string) => void;
+    selectedPackSizes: string[];
+    onPackSizeChange: (size: string) => void;
+    selectedRatings: number[];
+    onRatingChange: (rating: number) => void;
+
     priceRange: [number, number];
     onPriceChange: (range: [number, number]) => void;
     onlyInStock: boolean;
     onStockChange: (inStock: boolean) => void;
     onClearAll?: () => void;
-
-    currentLanguage?: 'en' | 'hi';
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -42,43 +58,35 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     onClose,
     brands,
     crops,
+    productTypes,
+    applicationMethods,
+    growthStages,
+    packSizes,
     minPrice,
     maxPrice,
     selectedBrands,
     onBrandChange,
     selectedCrops,
     onCropChange,
+    selectedTypes,
+    onTypeChange,
+    selectedMethods,
+    onMethodChange,
+    selectedStages,
+    onStageChange,
+    selectedPackSizes,
+    onPackSizeChange,
+    selectedRatings,
+    onRatingChange,
     priceRange,
     onPriceChange,
     onlyInStock,
     onStockChange,
-    onClearAll,
-    currentLanguage = 'en'
+    onClearAll
 }) => {
-    const translations = {
-        en: {
-            filters: "Filters",
-            clearAll: "Clear All",
-            brand: "Brand",
-            priceRange: "Price Range",
-            crop: "Crop",
-            availability: "Availability",
-            inStock: "In Stock Only",
-            apply: "Apply Filters"
-        },
-        hi: {
-            filters: "फिल्टर",
-            clearAll: "सभी हटाएं",
-            brand: "ब्रांड",
-            priceRange: "मूल्य सीमा",
-            crop: "फसल",
-            availability: "उपलब्धता",
-            inStock: "केवल उपलब्ध स्टॉक",
-            apply: "फिल्टर लागू करें"
-        }
-    };
+    const { t } = useLanguage();
 
-    const t = translations[currentLanguage];
+    const getCount = (selected: any[]) => selected.length > 0 ? `(${selected.length})` : '';
 
     return (
         <>
@@ -91,21 +99,21 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             )}
 
             <aside className={`
-        fixed lg:sticky top-0 lg:top-24 left-0 h-full lg:h-auto 
+        fixed lg:sticky top-0 lg:top-24 left-0 h-full lg:h-[calc(100vh-6rem)]
         w-[280px] bg-card border-r lg:border border-border p-6 
         z-50 lg:z-0 lg:block overflow-y-auto transition-transform duration-300
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2">
-                        <h3 className="font-display font-bold text-xl">{t.filters}</h3>
+                        <h3 className="font-display font-bold text-xl">{t.filters?.filters}</h3>
                         {onClearAll && (
                             <Button
                                 variant="link"
                                 className="text-xs text-primary px-0 h-auto font-normal underline"
                                 onClick={onClearAll}
                             >
-                                {t.clearAll}
+                                {t.filters?.clearAll}
                             </Button>
                         )}
                     </div>
@@ -119,7 +127,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                     </Button>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-6 pb-20 lg:pb-0">
                     {/* Availability */}
                     <div className="flex items-center space-x-2">
                         <Switch
@@ -128,7 +136,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                             onCheckedChange={onStockChange}
                         />
                         <Label htmlFor="stock-mode" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            {t.inStock}
+                            {t.filters?.inStock}
                         </Label>
                     </div>
 
@@ -137,7 +145,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         {/* Price Range */}
                         <AccordionItem value="price">
                             <AccordionTrigger className="text-sm font-medium hover:no-underline">
-                                {t.priceRange}
+                                {t.filters?.priceRange}
                             </AccordionTrigger>
                             <AccordionContent className="pt-4">
                                 <Slider
@@ -160,7 +168,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         {brands.length > 0 && (
                             <AccordionItem value="brand">
                                 <AccordionTrigger className="text-sm font-medium hover:no-underline">
-                                    {t.brand}
+                                    {t.filters?.brand}
                                 </AccordionTrigger>
                                 <AccordionContent className="space-y-2">
                                     {brands.map((brand) => (
@@ -174,7 +182,8 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                 htmlFor={`brand-${brand}`}
                                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                             >
-                                                {brand}
+                                                {/* @ts-ignore */}
+                                                {t.brands?.[brand.toLowerCase().replace(/ /g, '')] || brand}
                                             </label>
                                         </div>
                                     ))}
@@ -186,7 +195,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                         {crops.length > 0 && (
                             <AccordionItem value="crop">
                                 <AccordionTrigger className="text-sm font-medium hover:no-underline">
-                                    {t.crop}
+                                    {t.filters?.crop}
                                 </AccordionTrigger>
                                 <AccordionContent className="space-y-2">
                                     {crops.map((crop) => (
@@ -200,14 +209,43 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                                                 htmlFor={`crop-${crop}`}
                                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize"
                                             >
-                                                {crop}
+                                                {/* @ts-ignore */}
+                                                {t.crops?.[crop.toLowerCase()] || crop}
                                             </label>
                                         </div>
                                     ))}
                                 </AccordionContent>
                             </AccordionItem>
                         )}
+
+                        {/* Placeholder for Dynamic Filters (Product Type, etc.) - To be implemented fully via props in next step if needed, or I can add them here if passed in props */}
+                        {/* Product Type Filter - Hardcoded for demo/MVP as per plan to add structure, but usually should come from props */}
+                        <AccordionItem value="productType">
+                            <AccordionTrigger className="text-sm font-medium hover:no-underline">
+                                {t.filters?.productType}
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2">
+                                {['Organic', 'Chemical', 'Bio-based', 'Eco-friendly'].map((type) => (
+                                    <div key={type} className="flex items-center space-x-2">
+                                        {/* Note: Logic to handle change needs to be passed down or added to props. I will add placeholders for now and update interface above. */}
+                                        <Checkbox id={`type-${type}`} />
+                                        <label htmlFor={`type-${type}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                            {/* @ts-ignore */}
+                                            {t.filters?.types?.[type.replace(/-/g, '').replace(/ /g, '').toLowerCase()] || t.filters?.types?.['bioBased'] && type === 'Bio-based' ? t.filters.types.bioBased : type}
+                                        </label>
+                                    </div>
+                                ))}
+                            </AccordionContent>
+                        </AccordionItem>
+
                     </Accordion>
+                </div>
+
+                {/* Mobile Apply Button */}
+                <div className="lg:hidden absolute bottom-0 left-0 right-0 p-4 bg-card border-t border-border">
+                    <Button className="w-full" onClick={onClose}>
+                        {t.filters?.apply}
+                    </Button>
                 </div>
             </aside>
         </>

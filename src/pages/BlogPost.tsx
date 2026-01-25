@@ -14,7 +14,7 @@ const BlogPost = () => {
     const { t, language } = useLanguage();
     const currentLanguage = language === 'HI' ? 'hi' : 'en';
 
-    const post = t.blog.posts.find((p: any) => p.id === id);
+    const post = t.blog.posts.find((p) => p.id === id);
 
     if (!post) {
         return (

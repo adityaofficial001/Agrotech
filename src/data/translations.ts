@@ -19,6 +19,22 @@ export const translations = {
                 Delivered: "Delivered"
             }
         },
+
+        cart: {
+            title: "Your Shopping Cart",
+            empty: "Your cart is empty",
+            startShopping: "Start Shopping",
+            itemCount: "You have {count} item{plural} in your cart.",
+            subtotal: "Subtotal",
+            shipping: "Shipping",
+            calculatedAtCheckout: "Calculated at checkout",
+            estimatedTotal: "Estimated Total",
+            proceedToCheckout: "Proceed to Checkout",
+            termsAgreement: "By proceeding, you agree to our terms and conditions.",
+            removeItem: "Remove item",
+            increaseQty: "Increase quantity",
+            decreaseQty: "Decrease quantity"
+        },
         hero: {
             badge: "Premium Crop Solutions",
             title: "Quality Agricultural Products",
@@ -48,6 +64,65 @@ export const translations = {
             comingSoon: "Coming Soon",
             comingSoonDesc: "We are working on adding products to this category. Please check back soon!",
         },
+        filters: {
+            filters: "Filters",
+            clearAll: "Clear All",
+            brand: "Brand",
+            priceRange: "Price Range",
+            crop: "Crop",
+            availability: "Availability",
+            inStock: "In Stock Only",
+            apply: "Apply Filters",
+            productType: "Product Type",
+            applicationMethod: "Application Method",
+            growthStage: "Growth Stage",
+            packSize: "Pack Size",
+            rating: "Rating",
+            types: {
+                organic: "Organic",
+                bioBased: "Bio-based",
+                chemical: "Chemical",
+                ecoFriendly: "Eco-friendly",
+                hybrid: "Hybrid"
+            },
+            methods: {
+                soilApplication: "Soil Application",
+                foliarSpray: "Foliar Spray",
+                seedTreatment: "Seed Treatment"
+            },
+            stages: {
+                germination: "Germination",
+                vegetativeGrowth: "Vegetative Growth",
+                flowering: "Flowering",
+                fruiting: "Fruiting"
+            },
+            ratings: {
+                4: "4 & above",
+                3: "3 & above"
+            }
+        },
+        crops: {
+            cotton: "Cotton",
+            maize: "Maize",
+            rice: "Rice",
+            tomato: "Tomato",
+            wheat: "Wheat"
+        },
+        brands: {
+            vartman: "Vartman",
+            vartmanexperts: "Vartman Experts",
+            agrilab: "AgriLab",
+            agritechsolutions: "AgriTech Solutions",
+            syngenta: "Syngenta",
+            bayer: "Bayer",
+            fmc: "FMC",
+            dhankuka: "Dhanuka",
+            iffco: "IFFCO",
+            ipl: "IPL",
+            mahadhan: "Mahadhan",
+            multiplex: "Multiplex",
+            biolife: "BioLife"
+        },
         products: {
             addToCart: "Add to Cart",
             buyNow: "Buy Now",
@@ -55,13 +130,72 @@ export const translations = {
             addedToCart: "Added to cart",
             quantityUpdated: "Item quantity updated",
             proceedingToCheckout: "Proceeding to checkout",
-            showMore: "Show More"
+            showMore: "Show More",
+            chooseSize: "Choose a Size",
+            save: "Save",
+            off: "OFF"
         },
         wishlist: {
             title: "Your Wishlist",
             itemsSaved: "You have {count} item{plural} saved for later.",
             empty: "Your wishlist is empty",
             continueShopping: "Continue Shopping"
+        },
+        orderTracking: {
+            title: "Track Order",
+            trackOrder: "Track Your Order",
+            items: "Items",
+            placedOn: "Placed On",
+            estDelivery: "Est. Delivery",
+            totalAmount: "Total Amount",
+            orderId: "Order ID",
+            details: "Details",
+            orderDetails: "Order Details",
+            needHelp: "Need Help?",
+            loginPrompt: "Please login to view your orders",
+            loginBtn: "Login",
+            noOrders: "No orders yet",
+            continueShopping: "Browse Products",
+            tracking: "Tracking Details",
+            inProgress: "In Progress",
+            cancelOrder: "Cancel Order",
+            cancelConfirmTitle: "Are you sure?",
+            cancelConfirmDesc: "Do you want to cancel this order? This action cannot be undone.",
+            cancelSuccess: "Order cancelled successfully",
+            cancelWindowExpired: "Cancellation window has expired or order is shipped.",
+            confirm: "Yes, Cancel Order",
+            back: "Go Back",
+            status: {
+                placed: "Placed",
+                ordered: "Ordered",
+                packed: "Packed",
+                shipped: "Shipped",
+                out_for_delivery: "Out for Delivery",
+                delivered: "Delivered",
+                cancelled: "Cancelled",
+                confirmed: "Confirmed"
+            },
+            description: {
+                ordered: "Order received and confirmed",
+                packed: "Items are being prepared for shipping",
+                shipped: "Order is on the way to you",
+                delivered: "Order successfully delivered",
+                cancelled: "Order has been cancelled"
+            },
+            // cancelOrder: "Cancel Order", // This key is now above
+            // confirmCancelTitle: "Confirm Cancellation", // This key is now above
+            // confirmCancelMessage: "Are you sure you want to cancel this order? This action cannot be undone.", // This key is now above
+            // cancelSuccess: "Order cancelled successfully", // This key is now above
+            refundStatus: "Refund Status",
+            refundInitiated: "Refund Initiated",
+            refundCompleted: "Refund Completed",
+            cancelledAt: "Cancelled on",
+            steps: {
+                ordered: "Ordered",
+                packed: "Packed",
+                shipped: "Shipped",
+                delivered: "Delivered"
+            }
         },
         checkout: {
             title: "Checkout",
@@ -115,7 +249,8 @@ export const translations = {
                     express: "Express Delivery",
                     expressDays: "2-4 Business Days",
                     priority: "Priority Delivery",
-                    priorityDays: "1-2 Business Days"
+                    priorityDays: "1-2 Business Days",
+                    standardDaysLabel: "Estimated Delivery"
                 }
             },
             steps: {
@@ -164,6 +299,8 @@ export const translations = {
             buyNow: "Buy Now",
             outOfStock: "Out of Stock",
             inStock: "In Stock",
+            off: "OFF",
+            save: "Save",
             added: "Added",
             addedToCart: "Added to cart",
             relatedProducts: "Related Products",
@@ -198,9 +335,71 @@ export const translations = {
             features: {
                 delivery: "Fast Delivery",
                 genuine: "100% Genuine",
-                returns: "Easy Returns"
+                returns: "Easy Returns",
+                quality: "Quality Assured",
+                trusted: "Farmer Trusted",
+                secure: "Secure Payment"
             },
-            showMore: "Show More"
+            showMore: "Show More",
+            highlights: {
+                ecoFriendly: "Eco-friendly",
+                organic: "Organic",
+                fastAction: "Fast Action",
+                highYield: "High Yield"
+            },
+            cropSuitability: "Crop Suitability",
+            application: {
+                title: "Application Method",
+                steps: "Step-by-Step Guide",
+                step1: "Preparation",
+                step2: "Application",
+                step3: "Follow-up"
+            },
+            faq: {
+                title: "Frequently Asked Questions",
+                q1: "How to use this product?",
+                q2: "Is it safe for all crops?"
+            },
+            reviews: "Reviews",
+            sold: "Sold",
+            inclusiveTaxes: "Inclusive of all taxes",
+            selectPackSize: "Select Pack Size",
+            dosageCalculator: "Dosage Calculator",
+            landSize: "Land Size (Acres)",
+            calculate: "Calculate",
+            recommended: "Recommended",
+            checkDelivery: "Check Delivery",
+            enterPincode: "Enter Pincode",
+            check: "Check",
+            estimatedDelivery: "Estimated delivery by",
+            aboutProduct: "About",
+            techSpecs: "Technical Specifications",
+            formulation: "Formulation",
+            cropType: "Crop Type",
+            applicationGuide: "Application Guide",
+            precautionsText: "Always wear protective gear while spraying.",
+            stepGuideText: "Determine the area to be treated and calculate the required quantity using the dosage calculator above.",
+            safetyInfo: "Safety Information",
+            safetyText: "Keep away from children and foodstuffs. Wash hands thoroughly after use.",
+            safetyItems: {
+                gloves: "Gloves",
+                mask: "Mask",
+                boots: "Boots",
+                goggles: "Goggles",
+                required: "Required"
+            },
+            trust: {
+                original: "100% Original",
+                shipping: "Free Delivery",
+                secure: "Secure Payment",
+                support: "24/7 Support"
+            },
+            tabs: {
+                description: "Description",
+                specifications: "Specifications",
+                usage: "Usage",
+                safety: "Safety"
+            }
         },
         about: {
             title: "About Us — Vartman",
@@ -347,6 +546,94 @@ export const translations = {
                 }
             ],
             footerText: "By continuing to use Vartman, you agree to these legal terms. We reserve the right to modify these rules at any time."
+        },
+        compare: {
+            title: 'Compare Products',
+            empty: 'No products to compare',
+            emptyDesc: 'Add products to compare by clicking the compare icon on product cards',
+            browse: 'Browse Products',
+            clearAll: 'Clear All',
+            brand: 'Brand',
+            price: 'Price',
+            quantity: 'Pack Size',
+            availability: 'Availability',
+            inStock: 'In Stock',
+            outOfStock: 'Out of Stock',
+            crops: 'Suitable Crops',
+            pests: 'Target Pests',
+            shopNow: 'Shop Now',
+            items: 'products',
+            specifications: 'Specifications',
+            bestValue: 'Best Value',
+            category: 'Category',
+            differencesOnly: 'Differences Only',
+            remove: 'Remove',
+            bestFor: 'Best for',
+            multiCrop: 'Multi-Crop',
+            bestValueDesc: 'Best Price/Unit'
+        },
+        cropDoctor: {
+            title: 'Smart Crop Doctor',
+            subtitle: 'AI-Powered Plant Health Advisory',
+            step1: 'Select Crop & Stage',
+            step2: 'Observe Symptoms',
+            step3: 'Get Diagnosis',
+            selectCrop: 'Select Crop',
+            selectStage: 'Select Growth Stage',
+            selectSymptoms: 'Select Symptoms (Multiple)',
+            analyze: 'Analyze Health',
+            reset: 'Reset',
+            resultTitle: 'Advisory Result',
+            detectedIssue: 'Detected Issue',
+            treatment: 'Recommended Treatment',
+            explanation: 'How it works',
+            probableCause: 'Probable Cause',
+            dosage: 'Dosage',
+            timing: 'Application Timing',
+            method: 'Method',
+            safetyPrecautions: 'Safety Precautions',
+            weatherAdvisory: 'Weather Advisory',
+            recProducts: 'Recommended Products',
+            askExpert: 'Ask Expert on WhatsApp',
+            disclaimer: 'AI-generated advice. Consult a local expert for severe cases.',
+            noIssue: 'No matching issue found. Please consult an expert directly.',
+            stages: {
+                seedling: 'Seedling',
+                vegetative: 'Vegetative Growth',
+                flowering: 'Flowering',
+                fruiting: 'Fruiting',
+                harvest: 'Harvest',
+                boll_formation: 'Boll Formation'
+            },
+            weather: {
+                rain: 'Rain expected. Avoid spraying.',
+                wind: 'High winds. Spraying not recommended.',
+                clear: 'Clear weather. Good for application.'
+            }
+        },
+        loginPage: {
+            loginWithOtp: "Login with OTP",
+            getOtp: "Get OTP",
+            verifyOtp: "Verify OTP",
+            resendOtp: "Resend OTP",
+            rememberMe: "Remember Me",
+            secureInfo: "Your information is secure and encrypted.",
+            enterOtp: "Enter OTP sent to your mobile",
+            orLoginWithPassword: "Or login with password",
+            orLoginWithOtp: "Or login with OTP",
+            securityBadge: "100% Secure",
+            agreeTerms: "I agree to the",
+            terms: "Terms & Conditions",
+            and: "and",
+            privacy: "Privacy Policy",
+            verifyMobile: "Verify Mobile",
+            createAccount: "Create Account",
+            alreadyHaveAccount: "Already have an account?",
+            name: "Full Name",
+            email: "Email Address",
+            phone: "Mobile Number",
+            password: "Password",
+            confirmPassword: "Confirm Password"
         }
     },
     HI: {
@@ -368,6 +655,22 @@ export const translations = {
                 Delivered: "डिलीवर किया गया"
             }
         },
+
+        cart: {
+            title: "आपकी शॉपिंग कार्ट",
+            empty: "आपकी कार्ट खाली है",
+            startShopping: "खरीदारी शुरू करें",
+            itemCount: "आपकी कार्ट में {count} आइटम{plural} हैं।",
+            subtotal: "उप-योग",
+            shipping: "शिपिंग",
+            calculatedAtCheckout: "चेकआउट पर गणना की जाएगी",
+            estimatedTotal: "अनुमानित कुल",
+            proceedToCheckout: "चेकआउट के लिए आगे बढ़ें",
+            termsAgreement: "आगे बढ़ने पर, आप हमारे नियमों और शर्तों से सहमत होते हैं।",
+            removeItem: "आइटम निकालें",
+            increaseQty: "मात्रा बढ़ाएं",
+            decreaseQty: "मात्रा घटाएं"
+        },
         hero: {
             badge: "प्रीमियम फसल समाधान",
             title: "गुणवत्तापूर्ण कृषि उत्पाद",
@@ -387,7 +690,7 @@ export const translations = {
             insecticides: "कीटनाशक",
             seeds: "बीज और पौधे",
             implements: "कृषि उपकरण",
-            herbicides: "शाकनाशी",
+            herbicides: "खरपतवारनाशी",
             fertilizers: "उर्वरक",
             growth: "पौध विकास प्रमोटर",
             bio: "जैव उत्पाद",
@@ -397,20 +700,133 @@ export const translations = {
             comingSoon: "जल्द आ रहा है",
             comingSoonDesc: "हम इस श्रेणी में उत्पाद जोड़ने पर काम कर रहे हैं। कृपया जल्द ही वापस आएं!",
         },
+        filters: {
+            filters: "फिल्टर",
+            clearAll: "सभी हटाएं",
+            brand: "ब्रांड",
+            priceRange: "मूल्य सीमा",
+            crop: "फसल",
+            availability: "उपलब्धता",
+            inStock: "केवल उपलब्ध स्टॉक",
+            apply: "फिल्टर लागू करें",
+            productType: "उत्पाद प्रकार",
+            applicationMethod: "आवेदन विधि",
+            growthStage: "विकास चरण",
+            packSize: "पैकेट का आकार",
+            rating: "रेटिंग",
+            types: {
+                organic: "जैविक",
+                bioBased: "जैव-आधारित",
+                chemical: "रासायनिक",
+                ecoFriendly: "पर्यावरण के अनुकूल",
+                hybrid: "हाइब्रिड"
+            },
+            methods: {
+                soilApplication: "मिट्टी आवेदन",
+                foliarSpray: "पर्णीय स्प्रे",
+                seedTreatment: "बीज उपचार"
+            },
+            stages: {
+                germination: "अंकुरण",
+                vegetativeGrowth: "वनस्पति विकास",
+                flowering: "पुष्पण",
+                fruiting: "फलन"
+            },
+            ratings: {
+                4: "4 और ऊपर",
+                3: "3 और ऊपर"
+            }
+        },
+        crops: {
+            cotton: "क कपास",
+            maize: "मक्का",
+            rice: "चावल",
+            tomato: "टमाटर",
+            wheat: "गेहूं"
+        },
+
+        brands: {
+            vartman: "वर्तमान",
+            vartmanexperts: "वर्तमान एक्सपर्ट्स",
+            agrilab: "एग्रीलैव",
+            agritechsolutions: "एग्रीटेक सॉल्यूशंस",
+            syngenta: "सिंजेंटा",
+            bayer: "बायर",
+            fmc: "एफएमसी",
+            dhankuka: "धनुका",
+            iffco: "इफको",
+            ipl: "आईपीएल",
+            mahadhan: "महाधन",
+            multiplex: "मल्टीप्लेक्स",
+            biolife: "बायोलाइफ"
+        },
         products: {
             addToCart: "कार्ट में जोड़ें",
             buyNow: "अभी खरीदें",
             outOfStock: "स्टॉक में नहीं",
             addedToCart: "कार्ट में जोड़ा गया",
             quantityUpdated: "आइटम की मात्रा अपडेट की गई",
+
             proceedingToCheckout: "चेकआउट की ओर बढ़ रहे हैं",
-            showMore: "और देखें"
+            showMore: "और देखें",
+            chooseSize: "एक मात्रा चुनें",
+            save: "बचत करें",
+            off: "छूट"
         },
         wishlist: {
             title: "आपकी विशलिस्ट",
             itemsSaved: "आपके पास बाद के लिए {count} आइटम{plural} सहेजे गए हैं।",
             empty: "आपकी विशलिस्ट खाली है",
             continueShopping: "खरीदारी जारी रखें"
+        },
+        orderTracking: {
+            title: "ऑर्डर ट्रैक करें",
+            trackOrder: "अपना ऑर्डर ट्रैक करें",
+            items: "आइटम",
+            placedOn: "ऑर्डर किया गया",
+            estDelivery: "अनुमानित डिलीवरी",
+            totalAmount: "कुल राशि",
+            orderId: "ऑर्डर आईडी",
+            details: "विवरण",
+            orderDetails: "ऑर्डर विवरण",
+            needHelp: "सहायता चाहिए?",
+            loginPrompt: "अपने ऑर्डर देखने के लिए कृपया लॉग इन करें",
+            loginBtn: "लॉग इन",
+            noOrders: "अभी तक कोई ऑर्डर नहीं",
+            continueShopping: "उत्पाद ब्राउज़ करें",
+            tracking: "ट्रैकिंग विवरण",
+            inProgress: "जारी है",
+            status: {
+                placed: "आदेश दिया गया",
+                ordered: "आदेश दिया गया",
+                packed: "पैक किया गया",
+                shipped: "भेज दिया गया",
+                out_for_delivery: "डिलीवरी के लिए बाहर",
+                delivered: "डिलीवर किया गया",
+                cancelled: "रद्द किया गया",
+                confirmed: "पुष्टि की गई"
+            },
+            description: {
+                ordered: "ऑर्डर प्राप्त हुआ और पुष्टि की गई",
+                packed: "आइटम शिपिंग के लिए तैयार किए जा रहे हैं",
+                shipped: "ऑर्डर आपके पास आ रहा है",
+                delivered: "ऑर्डर सफलतापूर्वक वितरित किया गया",
+                cancelled: "ऑर्डर रद्द कर दिया गया है"
+            },
+            cancelOrder: "ऑर्डर रद्द करें",
+            confirmCancelTitle: "रद्द करने की पुष्टि करें",
+            confirmCancelMessage: "क्या आप वाकई इस ऑर्डर को रद्द करना चाहते हैं? इस क्रिया को बदला नहीं जा सकता।",
+            cancelSuccess: "ऑर्डर सफलतापूर्वक रद्द कर दिया गया",
+            refundStatus: "रिफंड की स्थिति",
+            refundInitiated: "रिफंड शुरू किया गया",
+            refundCompleted: "रिफंड पूरा हुआ",
+            cancelledAt: "रद्द किया गया",
+            steps: {
+                ordered: "ऑर्डर किया गया",
+                packed: "पैक किया गया",
+                shipped: "भेज दिया गया",
+                delivered: "डिलीवर किया गया"
+            }
         },
         checkout: {
             title: "चेकआउट",
@@ -464,7 +880,8 @@ export const translations = {
                     express: "एक्सप्रेस डिलीवरी",
                     expressDays: "2-4 कार्य दिवस",
                     priority: "प्रायोरिटी डिलीवरी",
-                    priorityDays: "1-2 कार्य दिवस"
+                    priorityDays: "1-2 कार्य दिवस",
+                    standardDaysLabel: "अनुमानित डिलीवरी"
                 }
             },
             steps: {
@@ -513,6 +930,8 @@ export const translations = {
             buyNow: "अभी खरीदें",
             outOfStock: "स्टॉक में नहीं",
             inStock: "स्टॉक में है",
+            off: "छूट",
+            save: "बचत करें",
             added: "जोड़ा गया",
             addedToCart: "कार्ट में जोड़ा गया",
             relatedProducts: "संबंधित उत्पाद",
@@ -547,9 +966,71 @@ export const translations = {
             features: {
                 delivery: "तेज डिलीवरी",
                 genuine: "100% असली",
-                returns: "आसान रिटर्न"
+                returns: "आसान रिटर्न",
+                quality: "गुणवत्ता सुनिश्चित",
+                trusted: "किसानों द्वारा भरोसेमंद",
+                secure: "सुरक्षित भुगतान"
             },
-            showMore: "और देखें"
+            showMore: "और देखें",
+            highlights: {
+                ecoFriendly: "पर्यावरण के अनुकूल",
+                organic: "जैविक",
+                fastAction: "तेजी से असर",
+                highYield: "अधिक पैदावार"
+            },
+            cropSuitability: "फसल उपयुक्तता",
+            application: {
+                title: "आवेदन विधि",
+                steps: "चरण-दर-चरण मार्गदर्शिका",
+                step1: "तैयारी",
+                step2: "आवेदन",
+                step3: "फालो-अप"
+            },
+            faq: {
+                title: "अक्सर पूछे जाने वाले प्रश्न",
+                q1: "इस उत्पाद का उपयोग कैसे करें?",
+                q2: "क्या यह सभी फसलों के लिए सुरक्षित है?"
+            },
+            reviews: "समीक्षाएं",
+            sold: "बिके",
+            inclusiveTaxes: "सभी करों सहित",
+            selectPackSize: "पैक आकार चुनें",
+            dosageCalculator: "खुराक कैलकुलेटर",
+            landSize: "भूमि का आकार (एकड़)",
+            calculate: "गणना करें",
+            recommended: "अनुशंसित",
+            checkDelivery: "डिलीवरी की जांच करें",
+            enterPincode: "पिनकोड दर्ज करें",
+            check: "जांचें",
+            estimatedDelivery: "अनुमानित डिलीवरी",
+            aboutProduct: "के बारे में",
+            techSpecs: "तकनीकी विशिष्टताएँ",
+            formulation: "फॉर्मूलेशन",
+            cropType: "फसल प्रकार",
+            applicationGuide: "आवेदन गाइड",
+            precautionsText: "स्प्रे करते समय हमेशा सुरक्षात्मक गियर पहनें।",
+            stepGuideText: "उपचार किए जाने वाले क्षेत्र का निर्धारण करें और ऊपर दिए गए खुराक कैलकुलेटर का उपयोग करके आवश्यक मात्रा की गणना करें।",
+            safetyInfo: "सुरक्षा जानकारी",
+            safetyText: "बच्चों और खाद्य पदार्थों से दूर रखें। उपयोग के बाद हाथ अच्छी तरह धोएं।",
+            safetyItems: {
+                gloves: "दस्ताने",
+                mask: "मास्क",
+                boots: "जूते",
+                goggles: "चश्मा",
+                required: "आवश्यक"
+            },
+            trust: {
+                original: "100% असली",
+                shipping: "मुफ्त डिलीवरी",
+                secure: "सुरक्षित भुगतान",
+                support: "24/7 सहायता"
+            },
+            tabs: {
+                description: "विवरण",
+                specifications: "विशिष्टताएँ",
+                usage: "उपयोग",
+                safety: "सुरक्षा"
+            }
         },
         about: {
             title: "हमारे बारे में - वर्तमान",
@@ -695,6 +1176,94 @@ export const translations = {
                     p: "लौटाए गए उत्पाद के गुणवत्ता निरीक्षण पास करने के बाद धनवापसी 5-7 कार्य दिवसों के भीतर संसाधित की जाती है।"
                 }
             ]
+        },
+        compare: {
+            title: 'उत्पादों की तुलना करें',
+            empty: 'तुलना करने के लिए कोई उत्पाद नहीं',
+            emptyDesc: 'उत्पाद कार्ड पर तुलना आइकन पर क्लिक करके तुलना के लिए उत्पाद जोड़ें',
+            browse: 'उत्पाद देखें',
+            clearAll: 'सभी हटाएं',
+            brand: 'ब्रांड',
+            price: 'मूल्य',
+            quantity: 'पैक साइज',
+            availability: 'उपलब्धता',
+            inStock: 'स्टॉक में',
+            outOfStock: 'स्टॉक में नहीं',
+            crops: 'उपयुक्त फसलें',
+            pests: 'लक्षित कीट',
+            shopNow: 'अभी खरीदें',
+            items: 'उत्पाद',
+            specifications: 'विशिष्टताएँ',
+            bestValue: 'सर्वोत्तम मूल्य',
+            category: 'श्रेणी',
+            differencesOnly: 'केवल अंतर',
+            remove: 'हटाएं',
+            bestFor: 'के लिए सर्वोत्तम',
+            multiCrop: 'बहु-फसल',
+            bestValueDesc: 'सर्वोत्तम मूल्य/इकाई'
+        },
+        cropDoctor: {
+            title: 'स्मार्ट फसल डॉक्टर',
+            subtitle: 'AI-संचालित पौधा स्वास्थ्य सलाह',
+            step1: 'फसल और चरण चुनें',
+            step2: 'लक्षण देखें',
+            step3: 'निदान प्राप्त करें',
+            selectCrop: 'फसल चुनें',
+            selectStage: 'विकास चरण चुनें',
+            selectSymptoms: 'लक्षण चुनें (एक से अधिक)',
+            analyze: 'स्वास्थ्य विश्लेषण करें',
+            reset: 'रीसेट',
+            resultTitle: 'सलाह परिणाम',
+            detectedIssue: 'पहचाना गया मुद्दा',
+            treatment: 'अनुशंसित उपचार',
+            explanation: 'यह कैसे काम करता है',
+            probableCause: 'संभावित कारण',
+            dosage: 'खुराक',
+            timing: 'आवेदन का समय',
+            method: 'विधि',
+            safetyPrecautions: 'सुरक्षा सावधानियां',
+            weatherAdvisory: 'मौसम सलाह',
+            recProducts: 'अनुशंसित उत्पाद',
+            askExpert: 'व्हाट्सएप पर विशेषज्ञ से पूछें',
+            disclaimer: 'AI-जनित सलाह। गंभीर मामलों के लिए स्थानीय विशेषज्ञ से सलाह लें।',
+            noIssue: 'कोई मेल नहीं मिला। कृपया सीधे विशेषज्ञ से परामर्श करें।',
+            stages: {
+                seedling: 'अंकुरण (Seedling)',
+                vegetative: 'वनस्पति विकास (Vegetative)',
+                flowering: 'फूल आना (Flowering)',
+                fruiting: 'फल लगना (Fruiting)',
+                harvest: 'कटाई (Harvest)',
+                boll_formation: 'बॉल गठन (Boll Formation)'
+            },
+            weather: {
+                rain: 'बारिश की संभावना। छिड़काव से बचें।',
+                wind: 'तेज हवाएं। छिड़काव की सिफारिश नहीं की जाती है।',
+                clear: 'साफ मौसम। आवेदन के लिए अच्छा है।'
+            }
+        },
+        loginPage: {
+            loginWithOtp: "OTP से लॉग इन करें",
+            getOtp: "OTP प्राप्त करें",
+            verifyOtp: "OTP सत्यापित करें",
+            resendOtp: "OTP पुनः भेजें",
+            rememberMe: "मुझे याद रखें",
+            secureInfo: "आपकी जानकारी सुरक्षित और एन्क्रिप्टेड है।",
+            enterOtp: "आपके मोबाइल पर भेजा गया OTP दर्ज करें",
+            orLoginWithPassword: "या पासवर्ड से लॉग इन करें",
+            orLoginWithOtp: "या OTP से लॉग इन करें",
+            securityBadge: "100% सुरक्षित",
+            agreeTerms: "मैं सहमत हूँ",
+            terms: "नियम और शर्तें",
+            and: "और",
+            privacy: "गोपनीयता नीति",
+            verifyMobile: "मोबाइल सत्यापित करें",
+            createAccount: "खाता बनाएं",
+            alreadyHaveAccount: "पहले से खाता है?",
+            name: "पूरा नाम",
+            email: "ईमेल पता",
+            phone: "मोबाइल नंबर",
+            password: "पासवर्ड",
+            confirmPassword: "पासवर्ड की पुष्टि करें"
         }
     }
 };

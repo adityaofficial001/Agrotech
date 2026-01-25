@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Product } from "@/data/categories";
 import { ShoppingCart, Tractor, Bug, Leaf, Zap, ShieldCheck } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useProductModal } from "@/contexts/ProductModalContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
@@ -13,11 +14,11 @@ interface ProductCardProps {
 export const ProductCard = ({ product }: ProductCardProps) => {
     const { addToCart, buyNow } = useCart();
     const { t, language } = useLanguage();
+    const { openModal } = useProductModal();
     const navigate = useNavigate();
 
     const handleAddToCart = () => {
-        addToCart(product);
-        // User remains on page, toast handled by context
+        openModal(product);
     };
 
     const handleBuyNow = () => {

@@ -30,7 +30,7 @@ const FAQ = () => {
                     </div>
 
                     <Accordion type="single" collapsible className="w-full bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
-                        {t.faq.questions.map((item: any, index: number) => (
+                        {t.faq.questions.map((item, index) => (
                             <AccordionItem key={index} value={`item-${index}`} className="border-b last:border-0 border-border px-6">
                                 <AccordionTrigger className="hover:no-underline font-display font-bold text-lg text-left py-6 group">
                                     <span className="group-data-[state=open]:text-primary transition-colors">{item.q}</span>

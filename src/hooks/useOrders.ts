@@ -34,6 +34,7 @@ export interface Order {
   delivered_at: string | null;
   estimated_delivery: string | null;
   tracking_number: string | null;
+  updated_at: string;
 }
 
 export const useOrders = () => {
@@ -43,7 +44,7 @@ export const useOrders = () => {
 
   const fetchOrders = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -53,7 +54,7 @@ export const useOrders = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      
+
       // Cast the data to match our Order interface
       const typedOrders: Order[] = (data || []).map(order => ({
         ...order,
@@ -61,7 +62,7 @@ export const useOrders = () => {
         shipping_address: order.shipping_address as Order['shipping_address'],
         items: order.items as Order['items'],
       }));
-      
+
       setOrders(typedOrders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -96,14 +97,14 @@ export const useOrders = () => {
         .single();
 
       if (error) throw error;
-      
+
       const typedOrder: Order = {
         ...data,
         status: data.status as OrderStatus,
         shipping_address: data.shipping_address as Order['shipping_address'],
         items: data.items as Order['items'],
       };
-      
+
       setOrders(prev => [typedOrder, ...prev]);
       return typedOrder;
     } catch (error) {
@@ -131,15 +132,15 @@ export const useOrders = () => {
         },
         (payload) => {
           const updatedOrder = payload.new as Order;
-          setOrders(prev => 
-            prev.map(order => 
-              order.id === updatedOrder.id 
+          setOrders(prev =>
+            prev.map(order =>
+              order.id === updatedOrder.id
                 ? {
-                    ...updatedOrder,
-                    status: updatedOrder.status as OrderStatus,
-                    shipping_address: updatedOrder.shipping_address as Order['shipping_address'],
-                    items: updatedOrder.items as Order['items'],
-                  }
+                  ...updatedOrder,
+                  status: updatedOrder.status as OrderStatus,
+                  shipping_address: updatedOrder.shipping_address as Order['shipping_address'],
+                  items: updatedOrder.items as Order['items'],
+                }
                 : order
             )
           );
@@ -153,5 +154,39 @@ export const useOrders = () => {
     };
   }, [user]);
 
-  return { orders, loading, fetchOrders, createOrder };
+  const cancelOrder = async (orderId: string) => {
+    if (!user) {
+      toast.error('Please login to cancel an order');
+      return false;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .update({
+          status: 'cancelled',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      // Manually update local state for immediate UI feedback
+      setOrders(prev => prev.map(o =>
+        o.id === orderId
+          ? { ...o, status: 'cancelled' as OrderStatus, updated_at: new Date().toISOString() }
+          : o
+      ));
+
+      toast.success('Order cancelled successfully');
+      return true;
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      toast.error('Failed to cancel order');
+      return false;
+    }
+  };
+
+  return { orders, loading, fetchOrders, createOrder, cancelOrder };
 };

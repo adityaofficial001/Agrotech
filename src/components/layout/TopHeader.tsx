@@ -5,6 +5,7 @@ import { AgriButton } from '@/components/ui/AgriButton';
 import { useCart } from '@/contexts/CartContext';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -14,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUserPreferences, Order } from "@/contexts/UserPreferencesContext";
+import { useOrders, Order } from "@/hooks/useOrders";
 import { OrderTrackingModal } from "../user/OrderTrackingModal";
 import CartSidebar from '@/components/cart/CartSidebar';
 import SearchDropdown from '@/components/search/SearchDropdown';
@@ -40,7 +41,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   };
 
   const { itemsCount } = useCart();
-  const { orders } = useUserPreferences();
+  const { orders } = useOrders();
+  const { user, signOut } = useAuth();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
@@ -59,7 +61,11 @@ const TopHeader: React.FC<TopHeaderProps> = ({
         Pending: "Pending",
         Packed: "Packed",
         Shipped: "Shipped",
-        Delivered: "Delivered"
+        Delivered: "Delivered",
+        Placed: "Placed",
+        Confirmed: "Confirmed",
+        Out_for_delivery: "Out for Delivery",
+        Cancelled: "Cancelled"
       }
     },
     hi: {
@@ -74,12 +80,23 @@ const TopHeader: React.FC<TopHeaderProps> = ({
         Pending: "लंबित",
         Packed: "पैक किया गया",
         Shipped: "भेज दिया गया",
-        Delivered: "डिलीवर किया गया"
+        Delivered: "डिलीवर किया गया",
+        Placed: "ऑर्डर किया गया",
+        Confirmed: "पुष्टि की गई",
+        Out_for_delivery: "डिलीवरी के लिए बाहर",
+        Cancelled: "रद्द किया गया"
       }
     }
   };
 
   const t = translations[currentLanguage];
+
+  const getStatusLabel = (status: string) => {
+    // Capitalize first letter to match translation keys if possible, or mapping
+    const key = status.charAt(0).toUpperCase() + status.slice(1);
+    // @ts-ignore
+    return t.orderStatus[key] || t.orderStatus[status] || key;
+  };
 
   return (
     <header className="bg-card border-b border-border">
@@ -87,9 +104,10 @@ const TopHeader: React.FC<TopHeaderProps> = ({
         <div className="flex items-center justify-between gap-4 flex-wrap">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+            {/* <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
               <Tractor className="w-6 h-6 text-primary-foreground" />
-            </div>
+            </div> */}
+            <img src="/logo.png" alt="Vartman Logo" className="h-10 w-auto object-contain" />
             <span className="text-xl font-display font-bold text-primary">
               Vartman
             </span>
@@ -132,15 +150,15 @@ const TopHeader: React.FC<TopHeaderProps> = ({
                       }}
                     >
                       <div className="flex justify-between w-full">
-                        <span className="font-bold text-xs">{order.id}</span>
-                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${order.status === 'Delivered' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
+                        <span className="font-bold text-xs">{order.order_number || order.id.slice(0, 8)}</span>
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${order.status === 'delivered' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
                           }`}>
-                          {t.orderStatus[order.status]}
+                          {getStatusLabel(order.status)}
                         </span>
                       </div>
                       <div className="flex items-center gap-1 text-[10px] text-muted-foreground font-medium">
                         <History className="w-3 h-3" />
-                        {order.date}
+                        {new Date(order.placed_at).toLocaleDateString()}
                       </div>
                     </DropdownMenuItem>
                   ))}
@@ -177,12 +195,19 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             </AgriButton>
 
             {/* Login */}
-            <Link to="/login">
-              <AgriButton variant="ghost" size="sm" className="gap-2">
+            {user ? (
+              <AgriButton variant="ghost" size="sm" className="gap-2" onClick={() => signOut()}>
                 <User className="w-4 h-4" />
-                <span className="hidden sm:inline">{t.login}</span>
+                <span className="hidden sm:inline">{language === 'HI' ? 'लॉगआउट' : 'Logout'}</span>
               </AgriButton>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <AgriButton variant="ghost" size="sm" className="gap-2">
+                  <User className="w-4 h-4" />
+                  <span className="hidden sm:inline">{t.login}</span>
+                </AgriButton>
+              </Link>
+            )}
 
             {/* Language Selector */}
             <div className="relative">

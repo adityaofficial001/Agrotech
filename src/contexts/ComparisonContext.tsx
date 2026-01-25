@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
 
-const MAX_COMPARISON_ITEMS = 4;
+const MAX_COMPARISON_ITEMS = 2;
 
 interface ComparisonContextType {
   comparisonIds: string[];
@@ -42,7 +42,7 @@ export const ComparisonProvider: React.FC<{ children: ReactNode }> = ({ children
 
   const fetchComparisonList = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     try {
       const { data, error } = await supabase

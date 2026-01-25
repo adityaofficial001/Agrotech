@@ -1,19 +1,27 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Tractor, Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, Phone, ShieldCheck, ArrowRight, Leaf, Sprout } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 import TopHeader from '@/components/layout/TopHeader';
 import CategoryNav from '@/components/layout/CategoryNav';
 import Footer from '@/components/layout/Footer';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
-
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Login = () => {
-  const { language } = useLanguage();
-  const currentLanguageCode = language.toLowerCase() as 'en' | 'hi';
+  const { language, t: globalT } = useLanguage();
+  // @ts-ignore
+  const t = { ...globalT.productDetail, ...globalT.header, ...globalT.loginPage, ...globalT };
+  const loginT = globalT.loginPage;
+
   const [isLogin, setIsLogin] = useState(true);
+  const [useOtp, setUseOtp] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState('');
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,65 +35,11 @@ const Login = () => {
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
   React.useEffect(() => {
     if (user) {
       navigate('/');
     }
   }, [user, navigate]);
-
-  const translations = {
-    en: {
-      login: 'Login',
-      signup: 'Sign Up',
-      welcome: 'Welcome Back!',
-      createAccount: 'Create Account',
-      loginDesc: 'Login to access your orders and exclusive deals',
-      signupDesc: 'Join Vartman for the best agricultural products',
-      email: 'Email Address',
-      phone: 'Phone Number',
-      password: 'Password',
-      confirmPassword: 'Confirm Password',
-      name: 'Full Name',
-      forgotPassword: 'Forgot Password?',
-      noAccount: "Don't have an account?",
-      haveAccount: 'Already have an account?',
-      orContinueWith: 'Or continue with',
-      google: 'Google',
-      loginSuccess: 'Login Successful!',
-      signupSuccess: 'Account Created!',
-      welcomeMsg: 'Welcome to Vartman',
-      backToHome: 'Back to Home',
-      passwordMismatch: 'Passwords do not match',
-      error: 'Error',
-    },
-    hi: {
-      login: 'लॉग इन',
-      signup: 'साइन अप',
-      welcome: 'वापस स्वागत है!',
-      createAccount: 'खाता बनाएं',
-      loginDesc: 'अपने ऑर्डर और विशेष सौदों तक पहुंचने के लिए लॉग इन करें',
-      signupDesc: 'सर्वोत्तम कृषि उत्पादों के लिए वर्तमान से जुड़ें',
-      email: 'ईमेल पता',
-      phone: 'फोन नंबर',
-      password: 'पासवर्ड',
-      confirmPassword: 'पासवर्ड की पुष्टि करें',
-      name: 'पूरा नाम',
-      forgotPassword: 'पासवर्ड भूल गए?',
-      noAccount: 'खाता नहीं है?',
-      haveAccount: 'पहले से खाता है?',
-      orContinueWith: 'या इसके साथ जारी रखें',
-      google: 'गूगल',
-      loginSuccess: 'लॉगिन सफल!',
-      signupSuccess: 'खाता बनाया गया!',
-      welcomeMsg: 'वर्तमान में आपका स्वागत है',
-      backToHome: 'होम पर वापस जाएं',
-      passwordMismatch: 'पासवर्ड मेल नहीं खाते',
-      error: 'त्रुटि',
-    }
-  };
-
-  const t = translations[currentLanguageCode];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,236 +47,335 @@ const Login = () => {
 
     try {
       if (isLogin) {
+        if (useOtp) {
+          if (!otpSent) {
+            setTimeout(() => {
+              setOtpSent(true);
+              toast.success(language === 'HI' ? 'OTP भेजा गया!' : 'OTP Sent successfully!');
+              setLoading(false);
+            }, 1000);
+            return;
+          } else {
+            if (otp === '1234') {
+              toast.success(language === 'HI' ? 'लॉगिन सफल!' : 'Login Successful!');
+              navigate('/');
+            } else {
+              toast.error(language === 'HI' ? 'अमान्य OTP' : 'Invalid OTP');
+              setLoading(false);
+            }
+            return;
+          }
+        }
+
         const { error } = await signIn(formData.email, formData.password);
         if (error) {
-          toast({
-            title: t.error,
-            description: error.message,
-            variant: 'destructive',
-          });
+          toast.error(error.message);
         } else {
-          toast({
-            title: t.loginSuccess,
-            description: t.welcomeMsg,
-          });
+          toast.success(language === 'HI' ? 'लॉगिन सफल!' : 'Login Successful!');
           navigate('/');
         }
       } else {
         if (formData.password !== formData.confirmPassword) {
-          toast({
-            title: t.error,
-            description: t.passwordMismatch,
-            variant: 'destructive',
-          });
+          toast.error(language === 'HI' ? 'पासवर्ड मेल नहीं खाते' : 'Passwords do not match');
           setLoading(false);
           return;
         }
 
         const { error } = await signUp(formData.email, formData.password, formData.name);
         if (error) {
-          toast({
-            title: t.error,
-            description: error.message,
-            variant: 'destructive',
-          });
+          toast.error(error.message);
         } else {
-          toast({
-            title: t.signupSuccess,
-            description: t.welcomeMsg,
-          });
+          toast.success(language === 'HI' ? 'खाता बनाया गया!' : 'Account Created!');
           navigate('/');
         }
       }
     } catch (error) {
       console.error('Auth error:', error);
     } finally {
-      setLoading(false);
+      if (!useOtp || (useOtp && otpSent)) {
+        setLoading(false);
+      }
     }
   };
 
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <TopHeader />
+  const handleGoogleLogin = () => {
+    toast.info("Google Login Integration Pending");
+  };
 
+  return (
+    <div className="min-h-screen bg-white flex flex-col font-sans">
+      <TopHeader />
       <CategoryNav activeCategory="" />
 
-      <main className="flex-1 flex items-center justify-center py-12 px-4">
-        <div className="w-full max-w-md">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <Link to="/" className="inline-flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-                <Tractor className="w-7 h-7 text-primary-foreground" />
+      <main className="flex-1 flex max-w-[1920px] mx-auto w-full shadow-2xl my-4 sm:my-8 rounded-2xl overflow-hidden bg-white min-h-[700px]">
+        {/* Left Side - Hero Image */}
+        <div className="hidden lg:flex lg:w-1/2 relative bg-gray-900 overflow-hidden">
+          <img
+            src="/login-hero.jpg"
+            alt="Farmer with Mahindra Tractor"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          {/* Premium Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+
+          <div className="absolute inset-0 flex flex-col justify-end p-12 text-white z-10">
+            <div className="mb-8 animate-in slide-in-from-bottom-8 duration-700 delay-100">
+              <div className="w-16 h-16 bg-green-500/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-green-400/30 shadow-lg">
+                <Leaf className="w-8 h-8 text-green-400" />
               </div>
-              <span className="text-2xl font-display font-bold text-primary">
-                Vartman
-              </span>
-            </Link>
-            <h1 className="text-2xl font-display font-bold text-foreground">
-              {isLogin ? t.welcome : t.createAccount}
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              {isLogin ? t.loginDesc : t.signupDesc}
-            </p>
+              <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 leading-tight drop-shadow-md">
+                {language === 'HI' ? 'खेती का नया दौर' : 'The Future of Farming'}
+              </h1>
+              <p className="text-lg text-gray-100 max-w-md leading-relaxed drop-shadow-sm font-medium">
+                {language === 'HI'
+                  ? 'वर्तमन के साथ अपनी फसल की पैदावार बढ़ाएं। विशेषज्ञ सलाह और प्रीमियम उत्पादों के लिए आपका विश्वसनीय साथी।'
+                  : 'Empowering farmers with premium products and expert advice. Join thousands of successful farmers on Vartman.'}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-4 text-sm text-gray-300 border-t border-white/20 pt-6">
+              <div className="flex -space-x-2">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="w-8 h-8 rounded-full border-2 border-gray-900 bg-gray-800 flex items-center justify-center text-xs font-bold overflow-hidden">
+                    <div className="w-full h-full bg-gray-600 flex items-center justify-center text-white">
+                      <User className="w-4 h-4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="font-semibold drop-shadow-sm">{t.hero.trustedBy} {t.hero.farmersCount}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Form */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 bg-white relative">
+          {/* Decorative background element */}
+          <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+            <Sprout className="w-64 h-64 text-green-600" />
           </div>
 
-          {/* Form Card */}
-          <div className="bg-card border border-border rounded-2xl p-6 shadow-agri-md">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Name (Signup only) */}
+          <div className="w-full max-w-md space-y-8 relative z-10 animate-in fade-in duration-700">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-display font-bold text-gray-900">
+                {isLogin
+                  ? (useOtp ? loginT.loginWithOtp : (language === 'HI' ? 'वापसी पर स्वागत है' : 'Welcome Back'))
+                  : (language === 'HI' ? 'शुरू करें' : 'Get Started')}
+              </h2>
+              <p className="mt-2 text-gray-500">
+                {isLogin
+                  ? (language === 'HI' ? 'आगे बढ़ने के लिए अपना विवरण दर्ज करें' : 'Enter your details to access your account')
+                  : (language === 'HI' ? 'अपना मुफ्त खाता बनाएं' : 'Create your free account today')}
+              </p>
+            </div>
+
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {!isLogin && (
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">
-                    {t.name}
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <div className="space-y-1.5">
+                  <label className="text-sm font-semibold text-gray-700">{language === 'HI' ? 'नाम' : 'Full Name'}</label>
+                  <div className="relative group">
+                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
                     <input
+                      name="name"
                       type="text"
+                      required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                      required
+                      className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none"
+                      placeholder="John Doe"
                     />
                   </div>
                 </div>
               )}
 
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">
-                  {t.email}
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    required
-                  />
-                </div>
-              </div>
-
-              {/* Phone (Signup only) */}
-              {!isLogin && (
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">
-                    {t.phone}
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Password */}
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">
-                  {t.password}
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full pl-10 pr-12 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    required
-                    minLength={6}
-                  />
+              {/* Login Toggle */}
+              {isLogin && (
+                <div className="flex justify-end">
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    onClick={() => { setUseOtp(!useOtp); setOtpSent(false); }}
+                    className="text-sm font-medium text-green-700 hover:text-green-800 hover:underline transition-colors"
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {useOtp ? loginT.orLoginWithPassword : loginT.orLoginWithOtp}
                   </button>
                 </div>
+              )}
+
+              {useOtp && isLogin ? (
+                <>
+                  {!otpSent ? (
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-gray-700">{language === 'HI' ? 'मोबाइल नंबर' : 'Mobile Number'}</label>
+                      <div className="relative group">
+                        <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
+                        <input
+                          name="phone"
+                          type="tel"
+                          required
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none"
+                          placeholder="9876543210"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-gray-700">{loginT.enterOtp}</label>
+                      <input
+                        name="otp"
+                        type="text"
+                        required
+                        maxLength={4}
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="w-full text-center tracking-[1em] text-2xl font-bold py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none"
+                        placeholder="- - - -"
+                      />
+                      <button type="button" onClick={() => setOtpSent(false)} className="text-xs text-green-600 hover:underline w-full text-right mt-1">
+                        {loginT.resendOtp}
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-gray-700">{language === 'HI' ? 'ईमेल' : 'Email Address'}</label>
+                    <div className="relative group">
+                      <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
+                      <input
+                        name="email"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none"
+                        placeholder="name@example.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-gray-700">{language === 'HI' ? 'पासवर्ड' : 'Password'}</label>
+                    <div className="relative group">
+                      <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
+                      <input
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        required
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="w-full pl-10 pr-12 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none"
+                        placeholder="••••••••"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-green-600 transition-colors"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-5 w-5 text-gray-400" /> : <Eye className="h-5 w-5 text-gray-400" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {!isLogin && (
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-gray-700">{language === 'HI' ? 'पासवर्ड पुनः दर्ज करें' : 'Confirm Password'}</label>
+                      <div className="relative group">
+                        <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400 group-focus-within:text-green-600 transition-colors" />
+                        <input
+                          name="confirmPassword"
+                          type="password"
+                          required
+                          value={formData.confirmPassword}
+                          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                          className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all outline-none"
+                          placeholder="••••••••"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+
+              <div className="flex items-center justify-between pt-2">
+                {isLogin && (
+                  <div className="flex items-center">
+                    <Checkbox id="remember-me" className="border-gray-300 text-green-600 focus:ring-green-500" />
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-600 cursor-pointer select-none">
+                      {loginT.rememberMe}
+                    </label>
+                  </div>
+                )}
+                {isLogin && !useOtp && (
+                  <a href="#" className="text-sm font-medium text-green-600 hover:text-green-500 hover:underline">
+                    {language === 'HI' ? 'पासवर्ड भूल गए?' : 'Forgot password?'}
+                  </a>
+                )}
               </div>
 
-              {/* Confirm Password (Signup only) */}
-              {!isLogin && (
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">
-                    {t.confirmPassword}
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      value={formData.confirmPassword}
-                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                      className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                      required
-                      minLength={6}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Forgot Password (Login only) */}
-              {isLogin && (
-                <div className="text-right">
-                  <a href="#" className="text-sm text-primary hover:underline">
-                    {t.forgotPassword}
-                  </a>
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <AgriButton type="submit" className="w-full" size="lg" disabled={loading}>
-                {loading ? '...' : (isLogin ? t.login : t.signup)}
+              <AgriButton
+                type="submit"
+                size="xl"
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold shadow-green-200 shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Processing...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    {useOtp && isLogin
+                      ? (otpSent ? loginT.verifyOtp : loginT.getOtp)
+                      : (isLogin ? (language === 'HI' ? 'लॉग इन' : 'Sign In') : (language === 'HI' ? 'साइन अप' : 'Create Account'))}
+                    <ArrowRight className="w-5 h-5" />
+                  </span>
+                )}
               </AgriButton>
             </form>
 
-            {/* Divider */}
-            <div className="flex items-center gap-4 my-6">
-              <div className="flex-1 h-px bg-border"></div>
-              <span className="text-sm text-muted-foreground">{t.orContinueWith}</span>
-              <div className="flex-1 h-px bg-border"></div>
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-3 bg-white text-gray-500 font-medium">
+                  {language === 'HI' ? 'या जारी रखें' : 'Or continue with'}
+                </span>
+              </div>
             </div>
 
-            {/* Google Button */}
-            <AgriButton variant="outline" className="w-full gap-2" disabled>
-              <svg className="w-5 h-5" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              {t.google}
-            </AgriButton>
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-gray-200 rounded-xl bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-medium"
+            >
+              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
+              <span>Google</span>
+            </button>
 
-            {/* Toggle Login/Signup */}
-            <p className="text-center mt-6 text-sm text-muted-foreground">
-              {isLogin ? t.noAccount : t.haveAccount}{' '}
-              <button
-                type="button"
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-primary font-medium hover:underline"
-              >
-                {isLogin ? t.signup : t.login}
-              </button>
-            </p>
-          </div>
+            <div className="text-center pt-4">
+              <p className="text-gray-600">
+                {isLogin ? (language === 'HI' ? 'खाता नहीं है?' : "Don't have an account?") : (language === 'HI' ? 'पहले से खाता है?' : "Already have an account?")}{' '}
+                <button
+                  onClick={() => { setIsLogin(!isLogin); setUseOtp(false); }}
+                  className="font-bold text-green-700 hover:text-green-800 hover:underline transition-colors ml-1"
+                >
+                  {isLogin ? (language === 'HI' ? 'साइन अप' : 'Sign up') : (language === 'HI' ? 'लॉग इन' : 'Log in')}
+                </button>
+              </p>
+            </div>
 
-          {/* Back to Home */}
-          <div className="text-center mt-6">
-            <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-              ← {t.backToHome}
-            </Link>
+            <div className="flex items-center justify-center gap-2 text-green-700/60 pt-4 cursor-default" title="Your data is encrypted">
+              <ShieldCheck className="w-4 h-4" />
+              <span className="text-xs font-semibold tracking-wide uppercase">{loginT.secureInfo}</span>
+            </div>
+
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );

@@ -22,7 +22,7 @@ const Terms = () => {
                         <h1 className="text-3xl font-display font-bold text-foreground mb-8">{t.terms.title}</h1>
 
                         <div className="prose prose-agri max-w-none">
-                            {t.terms.sections.map((section: any, index: number) => (
+                            {t.terms.sections.map((section, index) => (
                                 <div key={index} className="mb-10 last:mb-0">
                                     <h2 className="text-xl font-display font-bold text-foreground mb-4 flex items-center gap-2">
                                         <span className="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center text-sm">

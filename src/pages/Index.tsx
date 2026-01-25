@@ -1,5 +1,6 @@
 
 import { Header } from "@/components/Header";
+import { Product } from "@/data/categories";
 import { CategoryStrip } from "@/components/CategoryStrip";
 import { Hero } from "@/components/Hero";
 import Footer from "@/components/layout/Footer";
@@ -20,7 +21,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { ComparisonBar, ComparisonModal } from "@/components/user/ComparisonBar";
 import { NAV_CATEGORIES } from "@/data/categories";
 
 const Index = () => {
@@ -29,7 +29,7 @@ const Index = () => {
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   // Combine products for showcases
-  const allProducts = [
+  const allProducts: Product[] = [
     ...insecticideProducts,
     ...seedProducts,
     ...fertilizerProducts,
@@ -52,7 +52,7 @@ const Index = () => {
   ];
 
 
-  const handleAddToCart = (product: any) => {
+  const handleAddToCart = (product: Product) => {
     toast.success(`${product.name} added to cart`);
   };
 
@@ -98,10 +98,6 @@ const Index = () => {
       </main>
 
       <Footer />
-
-      {/* Product Comparison Floating UI */}
-      <ComparisonBar onOpenModal={() => setIsCompareModalOpen(true)} />
-      <ComparisonModal open={isCompareModalOpen} onOpenChange={setIsCompareModalOpen} />
     </div>
   );
 };
