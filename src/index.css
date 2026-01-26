@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Vartman Brand Colors - Organic Green Theme */
+    --background: 120 20% 98%;
+    --foreground: 150 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 10%;
+
+    /* Primary - Deep Forest Green */
+    --primary: 135 50% 20%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Fresh Lime */
+    --secondary: 95 50% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted - Soft Earth Tones */
+    --muted: 120 15% 95%;
+    --muted-foreground: 150 10% 40%;
+
+    /* Accent - Vibrant Green */
+    --accent: 120 60% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 120 20% 88%;
+    --input: 120 20% 88%;
+    --ring: 135 50% 25%;
+
+    --radius: 0.75rem;
+
+    /* Custom Vartman Colors */
+    --agri-green-dark: 135 55% 18%;
+    --agri-green: 135 50% 25%;
+    --agri-green-light: 95 45% 50%;
+    --agri-lime: 90 60% 55%;
+    --agri-yellow: 45 95% 55%;
+    --agri-earth: 30 30% 35%;
+    --agri-cream: 40 40% 96%;
+    --agri-brown: 25 40% 25%;
+
+    /* Gradients */
+    --gradient-header: linear-gradient(135deg, hsl(135 55% 18%) 0%, hsl(135 50% 25%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(120 20% 98%) 0%, hsl(90 30% 95%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(120 15% 98%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(95 50% 45%) 0%, hsl(120 60% 35%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px hsl(135 30% 20% / 0.08);
+    --shadow-md: 0 4px 16px hsl(135 30% 20% / 0.12);
+    --shadow-lg: 0 8px 32px hsl(135 30% 20% / 0.15);
+    --shadow-glow: 0 0 20px hsl(95 50% 45% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 150 30% 5%;
+    --foreground: 120 20% 95%;
+    --card: 150 25% 8%;
+    --card-foreground: 120 20% 95%;
+    --popover: 150 25% 8%;
+    --popover-foreground: 120 20% 95%;
+    --primary: 95 50% 50%;
+    --primary-foreground: 150 30% 5%;
+    --secondary: 135 40% 25%;
+    --secondary-foreground: 120 20% 95%;
+    --muted: 150 20% 15%;
+    --muted-foreground: 120 15% 60%;
+    --accent: 95 55% 45%;
+    --accent-foreground: 150 30% 5%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 150 20% 18%;
+    --input: 150 20% 18%;
+    --ring: 95 50% 50%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Nunito Sans', sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+@layer components {
+  .agri-gradient-header {
+    background: var(--gradient-header);
+  }
+
+  .agri-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .agri-gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .agri-gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .agri-shadow-sm {
+    box-shadow: var(--shadow-sm);
+  }
+
+  .agri-shadow-md {
+    box-shadow: var(--shadow-md);
+  }
+
+  .agri-shadow-lg {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .agri-shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .agri-text-gradient {
+    background: linear-gradient(135deg, hsl(var(--agri-green)) 0%, hsl(var(--agri-lime)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--agri-green-light));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--agri-green));
+}
+
+/* Hide scrollbar for horizontal product slider */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
