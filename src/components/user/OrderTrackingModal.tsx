@@ -11,6 +11,7 @@ import { Order } from '@/hooks/useOrders';
 import { Package, Truck, CheckCircle, Clock, ShoppingBag, X, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface OrderTrackingModalProps {
     order: Order | null;
@@ -26,31 +27,27 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
 
     if (!order) return null;
 
-    // Map backend statuses to UI steps
+    // Map backend statuses to UI steps (0-5)
     const getStatusIndex = (status: string) => {
         switch (status) {
-            case 'placed':
-            case 'confirmed':
-                return 0;
-            case 'packed':
-                return 1;
-            case 'shipped':
-            case 'out_for_delivery':
-                return 2;
-            case 'delivered':
-                return 3;
-            case 'cancelled':
-                return -1; // Handle cancelled
-            default:
-                return 0;
+            case 'placed': return 0;
+            case 'confirmed': return 1;
+            case 'packed': return 2;
+            case 'shipped': return 3;
+            case 'out_for_delivery': return 4;
+            case 'delivered': return 5;
+            case 'cancelled': return -1;
+            default: return 0;
         }
     };
 
     const statuses = [
-        { label: t.orderTracking?.status?.ordered || 'Ordered', icon: Clock, description: t.orderTracking?.description?.ordered || 'Order received and confirmed' },
-        { label: t.orderTracking?.status?.packed || 'Packed', icon: Package, description: t.orderTracking?.description?.packed || 'Items are being prepared for shipping' },
-        { label: t.orderTracking?.status?.shipped || 'Shipped', icon: Truck, description: t.orderTracking?.description?.shipped || 'Order is on the way to you' },
-        { label: t.orderTracking?.status?.delivered || 'Delivered', icon: CheckCircle, description: t.orderTracking?.description?.delivered || 'Order successfully delivered' },
+        { key: 'ordered', label: t.orderTracking?.steps?.ordered || 'Ordered', icon: ShoppingBag, date: order.placed_at },
+        { key: 'confirmed', label: t.orderTracking?.steps?.confirmed || 'Confirmed', icon: CheckCircle, date: order.confirmed_at },
+        { key: 'processing', label: t.orderTracking?.steps?.processing || 'Packed', icon: Package, date: order.packed_at },
+        { key: 'shipped', label: t.orderTracking?.steps?.shipped || 'Shipped', icon: Truck, date: order.shipped_at },
+        { key: 'outForDelivery', label: t.orderTracking?.steps?.outForDelivery || 'Out for Delivery', icon: Truck, date: order.out_for_delivery_at },
+        { key: 'delivered', label: t.orderTracking?.steps?.delivered || 'Delivered', icon: CheckCircle, date: order.delivered_at },
     ];
 
     const currentStatusIndex = getStatusIndex(order.status);
@@ -58,116 +55,95 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text);
-        // You might want to show a toast here, but simple alert for now or just silent copy
+        toast.success(t.products?.quantityUpdated || "Copied to clipboard");
     };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[750px] overflow-y-auto max-h-[90vh]">
-                <DialogHeader>
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b pb-4">
-                        <div>
-                            <DialogTitle className="text-2xl font-display font-bold text-primary">{t.orderTracking?.trackOrder || 'Track Your Order'}</DialogTitle>
-                            <DialogDescription className="mt-1 flex items-center gap-2 text-sm bg-muted/50 px-3 py-1 rounded-md w-fit">
-                                <span className="text-muted-foreground">{t.orderTracking?.orderId || 'Order ID'}:</span>
-                                <span className="font-mono font-bold text-foreground tracking-wider">{order.order_number || order.id.slice(0, 8)}</span>
-                                <button
-                                    onClick={() => copyToClipboard(order.order_number || order.id)}
-                                    className="ml-1 text-primary hover:text-primary-hover p-1 hover:bg-primary/10 rounded"
-                                    title="Copy Order ID"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
-                                </button>
-                            </DialogDescription>
-                        </div>
-                        <div className="flex gap-2">
-                            <Button variant="outline" size="sm" className="hidden sm:flex gap-2" onClick={() => navigate('/faq')}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
-                                {t.orderTracking?.needHelp || 'Need Help?'}
-                            </Button>
-                            <div className={`px-4 py-1.5 rounded-full text-sm font-bold shadow-sm items-center flex gap-1.5 ${order.status === 'delivered' ? 'bg-green-100 text-green-700 border border-green-200' :
-                                order.status === 'cancelled' ? 'bg-destructive/10 text-destructive border border-destructive/20' :
-                                    'bg-blue-50 text-blue-700 border border-blue-100'
+            <DialogContent className="sm:max-w-[700px] p-0 overflow-hidden border-none shadow-2xl rounded-3xl">
+                <div className="bg-gradient-to-br from-primary/5 to-white p-6 pb-0">
+                    <DialogHeader className="mb-6">
+                        <div className="flex justify-between items-center">
+                            <DialogTitle className="text-2xl font-display font-black text-gray-900 tracking-tight">
+                                {t.orderTracking?.title || 'Track Order'}
+                            </DialogTitle>
+                            <div className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${order.status === 'delivered' ? 'bg-green-100 text-green-700' :
+                                order.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                    'bg-primary/10 text-primary'
                                 }`}>
-                                <span className={`w-2 h-2 rounded-full ${order.status === 'delivered' ? 'bg-green-600' : order.status === 'cancelled' ? 'bg-destructive' : 'bg-blue-600 animate-pulse'}`}></span>
-                                {t.orderTracking?.status?.[order.status as keyof typeof t.orderTracking.status] || order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                                {t.orderTracking?.status?.[order.status as keyof typeof t.orderTracking.status] || order.status}
                             </div>
+                        </div>
+                    </DialogHeader>
+
+                    {/* Order Info Bar */}
+                    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-wrap justify-between items-center gap-4 mb-8">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                                <ShoppingBag className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{t.orderTracking?.orderId || 'Order ID'}</p>
+                                <div className="flex items-center gap-1">
+                                    <p className="font-mono font-bold text-gray-900 truncate max-w-[120px]">{order.order_number || order.id.slice(0, 8)}</p>
+                                    <button onClick={() => copyToClipboard(order.order_number || order.id)} className="text-muted-foreground hover:text-primary transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="h-8 w-px bg-gray-100 hidden md:block" />
+                        <div>
+                            <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{t.orderTracking?.placedOn || 'Placed On'}</p>
+                            <p className="font-bold text-gray-900">{new Date(order.placed_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                        </div>
+                        <div className="h-8 w-px bg-gray-100 hidden md:block" />
+                        <div>
+                            <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{t.orderTracking?.totalAmount || 'Total Amount'}</p>
+                            <p className="font-black text-primary text-lg">₹{order.total_amount.toLocaleString()}</p>
                         </div>
                     </div>
-                </DialogHeader>
+                </div>
 
-                <div className="py-6">
-                    {/* Horizontal Stepper (Desktop) / Vertical (Mobile) */}
-                    {order.status === 'cancelled' ? (
-                        <div className="bg-destructive/5 border border-destructive/20 rounded-2xl p-6 flex flex-col items-center text-center">
-                            <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-4">
-                                <X className="w-8 h-8 text-destructive" />
-                            </div>
-                            <h3 className="text-xl font-display font-bold text-destructive mb-2">
-                                {t.orderTracking.status.cancelled}
-                            </h3>
-                            <p className="text-muted-foreground flex items-center gap-2">
-                                {t.orderTracking.cancelledAt}: {new Date(order.updated_at || order.placed_at).toLocaleString()}
-                            </p>
-
-                            <div className="mt-6 w-full max-w-md bg-white border border-border rounded-xl p-4 flex items-center gap-4">
-                                <div className="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center shrink-0">
-                                    <AlertCircle className="w-5 h-5 text-green-600" />
-                                </div>
-                                <div className="text-left">
-                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t.orderTracking.refundStatus}</p>
-                                    <p className="text-sm font-bold text-green-700">{t.orderTracking.refundInitiated}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="relative">
-                            {/* Desktop Progress Bar Background */}
-                            <div className="hidden md:block absolute top-[22px] left-0 right-0 h-1 bg-gray-100 rounded-full -z-10" />
-                            {/* Desktop Progress Bar Fill */}
+                <div className="p-6 pt-0 space-y-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                    {/* 6-Step Progress Stepper */}
+                    {order.status !== 'cancelled' && (
+                        <div className="relative px-2 py-4">
+                            {/* Line Background */}
+                            <div className="absolute top-[34px] left-8 right-8 h-1 bg-gray-100 rounded-full" />
+                            {/* Line Active Fill */}
                             <div
-                                className="hidden md:block absolute top-[22px] left-0 h-1 bg-primary rounded-full transition-all duration-1000 -z-10"
-                                style={{ width: `${progressPercentage}%` }}
+                                className="absolute top-[34px] left-8 h-1 bg-primary rounded-full transition-all duration-700"
+                                style={{ width: `calc(${progressPercentage}% - ${currentStatusIndex === 5 ? '0px' : '0px'})` }}
                             />
 
-                            {/* Steps */}
-                            <div className="flex flex-col md:flex-row justify-between relative gap-8 md:gap-2">
-                                {/* Mobile Vertical Line */}
-                                <div className="md:hidden absolute left-[22px] top-4 bottom-4 w-0.5 bg-gray-100 -z-10" />
-                                {/* Mobile Vertical Fill */}
-                                <div
-                                    className="md:hidden absolute left-[22px] top-4 w-0.5 bg-primary transition-all duration-1000 -z-10"
-                                    style={{ height: `${progressPercentage}%` }}
-                                />
-
+                            <div className="relative flex justify-between gap-2">
                                 {statuses.map((s, index) => {
-                                    const Icon = s.icon;
                                     const isCompleted = index <= currentStatusIndex;
                                     const isCurrent = index === currentStatusIndex;
+                                    const Icon = s.icon;
 
                                     return (
-                                        <div key={s.label} className="flex md:flex-col items-start md:items-center gap-4 md:gap-2 relative flex-1">
-                                            {/* Icon Bubble */}
+                                        <div key={index} className="flex flex-col items-center gap-3 relative z-10 flex-1">
                                             <div className={`
-                                                w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center border-4 border-white shadow-sm shrink-0 z-10 transition-all duration-500
-                                                ${isCompleted ? 'bg-primary text-white scale-100' : 'bg-gray-50 text-gray-300'}
+                                                w-10 h-10 rounded-full flex items-center justify-center border-4 border-white shadow-md transition-all duration-500
+                                                ${isCompleted ? 'bg-primary text-white' : 'bg-white text-gray-300'}
                                                 ${isCurrent ? 'ring-4 ring-primary/20 scale-110' : ''}
                                             `}>
-                                                <Icon className="w-5 h-5 md:w-6 md:h-6" />
+                                                {isCompleted && !isCurrent && index < 5 ? (
+                                                    <CheckCircle className="w-5 h-5" />
+                                                ) : (
+                                                    <Icon className={`w-5 h-5 ${isCurrent ? 'animate-pulse' : ''}`} />
+                                                )}
                                             </div>
-
-                                            {/* Text Content */}
-                                            <div className="pt-1 md:text-center md:px-2">
-                                                <p className={`font-bold text-sm md:text-base transition-colors ${isCompleted ? 'text-gray-900' : 'text-gray-400'}`}>
+                                            <div className="text-center">
+                                                <p className={`text-[10px] font-black uppercase tracking-tighter leading-tight max-w-[60px] mx-auto ${isCompleted ? 'text-gray-900' : 'text-gray-400'}`}>
                                                     {s.label}
                                                 </p>
-                                                <p className="text-xs text-muted-foreground mt-0.5 md:max-w-[140px] md:mx-auto">
-                                                    {s.description}
-                                                </p>
-                                                {isCurrent && index < statuses.length - 1 && (
-                                                    <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 bg-primary/10 rounded-full text-[10px] font-bold text-primary uppercase tracking-wider animate-pulse md:mx-auto">
-                                                        {t.orderTracking?.inProgress || 'In Progress'}
-                                                    </div>
+                                                {s.date && isCompleted && (
+                                                    <p className="text-[8px] text-muted-foreground mt-0.5 whitespace-nowrap">
+                                                        {new Date(s.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                                                    </p>
                                                 )}
                                             </div>
                                         </div>
@@ -176,63 +152,86 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
                             </div>
                         </div>
                     )}
-                </div>
 
-                {/* Details Card */}
-                <div className="mt-6 bg-gray-50/80 rounded-xl border border-gray-100 overflow-hidden">
-                    <div className="p-4 border-b border-gray-100 bg-white/50">
-                        <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                            <ShoppingBag className="w-4 h-4 text-primary" />
-                            {t.orderTracking?.orderDetails || 'Order Details'}
+                    {order.status === 'cancelled' && (
+                        <div className="bg-red-50/50 border border-red-100 rounded-3xl p-8 flex flex-col items-center text-center">
+                            <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6 shadow-sm border-4 border-white">
+                                <X className="w-10 h-10 text-red-600" />
+                            </div>
+                            <h3 className="text-2xl font-display font-black text-red-600 mb-2">
+                                {t.orderTracking?.status?.cancelled || 'Cancelled'}
+                            </h3>
+                            <p className="text-muted-foreground font-medium mb-6">
+                                {t.orderTracking?.description?.cancelled || 'Order has been cancelled'}
+                            </p>
+
+                            <div className="w-full bg-white border border-red-50 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
+                                <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center shrink-0 border border-green-100">
+                                    <Clock className="w-6 h-6 text-green-600" />
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{t.orderTracking?.refundStatus || 'Refund Status'}</p>
+                                    <p className="text-sm font-bold text-green-700">{t.orderTracking?.refundInitiated || 'Refund Initiated'}</p>
+                                    <p className="text-[10px] text-muted-foreground mt-0.5">Will reflect in 5-7 working days</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Status History Timeline */}
+                    <div className="space-y-4">
+                        <h4 className="text-sm font-black text-gray-900 flex items-center gap-2 px-1">
+                            <Clock className="w-4 h-4 text-primary" />
+                            {t.orderTracking?.history?.title || 'Status History'}
                         </h4>
-                    </div>
-                    <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Items List */}
-                        <div className="space-y-3">
-                            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{t.orderTracking?.items || 'Items'} ({order.items.length})</h5>
-                            <div className="space-y-3 max-h-[160px] overflow-y-auto pr-2 custom-scrollbar">
-                                {order.items.map((item, i) => (
-                                    <div key={i} className="flex gap-3 items-center p-2 rounded-lg bg-white border border-gray-100 shadow-sm">
-                                        <div className="w-10 h-10 rounded bg-gray-100 shrink-0 flex items-center justify-center">
-                                            {/* Placeholder for item image if not available */}
-                                            {item.image ? <img src={item.image} alt={item.name} className="w-8 h-8 object-contain" /> : <Package className="w-5 h-5 text-gray-400" />}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-gray-900 truncate">{item.name}</p>
-                                            <p className="text-xs text-muted-foreground">{t.productDetail?.quantity || 'Qty'}: {item.quantity}</p>
-                                        </div>
-                                        {item.price && <p className="text-sm font-bold text-gray-700">₹{item.price}</p>}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
 
-                        {/* Summary Stats */}
-                        <div className="space-y-4">
-                            <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Summary</h5>
-                            <div className="bg-white p-4 rounded-lg border border-gray-100 shadow-sm space-y-3">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">{t.orderTracking?.placedOn || 'Placed On'}</span>
-                                    <span className="font-medium text-gray-900">{new Date(order.placed_at).toLocaleDateString()}</span>
+                        <div className="relative space-y-0 pb-4">
+                            {/* Vertical Line */}
+                            <div className="absolute left-[19px] top-4 bottom-4 w-0.5 bg-gray-100" />
+
+                            {statuses.filter(s => s.date).reverse().map((s, idx) => (
+                                <div key={idx} className="relative pl-12 pb-6 group last:pb-0">
+                                    {/* Dot */}
+                                    <div className={`absolute left-[14px] top-1.5 w-3 h-3 rounded-full border-2 border-white shadow-sm z-10 ${idx === 0 ? 'bg-primary ring-4 ring-primary/20 scale-125' : 'bg-gray-300'
+                                        }`} />
+
+                                    <div className={`p-4 rounded-2xl border transition-all duration-300 group-hover:translate-x-1 ${idx === 0 ? 'bg-primary/5 border-primary/20 shadow-sm' : 'bg-white border-gray-100'
+                                        }`}>
+                                        <div className="flex justify-between items-start gap-4">
+                                            <div>
+                                                <p className={`text-sm font-bold ${idx === 0 ? 'text-primary' : 'text-gray-900'}`}>
+                                                    {t.orderTracking?.history?.[s.key as keyof typeof t.orderTracking.history] || s.label}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground mt-1">
+                                                    {idx === 0 ? 'Latest Update' : 'Completed'}
+                                                </p>
+                                            </div>
+                                            <div className="text-right shrink-0">
+                                                <p className="text-xs font-bold text-gray-900">
+                                                    {new Date(s.date!).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
+                                                </p>
+                                                <p className="text-[10px] text-muted-foreground">
+                                                    {new Date(s.date!).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">{t.orderTracking?.estDelivery || 'Est. Delivery'}</span>
-                                    <span className="font-medium text-green-700">{order.estimated_delivery ? new Date(order.estimated_delivery).toLocaleDateString() : '3-5 Days'}</span>
-                                </div>
-                                <div className="h-px bg-gray-100 my-2" />
-                                <div className="flex justify-between items-end">
-                                    <span className="text-sm font-bold text-gray-900">{t.orderTracking?.totalAmount || 'Total Amount'}</span>
-                                    <span className="text-xl font-display font-black text-primary">₹{order.total_amount.toLocaleString()}</span>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-8">
+                <div className="p-6 border-t border-gray-50 flex gap-4 bg-gray-50/50">
                     <Button
-                        size="lg"
-                        className="w-full gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all text-base"
+                        variant="outline"
+                        className="flex-1 rounded-2xl h-12 font-bold text-gray-600 hover:bg-white"
+                        onClick={() => onOpenChange(false)}
+                    >
+                        {t.orderTracking?.back || 'Close'}
+                    </Button>
+                    <Button
+                        className="flex-[2] rounded-2xl h-12 font-black shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all text-base"
                         onClick={() => {
                             navigate(`/order/${order.id}`);
                             onOpenChange(false);
@@ -240,7 +239,7 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
                     >
                         {/* @ts-ignore */}
                         {t.orderTracking?.seeOrder || 'See your order'}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                        <svg className="ml-2" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                     </Button>
                 </div>
             </DialogContent>

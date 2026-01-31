@@ -182,19 +182,26 @@ export const translations = {
                 delivered: "Order successfully delivered",
                 cancelled: "Order has been cancelled"
             },
-            // cancelOrder: "Cancel Order", // This key is now above
-            // confirmCancelTitle: "Confirm Cancellation", // This key is now above
-            // confirmCancelMessage: "Are you sure you want to cancel this order? This action cannot be undone.", // This key is now above
-            // cancelSuccess: "Order cancelled successfully", // This key is now above
             refundStatus: "Refund Status",
             refundInitiated: "Refund Initiated",
             refundCompleted: "Refund Completed",
             cancelledAt: "Cancelled on",
             steps: {
-                ordered: "Ordered",
-                packed: "Packed",
+                ordered: "Order Placed",
+                confirmed: "Confirmed",
+                processing: "Processing",
                 shipped: "Shipped",
+                outForDelivery: "Out for Delivery",
                 delivered: "Delivered"
+            },
+            history: {
+                title: "Status History",
+                ordered: "Order placed successfully",
+                confirmed: "Order confirmed by seller",
+                processing: "Order is being prepared",
+                shipped: "Package handed to courier",
+                outForDelivery: "Package is out for delivery",
+                delivered: "Order successfully delivered"
             }
         },
         checkout: {
@@ -483,7 +490,7 @@ export const translations = {
         },
         privacy: {
             title: "Vartman Company Global Privacy Statement",
-            introduction: "At Vartman Company, we are committed to transparency and openness, including providing clear and accurate information about our privacy practices. This Global Privacy Statement (\"Privacy Statement\") describes how Vartman Company and its affiliates (“We”, “Us”, “Our”, or “Vartman”) collect, use, disclose, or otherwise process personal information.",
+            introduction: "At Vartman Company, we are committed to transparency and openness, including providing clear and accurate information about our privacy practices. This Global Privacy Statement (\"Privacy Statement\") describes how Vartman Company and its affiliates “We”, “Us”, “Our”, or “Vartman” collect, use, disclose, or otherwise process personal information.",
             text1: "This Privacy Statement applies when you access or use our websites, online applications, social media pages, or otherwise interact with us. Additional or country-specific notices may supplement or replace this Privacy Statement where applicable.",
             note: "Note: This Privacy Statement does not apply to our employees or job applicants. For applicants, personal information collected through our Career Portal is governed by the Vartman Applicant Privacy Notice.",
             contactingUs: {
@@ -796,6 +803,13 @@ export const translations = {
             continueShopping: "उत्पाद ब्राउज़ करें",
             tracking: "ट्रैकिंग विवरण",
             inProgress: "जारी है",
+            cancelOrder: "ऑर्डर रद्द करें",
+            cancelConfirmTitle: "क्या आप वाकई रद्द करना चाहते हैं?",
+            cancelConfirmDesc: "क्या आप इस ऑर्डर को रद्द करना चाहते हैं? इस क्रिया को बदला नहीं जा सकता।",
+            cancelSuccess: "ऑर्डर सफलतापूर्वक रद्द कर दिया गया",
+            cancelWindowExpired: "रद्दीकरण की अवधि समाप्त हो गई है या ऑर्डर भेज दिया गया है।",
+            confirm: "हाँ, ऑर्डर रद्द करें",
+            back: "वापस जाएं",
             status: {
                 placed: "आदेश दिया गया",
                 ordered: "आदेश दिया गया",
@@ -813,19 +827,26 @@ export const translations = {
                 delivered: "ऑर्डर सफलतापूर्वक वितरित किया गया",
                 cancelled: "ऑर्डर रद्द कर दिया गया है"
             },
-            cancelOrder: "ऑर्डर रद्द करें",
-            confirmCancelTitle: "रद्द करने की पुष्टि करें",
-            confirmCancelMessage: "क्या आप वाकई इस ऑर्डर को रद्द करना चाहते हैं? इस क्रिया को बदला नहीं जा सकता।",
-            cancelSuccess: "ऑर्डर सफलतापूर्वक रद्द कर दिया गया",
-            refundStatus: "रिफंड की स्थिति",
-            refundInitiated: "रिफंड शुरू किया गया",
-            refundCompleted: "रिफंड पूरा हुआ",
+            refundStatus: "धनवापसी स्थिति",
+            refundInitiated: "धनवापसी शुरू की गई",
+            refundCompleted: "धनवापसी पूरी हुई",
             cancelledAt: "रद्द किया गया",
             steps: {
-                ordered: "ऑर्डर किया गया",
-                packed: "पैक किया गया",
+                ordered: "ऑर्डर भेजा गया",
+                confirmed: "पुष्टि की गई",
+                processing: "प्रक्रिया में",
                 shipped: "भेज दिया गया",
+                outForDelivery: "डिलीवरी के लिए बाहर",
                 delivered: "डिलीवर किया गया"
+            },
+            history: {
+                title: "स्थिति का इतिहास",
+                ordered: "ऑर्डर सफलतापूर्वक दिया गया",
+                confirmed: "विक्रेता द्वारा ऑर्डर की पुष्टि की गई",
+                processing: "ऑर्डर तैयार किया जा रहा है",
+                shipped: "पैकेज कूरियर को सौंपा गया",
+                outForDelivery: "पैकेज डिलीवरी के लिए बाहर है",
+                delivered: "ऑर्डर सफलतापूर्वक वितरित किया गया"
             }
         },
         checkout: {

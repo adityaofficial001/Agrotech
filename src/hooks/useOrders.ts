@@ -120,6 +120,41 @@ export const useOrders = () => {
 
     fetchOrders();
 
+    // Initial mock data if needed (for demo/development)
+    const mockData: Order[] = [
+      {
+        id: '1',
+        order_number: 'ORD-2024-001',
+        status: 'shipped',
+        total_amount: 1280,
+        placed_at: '2024-01-15T10:00:00Z',
+        confirmed_at: '2024-01-15T10:30:00Z',
+        packed_at: '2024-01-16T09:00:00Z',
+        shipped_at: '2024-01-17T14:00:00Z',
+        out_for_delivery_at: null,
+        delivered_at: null,
+        estimated_delivery: '2024-01-22T18:00:00Z',
+        tracking_number: 'TRK123456789',
+        shipping_address: {
+          fullName: 'Aditya Singh',
+          phone: '9876543210',
+          email: 'aditya@example.com',
+          address: 'House No 123, Malviya Nagar',
+          city: 'Bhopal',
+          state: 'Madhya Pradesh',
+          pincode: '462001'
+        },
+        items: [
+          { id: 'p1', name: 'Coragen Insecticide', quantity: 1, price: 1280, image: '/placeholder.svg' }
+        ],
+        updated_at: '2024-01-17T14:00:00Z'
+      }
+    ];
+
+    if (orders.length === 0 && !loading) {
+      setOrders(mockData);
+    }
+
     const channel = supabase
       .channel('orders-changes')
       .on(
