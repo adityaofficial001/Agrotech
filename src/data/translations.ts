@@ -2,12 +2,12 @@
 export const translations = {
     EN: {
         header: {
-            welcome: "Welcome to Vartman - Your Farming Partner",
+            welcome: "Welcome to Vardhman - Your Farming Partner",
             bulkOrders: "Bulk Orders Enquiries",
             getApp: "Get App",
             login: "Login",
             searchPlaceholder: "What are you looking for?",
-            title: "Vartman",
+            title: "Vardhman",
             tagline: "Grow with us",
             orders: "Orders",
             myOrders: "My Orders",
@@ -109,8 +109,8 @@ export const translations = {
             wheat: "Wheat"
         },
         brands: {
-            vartman: "Vartman",
-            vartmanexperts: "Vartman Experts",
+            vartman: "Vardhman",
+            vartmanexperts: "Vardhman Experts",
             agrilab: "AgriLab",
             agritechsolutions: "AgriTech Solutions",
             syngenta: "Syngenta",
@@ -299,7 +299,7 @@ export const translations = {
             rights: "All rights reserved.",
             followUs: "Follow Us",
             madeWithLove: "Made with 💚 for farmers",
-            copyright: "© 2024 Vartman."
+            copyright: "© 2024 Vardhman."
         },
         productDetail: {
             addToCart: "Add to Cart",
@@ -409,27 +409,27 @@ export const translations = {
             }
         },
         about: {
-            title: "About Us — Vartman",
-            content: "Welcome to Vartman, where tradition meets innovation in agriculture. At Vartman, we are dedicated to empowering farmers with high-quality, reliable agricultural solutions that help maximize productivity and promote sustainable farming practices that honour the land and environment. Whether you are a small-scale farmer or a large agricultural enterprise, Vartman is here to support your growth with premium inputs, expert guidance, and trusted service.",
+            title: "About Us — Vardhman",
+            content: "Welcome to Vardhman, where tradition meets innovation in agriculture. At Vardhman, we are dedicated to empowering farmers with high-quality, reliable agricultural solutions that help maximize productivity and promote sustainable farming practices that honour the land and environment. Whether you are a small-scale farmer or a large agricultural enterprise, Vardhman is here to support your growth with premium inputs, expert guidance, and trusted service.",
             whoWeAre: {
                 title: "Who We Are",
-                text: "Founded with a passion for advancing Indian agriculture, Vartman specializes in providing a wide range of products and solutions, including quality seeds, fertilizers, crop care products, bioproducts, and plant growth promoters. We believe in combining cutting-edge agricultural technology with time-tested farming wisdom to create solutions that truly make a difference in the field."
+                text: "Founded with a passion for advancing Indian agriculture, Vardhman specializes in providing a wide range of products and solutions, including quality seeds, fertilizers, crop care products, bioproducts, and plant growth promoters. We believe in combining cutting-edge agricultural technology with time-tested farming wisdom to create solutions that truly make a difference in the field."
             },
             whyChooseUs: {
-                title: "Why Choose Vartman",
-                text: "At Vartman, our focus is on helping farmers succeed through:",
+                title: "Why Choose Vardhman",
+                text: "At Vardhman, our focus is on helping farmers succeed through:",
                 points: [
                     "Enhanced Productivity: Our innovative products are designed to improve crop yields and efficiency.",
                     "Stronger Soil Health: We advocate for healthy soil that supports resilient crops season after season.",
-                    "Cost-Effective Solutions: Vartman delivers high performance without unnecessary costs.",
+                    "Cost-Effective Solutions: Vardhman delivers high performance without unnecessary costs.",
                     "Superior Quality: Our products are crafted to meet rigorous quality standards you can trust."
                 ]
             },
             mission: "Our Mission",
             missionText: "Our mission is to build lasting partnerships with farmers by offering products and services that are reliable, effective, and tailored to the needs of modern agriculture. We strive to bridge the gap between traditional farming challenges and innovative solutions.",
             joinUs: {
-                title: "Join the Vartman Family",
-                text: "At Vartman, we are more than a supplier — we are your partner in growth. We are committed to delivering solutions that contribute to a greener, more sustainable future for farming communities across India."
+                title: "Join the Vardhman Family",
+                text: "At Vardhman, we are more than a supplier — we are your partner in growth. We are committed to delivering solutions that contribute to a greener, more sustainable future for farming communities across India."
             }
         },
         blog: {
@@ -476,7 +476,7 @@ export const translations = {
                 },
                 {
                     q: "Are the products genuine?",
-                    a: "Yes, Vartman only sells 100% genuine products directly sourced from verified manufacturers."
+                    a: "Yes, Vardhman only sells 100% genuine products directly sourced from verified manufacturers."
                 },
                 {
                     q: "What is your return policy?",
@@ -489,13 +489,13 @@ export const translations = {
             ]
         },
         privacy: {
-            title: "Vartman Company Global Privacy Statement",
-            introduction: "At Vartman Company, we are committed to transparency and openness, including providing clear and accurate information about our privacy practices. This Global Privacy Statement (\"Privacy Statement\") describes how Vartman Company and its affiliates “We”, “Us”, “Our”, or “Vartman” collect, use, disclose, or otherwise process personal information.",
+            title: "Vardhman Company Global Privacy Statement",
+            introduction: "At Vardhman Company, we are committed to transparency and openness, including providing clear and accurate information about our privacy practices. This Global Privacy Statement (\"Privacy Statement\") describes how Vardhman Company and its affiliates “We”, “Us”, “Our”, or “Vardhman” collect, use, disclose, or otherwise process personal information.",
             text1: "This Privacy Statement applies when you access or use our websites, online applications, social media pages, or otherwise interact with us. Additional or country-specific notices may supplement or replace this Privacy Statement where applicable.",
-            note: "Note: This Privacy Statement does not apply to our employees or job applicants. For applicants, personal information collected through our Career Portal is governed by the Vartman Applicant Privacy Notice.",
+            note: "Note: This Privacy Statement does not apply to our employees or job applicants. For applicants, personal information collected through our Career Portal is governed by the Vardhman Applicant Privacy Notice.",
             contactingUs: {
                 title: "Contacting Us",
-                text: "If you have questions about this Privacy Statement, please contact us at contact@vartman.com or use the contact form on our website."
+                text: "If you have questions about this Privacy Statement, please contact us at contact@vardhman.com or use the contact form on our website."
             },
             sections: [
                 {
@@ -532,7 +532,7 @@ export const translations = {
                 },
                 {
                     h: "Your Rights",
-                    p: "Depending on your location, you may have the right to access, correct, or delete personal information, and request data portability. Requests can be sent to contact@vartman.com."
+                    p: "Depending on your location, you may have the right to access, correct, or delete personal information, and request data portability. Requests can be sent to contact@vardhman.com."
                 },
                 {
                     h: "Security",
@@ -545,14 +545,14 @@ export const translations = {
             sections: [
                 {
                     h: "Usage Rules",
-                    p: "By using Vartman, you agree to provide accurate information and honor the purchase commitments made on the platform."
+                    p: "By using Vardhman, you agree to provide accurate information and honor the purchase commitments made on the platform."
                 },
                 {
                     h: "Refunds",
                     p: "Refunds are processed within 5-7 business days after the returned product passes quality inspection."
                 }
             ],
-            footerText: "By continuing to use Vartman, you agree to these legal terms. We reserve the right to modify these rules at any time."
+            footerText: "By continuing to use Vardhman, you agree to these legal terms. We reserve the right to modify these rules at any time."
         },
         compare: {
             title: 'Compare Products',
@@ -645,12 +645,12 @@ export const translations = {
     },
     HI: {
         header: {
-            welcome: "वर्तमान में आपका स्वागत है - आपका खेती भागीदार",
+            welcome: "वर्धमान में आपका स्वागत है - आपका खेती भागीदार",
             bulkOrders: "थोक आदेश पूछताछ",
             getApp: "ऐप डाउनलोड करें",
             login: "लॉग इन",
             searchPlaceholder: "आप क्या ढूंढ रहे हैं?",
-            title: "वर्तमान",
+            title: "वर्धमान",
             tagline: "हमारे साथ बढ़ें",
             orders: "ऑर्डर",
             myOrders: "मेरे ऑर्डर",
@@ -753,8 +753,8 @@ export const translations = {
         },
 
         brands: {
-            vartman: "वर्तमान",
-            vartmanexperts: "वर्तमान एक्सपर्ट्स",
+            vartman: "वर्धमान",
+            vartmanexperts: "वर्धमान एक्सपर्ट्स",
             agrilab: "एग्रीलैव",
             agritechsolutions: "एग्रीटेक सॉल्यूशंस",
             syngenta: "सिंजेंटा",
@@ -944,7 +944,7 @@ export const translations = {
             rights: "सर्वाधिकार सुरक्षित।",
             followUs: "हमें फॉलो करें",
             madeWithLove: "किसानों के लिए 💚 से बनाया गया",
-            copyright: "© 2024 वर्तमान।"
+            copyright: "© 2024 वर्धमान।"
         },
         productDetail: {
             addToCart: "कार्ट में जोड़ें",
@@ -1054,27 +1054,27 @@ export const translations = {
             }
         },
         about: {
-            title: "हमारे बारे में - वर्तमान",
-            content: "वर्तमान में आपका स्वागत है, जहाँ कृषि में परंपरा नवाचार से मिलती है। वर्तमान में, हम किसानों को उच्च-गुणवत्ता वाले, विश्वसनीय कृषि समाधानों के साथ सशक्त बनाने के लिए समर्पित हैं जो उत्पादकता को अधिकतम करने और स्थायी कृषि पद्धतियों को बढ़ावा देने में मदद करते हैं जो भूमि और पर्यावरण का सम्मान करते हैं। चाहे आप एक छोटे पैमाने के किसान हों या एक बड़े कृषि उद्यम, वर्तमान आपकी वृद्धि में प्रीमियम इनपुट, विशेषज्ञ मार्गदर्शन और विश्वसनीय सेवा के साथ समर्थन करने के लिए यहाँ है।",
+            title: "हमारे बारे में - वर्धमान",
+            content: "वर्धमान में आपका स्वागत है, जहाँ कृषि में परंपरा नवाचार से मिलती है। वर्धमान में, हम किसानों को उच्च-गुणवत्ता वाले, विश्वसनीय कृषि समाधानों के साथ सशक्त बनाने के लिए समर्पित हैं जो उत्पादकता को अधिकतम करने और स्थायी कृषि पद्धतियों को बढ़ावा देने में मदद करते हैं जो भूमि और पर्यावरण का सम्मान करते हैं। चाहे आप एक छोटे पैमाने के किसान हों या एक बड़े कृषि उद्यम, वर्धमान आपकी वृद्धि में प्रीमियम इनपुट, विशेषज्ञ मार्गदर्शन और विश्वसनीय सेवा के साथ समर्थन करने के लिए यहाँ है।",
             whoWeAre: {
                 title: "हम कौन हैं",
-                text: "भारतीय कृषि को आगे बढ़ाने के जुनून के साथ स्थापित, वर्तमान गुणवत्ता वाले बीज, उर्वरक, फसल देखभाल उत्पाद, जैव उत्पाद और पौधों के विकास प्रमोटरों सहित उत्पादों और समाधानों की एक विस्तृत श्रृंखला प्रदान करने में माहिर है। हम क्षेत्र में वास्तव में बदलाव लाने वाले समाधान बनाने के लिए अत्याधुनिक कृषि तकनीक को समय के साथ परखे गए कृषि ज्ञान के साथ जोड़ने में विश्वास करते हैं।"
+                text: "भारतीय कृषि को आगे बढ़ाने के जुनून के साथ स्थापित, वर्धमान गुणवत्ता वाले बीज, उर्वरक, फसल देखभाल उत्पाद, जैव उत्पाद और पौधों के विकास प्रमोटरों सहित उत्पादों और समाधानों की एक विस्तृत श्रृंखला प्रदान करने में माहिर है। हम क्षेत्र में वास्तव में बदलाव लाने वाले समाधान बनाने के लिए अत्याधुनिक कृषि तकनीक को समय के साथ परखे गए कृषि ज्ञान के साथ जोड़ने में विश्वास करते हैं।"
             },
             whyChooseUs: {
-                title: "वर्तमान को क्यों चुनें",
-                text: "वर्तमान में, हमारा ध्यान किसानों को सफल होने में मदद करने पर केंद्रित है:",
+                title: "वर्धमान को क्यों चुनें",
+                text: "वर्धमान में, हमारा ध्यान किसानों को सफल होने में मदद करने पर केंद्रित है:",
                 points: [
                     "बेहतर उत्पादकता: हमारे अभिनवीय उत्पादों को फसल की पैदावार और दक्षता में सुधार करने के लिए डिज़ाइन किया गया है।",
                     "मजबूत मृदा स्वास्थ्य: हम स्वस्थ मिट्टी की वकालत करते हैं जो सीजन दर सीजन लचीली फसलों का समर्थन करती है।",
-                    "लागत प्रभावी समाधान: वर्तमान अनावश्यक लागतों के बिना उच्च प्रदर्शन प्रदान करता है।",
+                    "लागत प्रभावी समाधान: वर्धमान अनावश्यक लागतों के बिना उच्च प्रदर्शन प्रदान करता है।",
                     "सर्वोच्च गुणवत्ता: हमारे उत्पाद कड़े गुणवत्ता मानकों को पूरा करने के लिए तैयार किए गए हैं जिन पर आप भरोसा कर सकते हैं।"
                 ]
             },
             mission: "हमारा लक्ष्य",
             missionText: "हमारा मिशन किसानों के साथ स्थायी साझेदारी बनाना है, ऐसे उत्पादों और सेवाओं की पेशकश करना जो विश्वसनीय, प्रभावी और आधुनिक कृषि की आवश्यकताओं के अनुरूप हों। हम पारंपरिक कृषि चुनौतियों और अभिनव समाधानों के बीच की खाई को पाटने का प्रयास करते हैं।",
             joinUs: {
-                title: "वर्तमान परिवार में शामिल हों",
-                text: "वर्तमान में, हम सिर्फ एक सप्लायर से कहीं अधिक हैं — हम विकास में आपके भागीदार हैं। हम ऐसे समाधान देने के लिए प्रतिबद्ध हैं जो पूरे भारत में कृषि समुदायों के लिए एक हरित, अधिक टिकाऊ भविष्य में योगदान करते हैं।"
+                title: "वर्धमान परिवार में शामिल हों",
+                text: "वर्धमान में, हम सिर्फ एक सप्लायर से कहीं अधिक हैं — हम विकास में आपके भागीदार हैं। हम ऐसे समाधान देने के लिए प्रतिबद्ध हैं जो पूरे भारत में कृषि समुदायों के लिए एक हरित, अधिक टिकाऊ भविष्य में योगदान करते हैं।"
             }
         },
         blog: {
@@ -1121,7 +1121,7 @@ export const translations = {
                 },
                 {
                     q: "क्या उत्पाद असली हैं?",
-                    a: "हाँ, वर्तमान केवल सत्यापित निर्माताओं से सीधे प्राप्त 100% असली उत्पाद बेचता है।"
+                    a: "हाँ, वर्धमान केवल सत्यापित निर्माताओं से सीधे प्राप्त 100% असली उत्पाद बेचता है।"
                 },
                 {
                     q: "आपकी वापसी नीति क्या है?",
@@ -1134,13 +1134,13 @@ export const translations = {
             ]
         },
         privacy: {
-            title: "वर्तमान कंपनी वैश्विक गोपनीयता विवरण",
-            introduction: "वर्तमान कंपनी में, हम अपनी गोपनीयता प्रथाओं के बारे में स्पष्ट और सटीक जानकारी प्रदान करने सहित पारदर्शिता और खुलेपन के लिए प्रतिबद्ध हैं। यह वैश्विक गोपनीयता विवरण (\"गोपनीयता विवरण\") बताता है कि वर्तमान कंपनी और उसके सहयोगी (\"हम\", \"हमें\", \"हमारा\", या \"वर्तमान\") व्यक्तिगत जानकारी कैसे एकत्र, उपयोग, प्रकट या अन्यथा संसाधित करते हैं।",
+            title: "वर्धमान कंपनी वैश्विक गोपनीयता विवरण",
+            introduction: "वर्धमान कंपनी में, हम अपनी गोपनीयता प्रथाओं के बारे में स्पष्ट और सटीक जानकारी प्रदान करने सहित पारदर्शिता और खुलेपन के लिए प्रतिबद्ध हैं। यह वैश्विक गोपनीयता विवरण (\"गोपनीयता विवरण\") बताता है कि वर्धमान कंपनी और उसके सहयोगी (\"हम\", \"हमें\", \"हमारा\", या \"वर्धमान\") व्यक्तिगत जानकारी कैसे एकत्र, उपयोग, प्रकट या अन्यथा संसाधित करते हैं।",
             text1: "यह गोपनीयता विवरण तब लागू होता है जब आप हमारी वेबसाइटों, ऑनलाइन अनुप्रयोगों, सोशल मीडिया पेजों तक पहुँचते हैं या उनका उपयोग करते हैं, या अन्यथा हमारे साथ बातचीत करते हैं। जहां लागू हो, अतिरिक्त या देश-विशिष्ट नोटिस इस गोपनीयता विवरण के पूरक हो सकते हैं या इसे बदल सकते हैं।",
-            note: "नोट: यह गोपनीयता विवरण हमारे कर्मचारियों या नौकरी आवेदकों पर लागू नहीं होता है। आवेदकों के लिए, हमारे करियर पोर्टल के माध्यम से एकत्र की गई व्यक्तिगत जानकारी वर्तमान आवेदक गोपनीयता नोटिस द्वारा शासित होती है।",
+            note: "नोट: यह गोपनीयता विवरण हमारे कर्मचारियों या नौकरी आवेदकों पर लागू नहीं होता है। आवेदकों के लिए, हमारे करियर पोर्टल के माध्यम से एकत्र की गई व्यक्तिगत जानकारी वर्धमान आवेदक गोपनीयता नोटिस द्वारा शासित होती है।",
             contactingUs: {
                 title: "हमसे संपर्क करना",
-                text: "यदि आपके पास इस गोपनीयता विवरण के बारे में प्रश्न हैं, तो कृपया हमसे contact@vartman.com पर संपर्क करें या हमारी वेबसाइट पर संपर्क फ़ॉर्म का उपयोग करें।"
+                text: "यदि आपके पास इस गोपनीयता विवरण के बारे में प्रश्न हैं, तो कृपया हमसे contact@vardhman.com पर संपर्क करें या हमारी वेबसाइट पर संपर्क फ़ॉर्म का उपयोग करें।"
             },
             sections: [
                 {
@@ -1177,7 +1177,7 @@ export const translations = {
                 },
                 {
                     h: "आपके अधिकार",
-                    p: "आपके स्थान के आधार पर, आपके पास व्यक्तिगत जानकारी तक पहुँचने, सही करने या हटाने और डेटा पोर्टेबिलिटी का अनुरोध करने का अधिकार हो सकता है। अनुरोध contact@vartman.com पर भेजे जा सकते हैं।"
+                    p: "आपके स्थान के आधार पर, आपके पास व्यक्तिगत जानकारी तक पहुँचने, सही करने या हटाने और डेटा पोर्टेबिलिटी का अनुरोध करने का अधिकार हो सकता है। अनुरोध contact@vardhman.com पर भेजे जा सकते हैं।"
                 },
                 {
                     h: "सुरक्षा",
@@ -1190,7 +1190,7 @@ export const translations = {
             sections: [
                 {
                     h: "उपयोग के नियम",
-                    p: "वर्तमान का उपयोग करके, आप सटीक जानकारी प्रदान करने और प्लेटफॉर्म पर की गई खरीद प्रतिबद्धताओं का सम्मान करने के लिए सहमत हैं।"
+                    p: "वर्धमान का उपयोग करके, आप सटीक जानकारी प्रदान करने और प्लेटफॉर्म पर की गई खरीद प्रतिबद्धताओं का सम्मान करने के लिए सहमत हैं।"
                 },
                 {
                     h: "धनवापसी",

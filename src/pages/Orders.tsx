@@ -15,12 +15,11 @@ import { format } from 'date-fns';
 const statusOrder: OrderStatus[] = ['placed', 'packed', 'shipped', 'delivered'];
 
 const Orders = () => {
-  const { t, language, setLanguage } = useLanguage();
+  const { t, language } = useLanguage();
   const { orders, loading, cancelOrder } = useOrders();
   const { user } = useAuth();
   const [cancelModalOrder, setCancelModalOrder] = useState<Order | null>(null);
 
-  const translations = t;
   const currentLanguage = language === 'HI' ? 'hi' : 'en';
 
   // Use global translations for status config
@@ -39,7 +38,6 @@ const Orders = () => {
     };
 
     const key = statusKeyMap[stepStatus] || 'ordered';
-
     const label = t.orderTracking?.status?.[key] || stepStatus;
 
     // Icon and color config
@@ -139,21 +137,32 @@ const Orders = () => {
             {orders.map((order) => {
               const { icon: StatusIcon, color: statusColor, label: statusLabel } = getStatusConfig(order.status);
               const currentStatusIndex = getStatusIndex(order.status);
+              const isCancelled = order.status === 'cancelled';
 
               return (
-                <div key={order.id} className={`bg-card rounded-xl border border-border overflow-hidden transition-all duration-300 ${order.status === 'cancelled' ? 'opacity-60 bg-gray-50' : ''}`}>
+                <div
+                  key={order.id}
+                  className={`bg-card rounded-xl border border-border overflow-hidden transition-all duration-300 relative ${isCancelled ? 'opacity-75 grayscale bg-gray-50' : ''
+                    }`}
+                >
+                  {isCancelled && (
+                    <div className="absolute top-4 right-4 z-10 bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-200 animate-in fade-in zoom-in">
+                      {t.orderTracking?.status?.cancelled || 'Cancelled'}
+                    </div>
+                  )}
+
                   {/* Order Header */}
                   <div className="p-4 border-b border-border bg-muted/30">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                       <div>
                         <p className="text-sm text-muted-foreground">{t.orderTracking?.orderId || 'Order'}</p>
-                        <p className="font-semibold text-foreground">{order.order_number}</p>
+                        <p className="font-semibold text-foreground uppercase">{order.order_number || order.id.slice(0, 8)}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-right text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground">
                           {format(new Date(order.placed_at), 'dd MMM yyyy')}
                         </p>
-                        <p className="font-bold text-primary">{t.orderTracking?.totalAmount || 'Total'}: ₹{order.total_amount.toLocaleString()}</p>
+                        <p className="font-bold text-primary text-lg">{t.orderTracking?.totalAmount || 'Total'}: ₹{order.total_amount.toLocaleString()}</p>
                       </div>
                     </div>
                   </div>
@@ -161,39 +170,34 @@ const Orders = () => {
                   {/* Status Timeline */}
                   <div className="p-4">
                     <div className="flex items-center gap-2">
-                      <StatusIcon className={`w-5 h-5 ${order.status === 'cancelled' ? 'text-red-500' : ''}`} />
-                      <span className={`font-medium ${order.status === 'cancelled' ? 'text-red-600 font-bold uppercase tracking-wider' : ''}`}>
-                        {t.orderTracking?.status?.[order.status as keyof typeof t.orderTracking.status] || statusLabel}
+                      <StatusIcon className={`w-5 h-5 ${statusColor}`} />
+                      <span className={`font-medium ${isCancelled ? 'text-red-600 font-bold uppercase tracking-wider' : 'text-foreground'}`}>
+                        {statusLabel}
                       </span>
                     </div>
-                    {order.estimated_delivery && (
-                      <div className="text-sm text-muted-foreground">
+                    {order.estimated_delivery && !isCancelled && (
+                      <div className="text-sm text-muted-foreground mt-1">
                         {t.orderTracking?.estDelivery || 'Estimated Delivery'}: {format(new Date(order.estimated_delivery), 'dd MMM')}
                       </div>
                     )}
                   </div>
 
-                  {/* Simplified 4-Step Progress Bar */}
-                  {order.status !== 'cancelled' && (
-                    <div className="relative">
-                      <div className="absolute top-1/2 left-0 w-full h-1 bg-muted -translate-y-1/2 z-0"></div>
+                  {/* Progress Bar - Hide if cancelled */}
+                  {!isCancelled && (
+                    <div className="px-4 py-2 relative">
+                      <div className="absolute top-1/2 left-4 right-4 h-1 bg-muted -translate-y-1/2 z-0"></div>
                       <div
-                        className="absolute top-1/2 left-0 h-1 bg-primary -translate-y-1/2 z-0 transition-all duration-500"
-                        style={{ width: `${(currentStatusIndex / (statusOrder.length - 1)) * 100}%` }}
+                        className="absolute top-1/2 left-4 h-1 bg-primary -translate-y-1/2 z-0 transition-all duration-500"
+                        style={{ width: `calc(${(currentStatusIndex / (statusOrder.length - 1)) * 100}% - 32px)` }}
                       ></div>
 
-                      <div className={`flex justify-between relative z-10 w-full px-[20px]`}>
+                      <div className="flex justify-between relative z-10 w-full">
                         {statusOrder.map((status, index) => {
-                          const { icon: StepIcon, label: stepLabel } = getStatusConfig(status);
+                          const { icon: StepIcon } = getStatusConfig(status);
                           const isActive = index <= currentStatusIndex;
                           return (
-                            <div key={status} className="flex flex-col items-center">
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${isActive ? 'bg-primary border-primary text-primary-foreground' : 'bg-background border-muted text-muted-foreground'}`}>
-                                <StepIcon className="w-4 h-4" />
-                              </div>
-                              <span className={`text-xs mt-2 font-medium ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
-                                {stepLabel}
-                              </span>
+                            <div key={status} className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${isActive ? 'bg-primary border-primary text-primary-foreground' : 'bg-background border-muted text-muted-foreground'}`}>
+                              <StepIcon className="w-4 h-4" />
                             </div>
                           )
                         })}
@@ -202,7 +206,7 @@ const Orders = () => {
                   )}
 
                   {/* Order Items Preview */}
-                  <div className="flex items-center gap-4 pt-6 mt-6 border-t border-border">
+                  <div className="flex items-center gap-4 p-4 border-t border-border mt-4">
                     <div className="flex -space-x-2">
                       {order.items.slice(0, 3).map((item, idx) => (
                         <div
@@ -223,14 +227,19 @@ const Orders = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-foreground">
+                      <p className="text-sm text-foreground font-medium">
                         {order.items.length} {t.orderTracking?.items || 'items'}
                       </p>
+                      <p className="text-xs text-muted-foreground line-clamp-1">
+                        {order.items.map(i => i.name).join(", ")}
+                      </p>
                     </div>
+
                     <div className="flex items-center gap-3">
                       {isCancellable(order.status) && (
                         <Button
                           variant="ghost"
+                          size="sm"
                           onClick={() => setCancelModalOrder(order)}
                           className="text-destructive hover:text-destructive/80 hover:bg-destructive/10"
                         >
@@ -245,13 +254,11 @@ const Orders = () => {
                     </div>
                   </div>
                 </div>
-
               );
             })}
           </div>
-        )
-        }
-      </main >
+        )}
+      </main>
 
       <Footer />
 

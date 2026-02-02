@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, User, Phone, ShieldCheck, ArrowRight, Leaf, Sprout } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
-import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+import { Header } from '@/components/Header';
 import Footer from '@/components/layout/Footer';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,10 +11,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Checkbox } from "@/components/ui/checkbox";
 
 const Login = () => {
-  const { language, t: globalT } = useLanguage();
-  // @ts-ignore
-  const t = { ...globalT.productDetail, ...globalT.header, ...globalT.loginPage, ...globalT };
-  const loginT = globalT.loginPage;
+  const { language, t } = useLanguage();
+  const loginT = t.loginPage;
 
   const [isLogin, setIsLogin] = useState(true);
   const [useOtp, setUseOtp] = useState(false);
@@ -45,10 +42,18 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Debug credentials as requested
+    console.log("Login: Attempting login with", {
+      email: formData.email,
+      password: formData.password ? "[REDACTED]" : "EMPTY",
+      useOtp
+    });
+
     try {
       if (isLogin) {
         if (useOtp) {
           if (!otpSent) {
+            console.log("Login: Sending OTP to", formData.phone);
             setTimeout(() => {
               setOtpSent(true);
               toast.success(language === 'HI' ? 'OTP भेजा गया!' : 'OTP Sent successfully!');
@@ -56,6 +61,7 @@ const Login = () => {
             }, 1000);
             return;
           } else {
+            console.log("Login: Verifying OTP", otp);
             if (otp === '1234') {
               toast.success(language === 'HI' ? 'लॉगिन सफल!' : 'Login Successful!');
               navigate('/');
@@ -69,7 +75,8 @@ const Login = () => {
 
         const { error } = await signIn(formData.email, formData.password);
         if (error) {
-          toast.error(error.message);
+          console.error("Login: Sign in error", error);
+          toast.error(error.message || "Failed to connect to authentication service");
         } else {
           toast.success(language === 'HI' ? 'लॉगिन सफल!' : 'Login Successful!');
           navigate('/');
@@ -83,14 +90,16 @@ const Login = () => {
 
         const { error } = await signUp(formData.email, formData.password, formData.name);
         if (error) {
-          toast.error(error.message);
+          console.error("Login: Sign up error", error);
+          toast.error(error.message || "Failed to create account");
         } else {
           toast.success(language === 'HI' ? 'खाता बनाया गया!' : 'Account Created!');
           navigate('/');
         }
       }
-    } catch (error) {
-      console.error('Auth error:', error);
+    } catch (error: any) {
+      console.error('Login: Unexpected auth error:', error);
+      toast.error(error.message || "An unexpected error occurred. Please check your internet connection.");
     } finally {
       if (!useOtp || (useOtp && otpSent)) {
         setLoading(false);
@@ -104,10 +113,9 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans">
-      <TopHeader />
-      <CategoryNav activeCategory="" />
+      <Header />
 
-      <main className="flex-1 flex max-w-[1920px] mx-auto w-full shadow-2xl my-4 sm:my-8 rounded-2xl overflow-hidden bg-white min-h-[700px]">
+      <main className="flex-1 flex max-w-[1920px] mx-auto w-full shadow-2xl mt-24 mb-4 sm:mb-8 rounded-2xl overflow-hidden bg-white min-h-[700px]">
         {/* Left Side - Hero Image */}
         <div className="hidden lg:flex lg:w-1/2 relative bg-gray-900 overflow-hidden">
           <img

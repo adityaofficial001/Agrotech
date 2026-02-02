@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, User, Phone, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
-import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+import { Header } from '@/components/Header';
 import Footer from '@/components/layout/Footer';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,10 +11,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Checkbox } from "@/components/ui/checkbox";
 
 const Signup = () => {
-    const { language, t: globalT } = useLanguage();
-    // @ts-ignore
-    const t = { ...globalT.productDetail, ...globalT.header, ...globalT.loginPage, ...globalT };
-    const loginT = globalT.loginPage;
+    const { language, t } = useLanguage();
+    const loginT = t.loginPage;
 
     const [step, setStep] = useState<'details' | 'otp'>('details');
     const [showPassword, setShowPassword] = useState(false);
@@ -62,6 +59,13 @@ const Signup = () => {
         e.preventDefault();
         setLoading(true);
 
+        // Debug credentials
+        console.log("Signup: Verifying and creating account", {
+            email: formData.email,
+            password: formData.password ? "[REDACTED]" : "EMPTY",
+            name: formData.name
+        });
+
         // Simulate OTP Check
         if (otp !== '1234') {
             toast.error(language === 'HI' ? 'अमान्य OTP' : 'Invalid OTP');
@@ -72,13 +76,15 @@ const Signup = () => {
         try {
             const { error } = await signUp(formData.email, formData.password, formData.name);
             if (error) {
-                toast.error(error.message);
+                console.error("Signup: Sign up error", error);
+                toast.error(error.message || "Failed to create account. Please check your connection.");
             } else {
                 toast.success(language === 'HI' ? 'खाता बनाया गया' : 'Account Created!');
                 navigate('/');
             }
-        } catch (error) {
-            console.error('Auth error:', error);
+        } catch (error: any) {
+            console.error('Signup: Unexpected auth error:', error);
+            toast.error(error.message || "An unexpected error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -90,10 +96,9 @@ const Signup = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex flex-col font-sans">
-            <TopHeader />
-            <CategoryNav activeCategory="" />
+            <Header />
 
-            <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <main className="flex-1 flex items-center justify-center pt-24 pb-12 px-4 sm:px-6 lg:px-8">
                 <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
 
                     <div className="text-center">

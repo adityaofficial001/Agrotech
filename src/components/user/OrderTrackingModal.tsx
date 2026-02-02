@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
     Dialog,
@@ -7,11 +6,12 @@ import {
     DialogTitle,
     DialogDescription,
 } from "@/components/ui/dialog";
-import { Order } from '@/hooks/useOrders';
-import { Package, Truck, CheckCircle, Clock, ShoppingBag, X, AlertCircle } from 'lucide-react';
+import { Order, useOrders } from '@/hooks/useOrders';
+import { Package, Truck, CheckCircle, Clock, ShoppingBag, X, AlertCircle, XCircle, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface OrderTrackingModalProps {
     order: Order | null;
@@ -19,10 +19,9 @@ interface OrderTrackingModalProps {
     onOpenChange: (open: boolean) => void;
 }
 
-import { useNavigate } from 'react-router-dom';
-
 export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, open, onOpenChange }) => {
     const { t } = useLanguage();
+    const { cancelOrder } = useOrders();
     const navigate = useNavigate();
 
     if (!order) return null;
@@ -57,6 +56,15 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
         navigator.clipboard.writeText(text);
         toast.success(t.products?.quantityUpdated || "Copied to clipboard");
     };
+
+    const handleCancel = async () => {
+        const success = await cancelOrder(order.id);
+        if (success) {
+            onOpenChange(false);
+        }
+    };
+
+    const isCancelled = order.status === 'cancelled';
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -107,7 +115,7 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
 
                 <div className="p-6 pt-0 space-y-8 max-h-[60vh] overflow-y-auto custom-scrollbar">
                     {/* 6-Step Progress Stepper */}
-                    {order.status !== 'cancelled' && (
+                    {!isCancelled && (
                         <div className="relative px-2 py-4">
                             {/* Line Background */}
                             <div className="absolute top-[34px] left-8 right-8 h-1 bg-gray-100 rounded-full" />
@@ -153,7 +161,7 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
                         </div>
                     )}
 
-                    {order.status === 'cancelled' && (
+                    {isCancelled && (
                         <div className="bg-red-50/50 border border-red-100 rounded-3xl p-8 flex flex-col items-center text-center">
                             <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6 shadow-sm border-4 border-white">
                                 <X className="w-10 h-10 text-red-600" />
@@ -220,9 +228,31 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({ order, o
                             ))}
                         </div>
                     </div>
+
+                    {/* Order Items */}
+                    <div className="bg-gray-50 p-6 border-t border-gray-100 mt-8 rounded-3xl">
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Items in Order</h4>
+                        <div className="space-y-3">
+                            {order.items.map((item, i) => (
+                                <div key={i} className="flex justify-between items-center text-sm bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
+                                    <span className="text-gray-700 font-medium line-clamp-1">{item.name}</span>
+                                    <span className="font-bold text-gray-900 bg-gray-100 px-2 py-0.5 rounded text-xs">x{item.quantity}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="p-6 border-t border-gray-50 flex gap-4 bg-gray-50/50">
+                    {!isCancelled && order.status === 'placed' && (
+                        <Button
+                            variant="outline"
+                            className="flex-1 rounded-2xl h-12 font-bold text-red-600 border-red-100 hover:bg-red-50"
+                            onClick={handleCancel}
+                        >
+                            Cancel Order
+                        </Button>
+                    )}
                     <Button
                         variant="outline"
                         className="flex-1 rounded-2xl h-12 font-bold text-gray-600 hover:bg-white"

@@ -33,6 +33,7 @@ import FAQ from "./pages/FAQ";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import CropDoctor from "./pages/CropDoctor";
+import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
 
 const queryClient = new QueryClient();
 
@@ -42,44 +43,46 @@ const App = () => (
       <AuthProvider>
         <LanguageProvider>
           <FeedbackProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <ComparisonProvider>
-                  <ProductModalProvider>
-                    <Toaster />
-                    <Sonner />
-                    <ProductVariantModal />
-                    <BrowserRouter basename={import.meta.env.BASE_URL}>
-                      <ScrollToTop />
-                      <Routes>
-                        <Route path="/" element={<Index />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/category/:categoryId" element={<CategoryPage />} />
-                        <Route path="/product/:productId" element={<ProductDetail />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/bulk-orders" element={<BulkOrders />} />
-                        <Route path="/get-app" element={<GetApp />} />
-                        <Route path="/wishlist" element={<Wishlist />} />
-                        <Route path="/orders" element={<Orders />} />
-                        <Route path="/order/:orderId" element={<OrderDetails />} />
-                        <Route path="/compare" element={<Compare />} />
-                        <Route path="/search" element={<SearchPage />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/blog" element={<Blog />} />
-                        <Route path="/blog/:id" element={<BlogPost />} />
-                        <Route path="/faq" element={<FAQ />} />
-                        <Route path="/privacy" element={<PrivacyPolicy />} />
-                        <Route path="/terms" element={<Terms />} />
-                        <Route path="/crop-doctor" element={<CropDoctor />} />
-                        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                        <Route path="*" element={<NotFound />} />
-                      </Routes>
-                    </BrowserRouter>
-                  </ProductModalProvider>
-                </ComparisonProvider>
-              </WishlistProvider>
-            </CartProvider>
+            <UserPreferencesProvider>
+              <CartProvider>
+                <WishlistProvider>
+                  <ComparisonProvider>
+                    <ProductModalProvider>
+                      <Toaster />
+                      <Sonner />
+                      <ProductVariantModal />
+                      <BrowserRouter basename={import.meta.env.BASE_URL}>
+                        <ScrollToTop />
+                        <Routes>
+                          <Route path="/" element={<Index />} />
+                          <Route path="/checkout" element={<Checkout />} />
+                          <Route path="/category/:categoryId" element={<CategoryPage />} />
+                          <Route path="/product/:productId" element={<ProductDetail />} />
+                          <Route path="/login" element={<Login />} />
+                          <Route path="/signup" element={<Signup />} />
+                          <Route path="/bulk-orders" element={<BulkOrders />} />
+                          <Route path="/get-app" element={<GetApp />} />
+                          <Route path="/wishlist" element={<Wishlist />} />
+                          <Route path="/orders" element={<Orders />} />
+                          <Route path="/order/:orderId" element={<OrderDetails />} />
+                          <Route path="/compare" element={<Compare />} />
+                          <Route path="/search" element={<SearchPage />} />
+                          <Route path="/about" element={<About />} />
+                          <Route path="/blog" element={<Blog />} />
+                          <Route path="/blog/:id" element={<BlogPost />} />
+                          <Route path="/faq" element={<FAQ />} />
+                          <Route path="/privacy" element={<PrivacyPolicy />} />
+                          <Route path="/terms" element={<Terms />} />
+                          <Route path="/crop-doctor" element={<CropDoctor />} />
+                          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                          <Route path="*" element={<NotFound />} />
+                        </Routes>
+                      </BrowserRouter>
+                    </ProductModalProvider>
+                  </ComparisonProvider>
+                </WishlistProvider>
+              </CartProvider>
+            </UserPreferencesProvider>
           </FeedbackProvider>
         </LanguageProvider>
       </AuthProvider>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import TopHeader from '@/components/layout/TopHeader';
+import { Header } from '@/components/Header';
 import CategoryNav from '@/components/layout/CategoryNav';
 import Footer from '@/components/layout/Footer';
 import CategoryBanner from '@/components/sections/CategoryBanner';
@@ -322,12 +322,14 @@ const CategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <TopHeader />
+      <Header />
 
-      <CategoryNav
-        activeCategory={categoryId || 'insecticides'}
-        onCategoryChange={handleCategoryChange}
-      />
+      <div className="mt-20">
+        <CategoryNav
+          activeCategory={categoryId || 'insecticides'}
+          onCategoryChange={handleCategoryChange}
+        />
+      </div>
 
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8">

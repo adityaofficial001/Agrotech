@@ -6,7 +6,7 @@ import {
   ShieldCheck, Heart, Share2, Calculator, MapPin, ChevronRight
 } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
-import TopHeader from '@/components/layout/TopHeader';
+import { Header } from '@/components/Header';
 import CategoryNav from '@/components/layout/CategoryNav';
 import Footer from '@/components/layout/Footer';
 import ProductSlider from '@/components/products/ProductSlider';
@@ -162,8 +162,10 @@ const ProductDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
-      <TopHeader />
-      <CategoryNav activeCategory="" />
+      <Header />
+      <div className="mt-20">
+        <CategoryNav activeCategory="" />
+      </div>
 
       <main className="flex-1 pb-24">
         {/* Breadcrumb */}

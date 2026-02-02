@@ -7,7 +7,7 @@ export interface Order {
     id: string;
     date: string;
     total: number;
-    status: 'Pending' | 'Packed' | 'Shipped' | 'Delivered';
+    status: 'Pending' | 'Packed' | 'Shipped' | 'Delivered' | 'Cancelled';
     items: string[];
 }
 
@@ -23,6 +23,7 @@ interface UserPreferencesContextType {
 
     orders: Order[];
     addMockOrder: (order: Order) => void;
+    cancelOrder: (orderId: string) => void;
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | undefined>(undefined);
@@ -30,8 +31,13 @@ const UserPreferencesContext = createContext<UserPreferencesContextType | undefi
 export const UserPreferencesProvider = ({ children }: { children: React.ReactNode }) => {
     // Wishlist State
     const [wishlist, setWishlist] = useState<string[]>(() => {
-        const saved = localStorage.getItem('wishlist');
-        return saved ? JSON.parse(saved) : [];
+        try {
+            const saved = localStorage.getItem('wishlist');
+            return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            console.error("Failed to parse wishlist from local storage", e);
+            return [];
+        }
     });
 
     useEffect(() => {
@@ -78,8 +84,12 @@ export const UserPreferencesProvider = ({ children }: { children: React.ReactNod
 
     // Mock Orders State
     const [orders, setOrders] = useState<Order[]>(() => {
-        const saved = localStorage.getItem('userOrders');
-        if (saved) return JSON.parse(saved);
+        try {
+            const saved = localStorage.getItem('userOrders');
+            if (saved) return JSON.parse(saved);
+        } catch (e) {
+            console.error("Failed to parse userOrders from local storage", e);
+        }
 
         // Initial Mock Data
         return [
@@ -108,11 +118,20 @@ export const UserPreferencesProvider = ({ children }: { children: React.ReactNod
         setOrders(prev => [order, ...prev]);
     };
 
+    const cancelOrder = (orderId: string) => {
+        setOrders(prev => prev.map(order =>
+            order.id === orderId
+                ? { ...order, status: 'Cancelled' as const }
+                : order
+        ));
+        toast.info("Order cancellation requested");
+    };
+
     return (
         <UserPreferencesContext.Provider value={{
             wishlist, toggleWishlist, isInWishlist,
             comparisons, addToComparison, removeFromComparison, clearComparison,
-            orders, addMockOrder
+            orders, addMockOrder, cancelOrder
         }}>
             {children}
         </UserPreferencesContext.Provider>

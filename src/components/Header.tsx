@@ -212,7 +212,7 @@ export const Header = () => {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-[10px]">
+                    <div className="flex items-center gap-2 sm:gap-4">
                         {/* Mobile Search Toggle */}
                         <Button variant="ghost" size="icon" className="md:hidden text-primary border border-gray-200 rounded-lg">
                             <Search className="h-5 w-5" />
@@ -220,11 +220,20 @@ export const Header = () => {
 
                         <Button
                             variant="outline"
-                            className="hidden md:flex gap-2 text-primary border-primary/20 hover:bg-primary/5 min-w-[140px] border border-gray-200 rounded-lg"
+                            className="hidden md:flex gap-2 text-primary border-gray-200 hover:bg-gray-50 min-w-[140px] rounded-lg"
                             onClick={toggleLanguage}
                         >
                             <Languages className="h-4 w-4" />
                             <span>{language === 'EN' ? 'हिंदी में पढ़ें' : 'Read in English'}</span>
+                        </Button>
+
+                        <Button
+                            variant="outline"
+                            className="hidden md:flex gap-2 text-primary border-gray-200 hover:bg-gray-50 rounded-lg"
+                            onClick={() => navigate('/orders')}
+                        >
+                            <Package className="h-4 w-4" />
+                            <span className="text-sm font-medium">{t.header.myOrders || 'My Orders'}</span>
                         </Button>
 
                         {user ? (
@@ -239,11 +248,10 @@ export const Header = () => {
                             </Button>
                         )}
 
-
                         <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
-                            className="text-primary hover:bg-primary/5 relative border border-gray-200 rounded-lg"
+                            className="text-primary hover:bg-gray-50 border-gray-200 relative w-10 h-10 rounded-lg"
                             onClick={() => setIsWishlistOpen(true)}
                         >
                             <Heart className={`h-5 w-5 ${wishlistIds.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
@@ -255,27 +263,17 @@ export const Header = () => {
                         </Button>
 
                         <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
-                            className="text-primary hover:bg-primary/5 relative border border-gray-200 rounded-lg"
+                            className="text-primary hover:bg-gray-50 border-gray-200 relative w-10 h-10 rounded-lg"
                             onClick={() => setIsCartOpen(true)}
                         >
-                            <ShoppingBag className="h-5 w-5" />
+                            <ShoppingBag className="h-4 w-4" />
                             {itemsCount > 0 && (
-                                <Badge className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center bg-destructive text-[10px]">
+                                <Badge className="absolute -top-1.5 -right-1.5 h-4 w-4 p-0 flex items-center justify-center bg-destructive text-[10px]">
                                     {itemsCount}
                                 </Badge>
                             )}
-                        </Button>
-
-                        {/* My Order Button */}
-                        <Button
-                            variant="ghost"
-                            className="text-primary hover:bg-primary/5 hidden sm:flex gap-2 border border-gray-200 rounded-lg px-3"
-                            onClick={() => navigate('/orders')}
-                        >
-                            <Package className="h-5 w-5" />
-                            <span className="hidden lg:inline">{t.header.myOrders || 'My Orders'}</span>
                         </Button>
 
                         <Button variant="ghost" size="icon" className="md:hidden text-primary border border-gray-200 rounded-lg">
