@@ -17,7 +17,8 @@ export const translations = {
                 Packed: "Packed",
                 Shipped: "Shipped",
                 Delivered: "Delivered"
-            }
+            },
+            cropDoctor: "Crop Doctor"
         },
 
         cart: {
@@ -660,7 +661,8 @@ export const translations = {
                 Packed: "पैक किया गया",
                 Shipped: "भेज दिया गया",
                 Delivered: "डिलीवर किया गया"
-            }
+            },
+            cropDoctor: "क्रॉप डॉक्टर"
         },
 
         cart: {

@@ -1,15 +1,4 @@
-import {
-    Bug,
-    Leaf,
-    Wrench,
-    Sprout,
-    Droplets,
-    TrendingUp,
-    Microscope,
-    ShoppingBag,
-    BookOpen,
-    Gift
-} from 'lucide-react';
+// Icons Replaced with Emojis
 import React from 'react';
 
 export interface ProductVariant {
@@ -61,6 +50,8 @@ export interface Product {
     descriptionHi?: string;
     benefits?: string[];
     usageInstructions?: string[];
+    dosagePerAcre?: number;
+    dosageUnit?: 'ml' | 'L' | 'g' | 'kg';
 }
 
 export const CATEGORIES = [
@@ -85,16 +76,16 @@ export interface NavCategory {
 }
 
 export const NAV_CATEGORIES: NavCategory[] = [
-    { id: 'insecticides', name: { en: 'Insecticides', hi: 'कीटनाशक' }, icon: Bug },
-    { id: 'seeds', name: { en: 'Seeds & Saplings', hi: 'बीज और पौधे' }, icon: Sprout },
-    { id: 'implements', name: { en: 'Implements', hi: 'उपकरण' }, icon: Wrench },
-    { id: 'herbicides', name: { en: 'Herbicides', hi: 'खरपतवारनाशी' }, icon: Leaf },
-    { id: 'fertilizers', name: { en: 'Fertilizers', hi: 'उर्वरक' }, icon: Droplets },
-    { id: 'growth', name: { en: 'Plant Growth Promoters', hi: 'पौधा विकास प्रवर्तक' }, icon: TrendingUp },
-    { id: 'bioproducts', name: { en: 'Bioproducts', hi: 'जैव उत्पाद' }, icon: Microscope },
-    { id: 'allied', name: { en: 'Allied Products', hi: 'संबद्ध उत्पाद' }, icon: ShoppingBag },
-    { id: 'cropscience', name: { en: 'Crop Science', hi: 'फसल विज्ञान' }, icon: BookOpen },
-    { id: 'offers', name: { en: 'Special Offers', hi: 'विशेष ऑफर' }, icon: Gift },
+    { id: 'insecticides', name: { en: 'Insecticides', hi: 'कीटनाशक' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🪲') },
+    { id: 'seeds', name: { en: 'Seeds & Saplings', hi: 'बीज और पौधे' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🌱') },
+    { id: 'implements', name: { en: 'Implements', hi: 'उपकरण' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🚜') },
+    { id: 'herbicides', name: { en: 'Herbicides', hi: 'खरपतवारनाशी' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🍃') },
+    { id: 'fertilizers', name: { en: 'Fertilizers', hi: 'उर्वरक' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🧪') },
+    { id: 'growth', name: { en: 'Plant Growth Promoters', hi: 'पौधा विकास प्रवर्तक' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🚀') },
+    { id: 'bioproducts', name: { en: 'Bioproducts', hi: 'जैव उत्पाद' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🦠') },
+    { id: 'allied', name: { en: 'Allied Products', hi: 'संबद्ध उत्पाद' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '📦') },
+    { id: 'cropscience', name: { en: 'Crop Science', hi: 'फसल विज्ञान' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🔬') },
+    { id: 'offers', name: { en: 'Special Offers', hi: 'विशेष ऑफर' }, icon: (props: any) => React.createElement('span', { ...props, style: { fontSize: '1.5rem', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' } }, '🎁') },
 ];
 
 const generateProducts = () => {

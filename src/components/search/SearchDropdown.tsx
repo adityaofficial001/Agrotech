@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, Tractor, Package } from 'lucide-react';
 import { getAllProducts } from '@/data/products';
-import { Product } from '@/components/products/ProductCard';
+import { Product } from '@/data/categories';
 
 interface SearchDropdownProps {
   currentLanguage?: 'en' | 'hi';
@@ -55,16 +55,16 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ currentLanguage = 'en' 
 
   const filteredProducts = useMemo(() => {
     if (!searchQuery.trim()) return [];
-    
+
     const query = searchQuery.toLowerCase().trim();
-    
+
     return allProducts.filter(product => {
       const nameMatch = product.name.toLowerCase().includes(query);
       const brandMatch = product.brand.toLowerCase().includes(query);
       const categoryMatch = getCategoryFromId(product.id).toLowerCase().includes(query);
       const cropMatch = product.crops?.some(crop => crop.toLowerCase().includes(query));
       const pestMatch = product.pests?.some(pest => pest.toLowerCase().includes(query));
-      
+
       return nameMatch || brandMatch || categoryMatch || cropMatch || pestMatch;
     }).slice(0, 6); // Limit to 6 results
   }, [searchQuery, allProducts]);
@@ -163,8 +163,8 @@ const SearchDropdown: React.FC<SearchDropdownProps> = ({ currentLanguage = 'en' 
                   {/* Product Image */}
                   <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center shrink-0 overflow-hidden">
                     {product.image ? (
-                      <img 
-                        src={product.image} 
+                      <img
+                        src={product.image}
                         alt={product.name}
                         className="w-full h-full object-cover"
                       />

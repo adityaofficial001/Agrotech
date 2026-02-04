@@ -88,6 +88,8 @@ export const Header = () => {
                     <div className="flex items-center gap-4 ml-auto">
                         <a onClick={() => navigate('/bulk-orders')} className="hover:text-primary-light transition-colors cursor-pointer">{t.header.bulkOrders}</a>
                         <span className="w-[1px] h-3 bg-white/30" />
+                        <a onClick={() => navigate('/crop-doctor')} className="hover:text-primary-light transition-colors cursor-pointer font-bold text-yellow-200 animate-pulse">{t.header.cropDoctor}</a>
+                        <span className="w-[1px] h-3 bg-white/30" />
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>

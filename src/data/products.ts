@@ -28,7 +28,9 @@ export const insecticideProducts: Product[] = [
     applicationMethod: ['Foliar Spray'],
     growthStage: ['Vegetative Growth', 'Flowering'],
     packSize: '1 L',
-    rating: 4.5
+    rating: 4.5,
+    dosagePerAcre: 500,
+    dosageUnit: 'ml'
   },
   {
     id: 'ins-002',
@@ -187,7 +189,9 @@ export const seedProducts: Product[] = [
     applicationMethod: ['Seed Treatment'],
     growthStage: ['Germination'],
     packSize: '100 g',
-    rating: 4.9
+    rating: 4.9,
+    dosagePerAcre: 60, // 60g per acre
+    dosageUnit: 'g'
   },
   {
     id: 'seed-004',

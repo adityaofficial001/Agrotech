@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Package, Smartphone, User, Globe, Tractor, ShoppingCart, History, ChevronDown } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Search, Package, Smartphone, User, Globe, Tractor, ShoppingCart, History, ChevronDown, Heart } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 import { useCart } from '@/contexts/CartContext';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -31,6 +32,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
 }) => {
   const { language, setLanguage } = useLanguage();
   const currentLanguage = propsCurrentLanguage || (language === 'HI' ? 'hi' : 'en');
+  const location = useLocation();
 
   const handleLanguageChange = (lang: 'en' | 'hi') => {
     setLanguage(lang === 'hi' ? 'HI' : 'EN');
@@ -41,6 +43,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   };
 
   const { itemsCount } = useCart();
+  const { wishlistIds } = useWishlist();
+  const wishlistCount = wishlistIds.length;
   const { orders } = useOrders();
   const { user, signOut } = useAuth();
   const [isLangOpen, setIsLangOpen] = useState(false);
@@ -57,6 +61,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
       orders: "Orders",
       myOrders: "My Orders",
       viewAllOrders: "View All Orders",
+      wishlist: "Wishlist",
       orderStatus: {
         Pending: "Pending",
         Packed: "Packed",
@@ -66,7 +71,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
         Confirmed: "Confirmed",
         Out_for_delivery: "Out for Delivery",
         Cancelled: "Cancelled"
-      }
+      },
+      cropDoctor: "Crop Doctor"
     },
     hi: {
       search: "आप क्या खोज रहे हैं?",
@@ -76,6 +82,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
       orders: "ऑर्डर",
       myOrders: "मेरे ऑर्डर",
       viewAllOrders: "सभी ऑर्डर देखें",
+      wishlist: "इच्छा सूची",
       orderStatus: {
         Pending: "लंबित",
         Packed: "पैक किया गया",
@@ -85,7 +92,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({
         Confirmed: "पुष्टि की गई",
         Out_for_delivery: "डिलीवरी के लिए बाहर",
         Cancelled: "रद्द किया गया"
-      }
+      },
+      cropDoctor: "क्रॉप डॉक्टर"
     }
   };
 
@@ -97,6 +105,9 @@ const TopHeader: React.FC<TopHeaderProps> = ({
     // @ts-ignore
     return t.orderStatus[key] || t.orderStatus[status] || key;
   };
+
+  const activeClass = "bg-[#1a5319] text-white hover:bg-[#1a5319]/90 hover:text-white";
+  const inactiveClass = "text-foreground hover:text-primary";
 
   return (
     <header className="bg-card border-b border-border">
@@ -121,17 +132,28 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             {/* Bulk Orders */}
             <Link
               to="/bulk-orders"
-              className="hidden lg:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className={`hidden lg:flex items-center gap-2 text-sm font-medium transition-colors px-3 py-2 rounded-md ${location.pathname === '/bulk-orders' ? activeClass : inactiveClass}`}
             >
               <Package className="w-4 h-4" />
               <span>{t.bulkOrders}</span>
+            </Link>
+
+            {/* Crop Doctor */}
+            <Link
+              to="/crop-doctor"
+              className={`hidden lg:flex items-center gap-2 text-sm font-medium transition-colors px-3 py-2 rounded-md ${location.pathname === '/crop-doctor' ? activeClass : inactiveClass}`}
+            >
+              <Tractor className="w-4 h-4" />
+              <span>{t.cropDoctor}</span>
             </Link>
 
             {/* Orders Dropdown */}
             <div className="hidden sm:block">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors focus:outline-none">
+                  <button
+                    className={`flex items-center gap-2 text-sm font-medium transition-colors focus:outline-none px-3 py-2 rounded-md ${location.pathname.includes('/orders') ? activeClass : inactiveClass}`}
+                  >
                     <Package className="w-4 h-4" />
                     <span>{t.orders}</span>
                     <ChevronDown className="w-4 h-4 opacity-50" />
@@ -163,9 +185,11 @@ const TopHeader: React.FC<TopHeaderProps> = ({
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="justify-center text-xs font-bold text-primary hover:underline cursor-pointer">
-                    {t.viewAllOrders}
-                  </DropdownMenuItem>
+                  <Link to="/orders">
+                    <DropdownMenuItem className="justify-center text-xs font-bold text-primary hover:underline cursor-pointer">
+                      {t.viewAllOrders}
+                    </DropdownMenuItem>
+                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -173,22 +197,38 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             {/* Get App */}
             <Link
               to="/get-app"
-              className="hidden md:flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className={`hidden md:flex items-center gap-2 text-sm font-medium transition-colors ${inactiveClass}`}
             >
               <Smartphone className="w-4 h-4" />
               <span>{t.getApp}</span>
             </Link>
 
+            {/* Wishlist */}
+            <Link to="/wishlist" className="hidden sm:block">
+              <AgriButton
+                variant={location.pathname === '/wishlist' ? "default" : "ghost"}
+                size="sm"
+                className={`gap-2 relative ${location.pathname === '/wishlist' ? activeClass : ''}`}
+              >
+                <Heart className="w-4 h-4" />
+                {wishlistCount > 0 && (
+                  <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${location.pathname === '/wishlist' ? 'bg-white text-[#1a5319]' : 'bg-primary text-primary-foreground'}`}>
+                    {wishlistCount > 99 ? '99+' : wishlistCount}
+                  </span>
+                )}
+              </AgriButton>
+            </Link>
+
             {/* Cart */}
             <AgriButton
-              variant="ghost"
+              variant={isCartOpen ? "default" : "ghost"}
               size="sm"
-              className="gap-2 relative"
+              className={`gap-2 relative ${isCartOpen ? activeClass : ''}`}
               onClick={() => setIsCartOpen(true)}
             >
               <ShoppingCart className="w-4 h-4" />
               {itemsCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${isCartOpen ? 'bg-white text-[#1a5319]' : 'bg-primary text-primary-foreground'}`}>
                   {itemsCount > 99 ? '99+' : itemsCount}
                 </span>
               )}
@@ -196,13 +236,17 @@ const TopHeader: React.FC<TopHeaderProps> = ({
 
             {/* Login */}
             {user ? (
-              <AgriButton variant="ghost" size="sm" className="gap-2" onClick={() => signOut()}>
+              <AgriButton variant="ghost" size="sm" className={`gap-2 ${location.pathname === '/profile' ? activeClass : ''}`} onClick={() => signOut()}>
                 <User className="w-4 h-4" />
                 <span className="hidden sm:inline">{language === 'HI' ? 'लॉगआउट' : 'Logout'}</span>
               </AgriButton>
             ) : (
               <Link to="/login">
-                <AgriButton variant="ghost" size="sm" className="gap-2">
+                <AgriButton
+                  variant={location.pathname === '/login' ? "default" : "ghost"}
+                  size="sm"
+                  className={`gap-2 ${location.pathname === '/login' ? activeClass : ''}`}
+                >
                   <User className="w-4 h-4" />
                   <span className="hidden sm:inline">{t.login}</span>
                 </AgriButton>
@@ -212,10 +256,10 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             {/* Language Selector */}
             <div className="relative">
               <AgriButton
-                variant="outline"
+                variant={currentLanguage === 'hi' ? "default" : "outline"}
                 size="sm"
                 onClick={() => setIsLangOpen(!isLangOpen)}
-                className="gap-1"
+                className={`gap-1 ${currentLanguage === 'hi' ? activeClass : ''}`}
               >
                 <Globe className="w-4 h-4" />
                 <span>{currentLanguage === 'en' ? 'EN' : 'हि'}</span>

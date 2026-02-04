@@ -111,22 +111,44 @@ const ProductDetail = () => {
     }
   };
 
-  // Mock Dosage Calculation
+  // Dosage Calculation
   const calculateDosage = () => {
     if (!landSize || isNaN(Number(landSize))) return;
     const acres = Number(landSize);
-    // Assume 500ml/acre for liquid, 5kg/acre for solid
+
+    // 1. Use Specific Dosage Data if available
+    if (product?.dosagePerAcre && product?.dosageUnit) {
+      const totalNeeded = acres * product.dosagePerAcre;
+      let result = '';
+
+      // Unit Conversions for display
+      if (product.dosageUnit === 'ml' && totalNeeded >= 1000) {
+        // ml -> L
+        result = `${(totalNeeded / 1000).toFixed(1).replace(/\.0$/, '')} ${currentLanguage === 'HI' ? 'लिटर' : 'Liters'}`;
+      } else if (product.dosageUnit === 'g' && totalNeeded >= 1000) {
+        // g -> kg
+        result = `${(totalNeeded / 1000).toFixed(1).replace(/\.0$/, '')} ${currentLanguage === 'HI' ? 'किग्रा' : 'kg'}`;
+      } else {
+        // No conversion
+        result = `${totalNeeded} ${product.dosageUnit}`;
+      }
+
+      setCalculatedDosage(result);
+      return;
+    }
+
+    // 2. Fallback Logic (Estimation) based on product type
     const isLiquid = product?.quantity.toLowerCase().includes('l') || product?.quantity.toLowerCase().includes('ml');
-    const dosagePerAcre = isLiquid ? 500 : 2; // ml or kg
+    const dosagePerAcre = isLiquid ? 500 : 2; // Default: 500ml or 2kg
     const unit = isLiquid ? 'ml' : 'kg';
 
     const totalNeeded = acres * dosagePerAcre;
     let result = '';
 
     if (totalNeeded >= 1000 && isLiquid) {
-      result = `${totalNeeded / 1000} ${t.liquid === 'तरल' ? 'लिटर' : 'Liters'}`;
+      result = `${totalNeeded / 1000} ${currentLanguage === 'HI' ? 'लिटर' : 'Liters'} (Est.)`;
     } else {
-      result = `${totalNeeded} ${unit}`;
+      result = `${totalNeeded} ${unit} (Est.)`;
     }
 
     setCalculatedDosage(result);
