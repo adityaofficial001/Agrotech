@@ -39,8 +39,8 @@ const Terms = () => {
                             <div className="mt-12 p-6 bg-muted rounded-xl border border-border">
                                 <p className="text-sm text-muted-foreground italic">
                                     {language === 'HI'
-                                        ? 'वर्तमान का उपयोग जारी रखकर, आप इन कानूनी शर्तों से सहमत हैं। हम किसी भी समय इन नियमों को संशोधित करने का अधिकार सुरक्षित रखते हैं।'
-                                        : 'By continuing to use Vartman, you agree to these legal terms. We reserve the right to modify these rules at any time.'}
+                                        ? 'वर्थमान का उपयोग जारी रखकर, आप इन कानूनी शर्तों से सहमत हैं। हम किसी भी समय इन नियमों को संशोधित करने का अधिकार सुरक्षित रखते हैं।'
+                                        : 'By continuing to use Varthman, you agree to these legal terms. We reserve the right to modify these rules at any time.'}
                                 </p>
                             </div>
                         </div>

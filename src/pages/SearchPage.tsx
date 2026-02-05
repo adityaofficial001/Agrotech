@@ -23,6 +23,12 @@ const SearchPage = () => {
     // Filter States
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
     const [selectedCrops, setSelectedCrops] = useState<string[]>([]);
+
+    const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+    const [selectedMethods, setSelectedMethods] = useState<string[]>([]);
+    const [selectedStages, setSelectedStages] = useState<string[]>([]);
+    const [selectedPackSizes, setSelectedPackSizes] = useState<string[]>([]);
+    const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
     const [onlyInStock, setOnlyInStock] = useState(false);
 
@@ -32,7 +38,6 @@ const SearchPage = () => {
             noResults: "No products found",
             noResultsDesc: "Try checking your spelling or use different keywords.",
             filterBtn: "Filters",
-            addedToCart: "Added to cart!",
             backToHome: "Back to Home",
             clearFilters: "Clear Filters"
         },
@@ -41,7 +46,6 @@ const SearchPage = () => {
             noResults: "कोई उत्पाद नहीं मिला",
             noResultsDesc: "अपनी वर्तनी की जाँच करें या अलग कीवर्ड का उपयोग करें।",
             filterBtn: "फिल्टर",
-            addedToCart: "कार्ट में जोड़ा गया!",
             backToHome: "मुखपृष्ठ पर वापस जाएं",
             clearFilters: "फिल्टर हटाएं"
         }
@@ -73,6 +77,42 @@ const SearchPage = () => {
                 if (!selectedCrops.some(crop => productCrops.includes(crop))) return false;
             }
 
+            // Type Filter
+            if (selectedTypes.length > 0) {
+                const productTypes = product.type || [];
+                if (!selectedTypes.some(t => productTypes.includes(t))) return false;
+            }
+
+            // Method Filter
+            if (selectedMethods.length > 0) {
+                const productMethods = product.applicationMethod || [];
+                if (!selectedMethods.some(m => productMethods.includes(m))) return false;
+            }
+
+            // Stage Filter
+            if (selectedStages.length > 0) {
+                const productStages = product.growthStage || [];
+                if (!selectedStages.some(s => productStages.includes(s))) return false;
+            }
+
+            // Pack Size Filter
+            if (selectedPackSizes.length > 0) {
+                if (!product.packSize || !selectedPackSizes.includes(product.packSize)) return false;
+            }
+
+            // Rating Filter
+            if (selectedRatings.length > 0) {
+                const rating = product.rating || 0;
+                // Assuming selectedRatings contains minimum star ratings (e.g., [4] means 4 stars & up)
+                // or exact matches. Let's assume exact match or >= for now. 
+                // Usually sidebar ratings are "4 stars & up". Let's stick to exact logic if it's checkboxes
+                // If the UI is checkboxes for 4, 3, 2, 1, usually it implies OR logic for exact buckets 
+                // OR "at least". Let's assume standard checkbox OR logic for exact buckets if that's what the UI does.
+                // Checking FilterSidebar: implies just checkboxes.
+                // However, Product.rating is optional number.
+                if (!selectedRatings.some(r => Math.floor(rating) === r)) return false;
+            }
+
             // Price Filter
             if (product.priceMin > priceRange[1] || product.priceMax < priceRange[0]) return false;
 
@@ -81,16 +121,37 @@ const SearchPage = () => {
 
             return true;
         });
-    }, [searchResults, selectedBrands, selectedCrops, priceRange, onlyInStock]);
+    }, [searchResults, selectedBrands, selectedCrops, selectedTypes, selectedMethods, selectedStages, selectedPackSizes, selectedRatings, priceRange, onlyInStock]);
 
     // Derived Filter Data (Facets)
-    const { availableBrands, availableCrops, minPrice, maxPrice } = useMemo(() => {
-        if (searchResults.length === 0) return { availableBrands: [], availableCrops: [], minPrice: 0, maxPrice: 10000 };
+    const { availableBrands, availableCrops, availableTypes, availableMethods, availableStages, availablePackSizes, minPrice, maxPrice } = useMemo(() => {
+        if (searchResults.length === 0) return {
+            availableBrands: [], availableCrops: [], availableTypes: [], availableMethods: [],
+            availableStages: [], availablePackSizes: [], minPrice: 0, maxPrice: 10000
+        };
 
         const brands = Array.from(new Set(searchResults.map(p => p.brand))).sort();
+
         const cropsSet = new Set<string>();
         searchResults.forEach(p => p.crops?.forEach(c => cropsSet.add(c)));
         const crops = Array.from(cropsSet).sort();
+
+        const typesSet = new Set<string>();
+        searchResults.forEach(p => p.type?.forEach(t => typesSet.add(t)));
+        const types = Array.from(typesSet).sort();
+
+        const methodsSet = new Set<string>();
+        searchResults.forEach(p => p.applicationMethod?.forEach(m => methodsSet.add(m)));
+        const methods = Array.from(methodsSet).sort();
+
+        const stagesSet = new Set<string>();
+        searchResults.forEach(p => p.growthStage?.forEach(s => stagesSet.add(s)));
+        const stages = Array.from(stagesSet).sort();
+
+        const packSizesSet = new Set<string>();
+        searchResults.forEach(p => { if (p.packSize) packSizesSet.add(p.packSize) });
+        const packSizes = Array.from(packSizesSet).sort();
+
 
         const prices = searchResults.flatMap(p => [p.priceMin, p.priceMax]);
         const min = Math.min(...prices);
@@ -99,6 +160,10 @@ const SearchPage = () => {
         return {
             availableBrands: brands,
             availableCrops: crops,
+            availableTypes: types,
+            availableMethods: methods,
+            availableStages: stages,
+            availablePackSizes: packSizes,
             minPrice: Math.floor(min / 100) * 100,
             maxPrice: Math.ceil(max / 100) * 100,
         };
@@ -108,6 +173,11 @@ const SearchPage = () => {
     useEffect(() => {
         setSelectedBrands([]);
         setSelectedCrops([]);
+        setSelectedTypes([]);
+        setSelectedMethods([]);
+        setSelectedStages([]);
+        setSelectedPackSizes([]);
+        setSelectedRatings([]);
         setOnlyInStock(false);
     }, [query]);
 
@@ -118,12 +188,7 @@ const SearchPage = () => {
     }, [minPrice, maxPrice]);
 
 
-    const handleAddToCart = (product: Product) => {
-        toast({
-            title: t.addedToCart,
-            description: product.name,
-        });
-    };
+
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -153,12 +218,26 @@ const SearchPage = () => {
                         onClose={() => setIsMobileFilterOpen(false)}
                         brands={availableBrands}
                         crops={availableCrops}
+                        productTypes={availableTypes}
+                        applicationMethods={availableMethods}
+                        growthStages={availableStages}
+                        packSizes={availablePackSizes}
                         minPrice={minPrice}
                         maxPrice={maxPrice}
                         selectedBrands={selectedBrands}
                         onBrandChange={(b) => setSelectedBrands(prev => prev.includes(b) ? prev.filter(x => x !== b) : [...prev, b])}
                         selectedCrops={selectedCrops}
                         onCropChange={(c) => setSelectedCrops(prev => prev.includes(c) ? prev.filter(x => x !== c) : [...prev, c])}
+                        selectedTypes={selectedTypes}
+                        onTypeChange={(t) => setSelectedTypes(prev => prev.includes(t) ? prev.filter(x => x !== t) : [...prev, t])}
+                        selectedMethods={selectedMethods}
+                        onMethodChange={(m) => setSelectedMethods(prev => prev.includes(m) ? prev.filter(x => x !== m) : [...prev, m])}
+                        selectedStages={selectedStages}
+                        onStageChange={(s) => setSelectedStages(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])}
+                        selectedPackSizes={selectedPackSizes}
+                        onPackSizeChange={(s) => setSelectedPackSizes(prev => prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s])}
+                        selectedRatings={selectedRatings}
+                        onRatingChange={(r) => setSelectedRatings(prev => prev.includes(r) ? prev.filter(x => x !== r) : [...prev, r])}
                         priceRange={priceRange}
                         onPriceChange={setPriceRange}
                         onlyInStock={onlyInStock}
@@ -166,10 +245,14 @@ const SearchPage = () => {
                         onClearAll={() => {
                             setSelectedBrands([]);
                             setSelectedCrops([]);
+                            setSelectedTypes([]);
+                            setSelectedMethods([]);
+                            setSelectedStages([]);
+                            setSelectedPackSizes([]);
+                            setSelectedRatings([]);
                             setPriceRange([minPrice, maxPrice]);
                             setOnlyInStock(false);
                         }}
-                        currentLanguage={currentLanguage === 'EN' ? 'en' : 'hi'}
                     />
 
                     {/* Results Grid */}
@@ -178,7 +261,6 @@ const SearchPage = () => {
                             <ProductGrid
                                 products={filteredProducts}
                                 currentLanguage={currentLanguage === 'EN' ? 'en' : 'hi'}
-                                onAddToCart={handleAddToCart}
                             />
                         ) : (
                             <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -188,6 +270,11 @@ const SearchPage = () => {
                                 <Button onClick={() => {
                                     setSelectedBrands([]);
                                     setSelectedCrops([]);
+                                    setSelectedTypes([]);
+                                    setSelectedMethods([]);
+                                    setSelectedStages([]);
+                                    setSelectedPackSizes([]);
+                                    setSelectedRatings([]);
                                     setOnlyInStock(false);
                                     setPriceRange([minPrice, maxPrice]);
                                 }}>

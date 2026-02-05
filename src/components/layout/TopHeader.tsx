@@ -118,9 +118,9 @@ const TopHeader: React.FC<TopHeaderProps> = ({
             {/* <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
               <Tractor className="w-6 h-6 text-primary-foreground" />
             </div> */}
-            <img src="/logo.png" alt="Vardhman Logo" className="h-10 w-auto object-contain" />
+            <img src="/logo.png" alt="Varthman Logo" className="h-10 w-auto object-contain" />
             <span className="text-xl font-display font-bold text-primary">
-              Vardhman
+              Varthman
             </span>
           </Link>
 

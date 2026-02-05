@@ -136,8 +136,8 @@ const Login = () => {
               </h1>
               <p className="text-lg text-gray-100 max-w-md leading-relaxed drop-shadow-sm font-medium">
                 {language === 'HI'
-                  ? 'वर्तमन के साथ अपनी फसल की पैदावार बढ़ाएं। विशेषज्ञ सलाह और प्रीमियम उत्पादों के लिए आपका विश्वसनीय साथी।'
-                  : 'Empowering farmers with premium products and expert advice. Join thousands of successful farmers on Vartman.'}
+                  ? 'वर्थमान के साथ अपनी फसल की पैदावार बढ़ाएं। विशेषज्ञ सलाह और प्रीमियम उत्पादों के लिए आपका विश्वसनीय साथी।'
+                  : 'Empowering farmers with premium products and expert advice. Join thousands of successful farmers on Varthman.'}
               </p>
             </div>
 

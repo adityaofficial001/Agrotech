@@ -12,9 +12,9 @@ export const CheckoutHeader = ({ step, t }: { step: number; t?: any }) => {
                         {/* <div className="bg-primary p-2 rounded-lg">
                             <Tractor className="h-6 w-6 text-white" />
                         </div> */}
-                        <img src="/logo.png" alt="Vartman Logo" className="h-10 w-auto object-contain" />
+                        <img src="/logo.png" alt="Varthman Logo" className="h-10 w-auto object-contain" />
                         <div>
-                            <h1 className="text-xl font-bold text-primary leading-none">Vartman</h1>
+                            <h1 className="text-xl font-bold text-primary leading-none">Varthman</h1>
                             <p className="text-xs text-primary/80">{t?.title || "Checkout"}</p>
                         </div>
                     </Link>

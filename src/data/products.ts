@@ -14,7 +14,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-001',
     name: 'Super Kill Pro - Broad Spectrum Insecticide',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide1,
     price: 450,
     priceMin: 450,
@@ -35,7 +35,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-002',
     name: 'Pest Guard Ultra - Contact Insecticide',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide2,
     price: 320,
     priceMin: 320,
@@ -54,7 +54,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-003',
     name: 'BioShield Organic Pest Control',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide3,
     price: 280,
     priceMin: 280,
@@ -72,7 +72,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-004',
     name: 'Termite End - Soil Treatment',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide2,
     price: 890,
     priceMin: 890,
@@ -90,7 +90,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-005',
     name: 'Crop Defender Systemic Insecticide',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide1,
     price: 560,
     priceMin: 560,
@@ -104,7 +104,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-006',
     name: 'Quick Kill Spray - Ready to Use',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide3,
     price: 199,
     priceMin: 199,
@@ -116,7 +116,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-007',
     name: 'Root Shield Plus - Soil Insecticide',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide2,
     price: 720,
     priceMin: 720,
@@ -129,7 +129,7 @@ export const insecticideProducts: Product[] = [
   {
     id: 'ins-008',
     name: 'Fly Away - Flying Pest Control',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: insecticide1,
     price: 380,
     priceMin: 380,
@@ -145,7 +145,7 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-001',
     name: 'Premium Wheat Seeds - High Yield Variety',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds1,
     price: 180,
 
@@ -163,7 +163,7 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-002',
     name: 'Hybrid Rice Seeds - Basmati Quality',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds2,
     price: 350,
 
@@ -176,7 +176,7 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-003',
     name: 'Organic Tomato Seeds - Cherry Variety',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds3,
     price: 120,
 
@@ -196,7 +196,7 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-004',
     name: 'Cotton Seeds - Bt Hybrid',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds1,
     price: 890,
 
@@ -209,7 +209,7 @@ export const seedProducts: Product[] = [
   {
     id: 'seed-005',
     name: 'Maize Seeds - Sweet Corn Variety',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds2,
     price: 250,
 
@@ -225,7 +225,7 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-001',
     name: 'NPK 20-20-20 - Balanced Fertilizer',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: fertilizer1,
     price: 450,
 
@@ -237,7 +237,7 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-002',
     name: 'Urea 46% Nitrogen - Growth Booster',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: fertilizer1,
     price: 280,
 
@@ -249,7 +249,7 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-003',
     name: 'DAP - Di-Ammonium Phosphate',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: fertilizer1,
     price: 650,
 
@@ -261,7 +261,7 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-004',
     name: 'Organic Vermicompost Premium',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: fertilizer2,
     price: 180,
 
@@ -273,7 +273,7 @@ export const fertilizerProducts: Product[] = [
   {
     id: 'fert-005',
     name: 'Potash MOP - Potassium Fertilizer',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: fertilizer1,
     price: 520,
 
@@ -288,7 +288,7 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-001',
     name: 'Weed Clear Pro - Pre-Emergent',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: herbicide1,
     price: 380,
 
@@ -300,7 +300,7 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-002',
     name: 'Grass Killer - Selective Herbicide',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: herbicide1,
     price: 290,
 
@@ -312,7 +312,7 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-003',
     name: 'Total Weed Control - Non-Selective',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: herbicide1,
     price: 550,
 
@@ -324,7 +324,7 @@ export const herbicideProducts: Product[] = [
   {
     id: 'herb-004',
     name: 'Paddy Weed Killer - Rice Herbicide',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: herbicide1,
     price: 420,
 
@@ -726,7 +726,7 @@ export const offersProducts: Product[] = [
   {
     id: 'ser-003',
     name: 'Expert Farm Consultancy',
-    brand: 'Vardhman Experts',
+    brand: 'Varthman Experts',
     image: seeds3,
     price: 999,
     priceMin: 999,
@@ -738,7 +738,7 @@ export const offersProducts: Product[] = [
   {
     id: 'off-001',
     name: 'Monsoon Special Combo',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds1,
     price: 999,
 
@@ -750,7 +750,7 @@ export const offersProducts: Product[] = [
   {
     id: 'off-002',
     name: 'Farmer Starter Kit',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds2,
     price: 1499,
 
@@ -762,7 +762,7 @@ export const offersProducts: Product[] = [
   {
     id: 'off-003',
     name: 'Bulk Purchase Membership',
-    brand: 'Vardhman',
+    brand: 'Varthman',
     image: seeds3,
     price: 499,
 

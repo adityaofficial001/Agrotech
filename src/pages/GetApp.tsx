@@ -13,7 +13,7 @@ const GetApp = () => {
 
   const translations = {
     en: {
-      title: 'Get the Vartman App',
+      title: 'Get the Varthman App',
       subtitle: 'Shop smarter, faster, and save more!',
       description: 'Download our mobile app for the best shopping experience. Get exclusive app-only deals, track orders in real-time, and access expert farming advice.',
       downloadAndroid: 'Download for Android',
@@ -34,7 +34,7 @@ const GetApp = () => {
       backToHome: 'Back to Home',
     },
     hi: {
-      title: 'वर्तमान ऐप डाउनलोड करें',
+      title: 'वर्थमान ऐप डाउनलोड करें',
       subtitle: 'स्मार्ट खरीदारी करें, तेजी से करें, और अधिक बचाएं!',
       description: 'सर्वोत्तम खरीदारी अनुभव के लिए हमारा मोबाइल ऐप डाउनलोड करें। ऐप-ओनली विशेष सौदे प्राप्त करें, रीयल-टाइम में ऑर्डर ट्रैक करें, और विशेषज्ञ कृषि सलाह प्राप्त करें।',
       downloadAndroid: 'एंड्रॉइड के लिए डाउनलोड करें',

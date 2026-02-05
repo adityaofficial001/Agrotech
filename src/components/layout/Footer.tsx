@@ -18,9 +18,9 @@ const Footer: React.FC = () => {
                 <Tractor className="w-6 h-6 text-primary" />
               </div> */}
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center overflow-hidden">
-                <img src="/logo.png" alt="Vardhman Logo" className="w-full h-full object-cover" />
+                <img src="/logo.png" alt="Varthman Logo" className="w-full h-full object-cover" />
               </div>
-              <span className="text-2xl font-display font-bold">Vardhman</span>
+              <span className="text-2xl font-display font-bold">Varthman</span>
             </div>
             <p className="text-primary-foreground/80 text-sm">
               {footerT.tagline}
@@ -114,7 +114,7 @@ const Footer: React.FC = () => {
                 <div className="w-8 h-8 rounded-full bg-agri-lime/20 flex items-center justify-center shrink-0">
                   <Mail className="w-4 h-4 text-agri-lime" />
                 </div>
-                <span className="text-primary-foreground/80 text-sm">info@vardhman.com</span>
+                <span className="text-primary-foreground/80 text-sm">info@varthman.com</span>
               </li>
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-agri-lime/20 flex items-center justify-center shrink-0">
@@ -131,7 +131,7 @@ const Footer: React.FC = () => {
       <div className="border-t border-primary-foreground/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
-            <p>© 2024 Vardhman. {footerT.rights}</p>
+            <p>© 2024 Varthman. {footerT.rights}</p>
             <p>{footerT.madeWithLove}</p>
           </div>
         </div>
