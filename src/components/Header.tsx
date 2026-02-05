@@ -148,7 +148,7 @@ export const Header = () => {
                         {/* <div className="bg-primary p-2 rounded-lg">
                             <Tractor className="h-6 w-6 text-white" />
                         </div> */}
-                        <img src="/logo.png" alt="Varthman Logo" className="h-10 w-auto object-contain" />
+                        <img src="/logo.png" alt="Vardhman Logo" className="h-10 w-auto object-contain" />
                         <div className="hidden md:block">
                             <h1 className="text-xl font-bold text-primary leading-none">{t.header.title}</h1>
                             <p className="text-xs text-primary/80">{t.header.tagline}</p>

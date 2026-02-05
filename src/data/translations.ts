@@ -2,12 +2,12 @@
 export const translations = {
     EN: {
         header: {
-            welcome: "Welcome to Varthman - Your Farming Partner",
+            welcome: "Welcome to Vardhman - Your Farming Partner",
             bulkOrders: "Bulk Orders Enquiries",
             getApp: "Get App",
             login: "Login",
             searchPlaceholder: "What are you looking for?",
-            title: "Varthman",
+            title: "Vardhman",
             tagline: "Grow with us",
             orders: "Orders",
             myOrders: "My Orders",
@@ -110,8 +110,8 @@ export const translations = {
             wheat: "Wheat"
         },
         brands: {
-            varthman: "Varthman",
-            varthmanexperts: "Varthman Experts",
+            vardhman: "Vardhman",
+            vardhmanexperts: "Vardhman Experts",
             agrilab: "AgriLab",
             agritechsolutions: "AgriTech Solutions",
             syngenta: "Syngenta",
@@ -134,7 +134,8 @@ export const translations = {
             showMore: "Show More",
             chooseSize: "Choose a Size",
             save: "Save",
-            off: "OFF"
+            off: "OFF",
+            inStock: "In Stock"
         },
         wishlist: {
             title: "Your Wishlist",
@@ -300,7 +301,7 @@ export const translations = {
             rights: "All rights reserved.",
             followUs: "Follow Us",
             madeWithLove: "Made with 💚 for farmers",
-            copyright: "© 2024 Varthman."
+            copyright: "© 2024 Vardhman."
         },
         productDetail: {
             addToCart: "Add to Cart",
@@ -410,27 +411,27 @@ export const translations = {
             }
         },
         about: {
-            title: "About Us — Varthman",
-            content: "Welcome to Varthman, where tradition meets innovation in agriculture. At Varthman, we are dedicated to empowering farmers with high-quality, reliable agricultural solutions that help maximize productivity and promote sustainable farming practices that honour the land and environment. Whether you are a small-scale farmer or a large agricultural enterprise, Varthman is here to support your growth with premium inputs, expert guidance, and trusted service.",
+            title: "About Us — Vardhman",
+            content: "Welcome to Vardhman, where tradition meets innovation in agriculture. At Vardhman, we are dedicated to empowering farmers with high-quality, reliable agricultural solutions that help maximize productivity and promote sustainable farming practices that honour the land and environment. Whether you are a small-scale farmer or a large agricultural enterprise, Vardhman is here to support your growth with premium inputs, expert guidance, and trusted service.",
             whoWeAre: {
                 title: "Who We Are",
-                text: "Founded with a passion for advancing Indian agriculture, Varthman specializes in providing a wide range of products and solutions, including quality seeds, fertilizers, crop care products, bioproducts, and plant growth promoters. We believe in combining cutting-edge agricultural technology with time-tested farming wisdom to create solutions that truly make a difference in the field."
+                text: "Founded with a passion for advancing Indian agriculture, Vardhman specializes in providing a wide range of products and solutions, including quality seeds, fertilizers, crop care products, bioproducts, and plant growth promoters. We believe in combining cutting-edge agricultural technology with time-tested farming wisdom to create solutions that truly make a difference in the field."
             },
             whyChooseUs: {
-                title: "Why Choose Varthman",
-                text: "At Varthman, our focus is on helping farmers succeed through:",
+                title: "Why Choose Vardhman",
+                text: "At Vardhman, our focus is on helping farmers succeed through:",
                 points: [
                     "Enhanced Productivity: Our innovative products are designed to improve crop yields and efficiency.",
                     "Stronger Soil Health: We advocate for healthy soil that supports resilient crops season after season.",
-                    "Cost-Effective Solutions: Varthman delivers high performance without unnecessary costs.",
+                    "Cost-Effective Solutions: Vardhman delivers high performance without unnecessary costs.",
                     "Superior Quality: Our products are crafted to meet rigorous quality standards you can trust."
                 ]
             },
             mission: "Our Mission",
             missionText: "Our mission is to build lasting partnerships with farmers by offering products and services that are reliable, effective, and tailored to the needs of modern agriculture. We strive to bridge the gap between traditional farming challenges and innovative solutions.",
             joinUs: {
-                title: "Join the Varthman Family",
-                text: "At Varthman, we are more than a supplier — we are your partner in growth. We are committed to delivering solutions that contribute to a greener, more sustainable future for farming communities across India."
+                title: "Join the Vardhman Family",
+                text: "At Vardhman, we are more than a supplier — we are your partner in growth. We are committed to delivering solutions that contribute to a greener, more sustainable future for farming communities across India."
             }
         },
         blog: {
@@ -477,7 +478,7 @@ export const translations = {
                 },
                 {
                     q: "Are the products genuine?",
-                    a: "Yes, Varthman only sells 100% genuine products directly sourced from verified manufacturers."
+                    a: "Yes, Vardhman only sells 100% genuine products directly sourced from verified manufacturers."
                 },
                 {
                     q: "What is your return policy?",
@@ -490,13 +491,13 @@ export const translations = {
             ]
         },
         privacy: {
-            title: "Varthman Company Global Privacy Statement",
-            introduction: "At Varthman Company, we are committed to transparency and openness, including providing clear and accurate information about our privacy practices. This Global Privacy Statement (\"Privacy Statement\") describes how Varthman Company and its affiliates “We”, “Us”, “Our”, or “Varthman” collect, use, disclose, or otherwise process personal information.",
+            title: "Vardhman Company Global Privacy Statement",
+            introduction: "At Vardhman Company, we are committed to transparency and openness, including providing clear and accurate information about our privacy practices. This Global Privacy Statement (\"Privacy Statement\") describes how Vardhman Company and its affiliates “We”, “Us”, “Our”, or “Vardhman” collect, use, disclose, or otherwise process personal information.",
             text1: "This Privacy Statement applies when you access or use our websites, online applications, social media pages, or otherwise interact with us. Additional or country-specific notices may supplement or replace this Privacy Statement where applicable.",
-            note: "Note: This Privacy Statement does not apply to our employees or job applicants. For applicants, personal information collected through our Career Portal is governed by the Varthman Applicant Privacy Notice.",
+            note: "Note: This Privacy Statement does not apply to our employees or job applicants. For applicants, personal information collected through our Career Portal is governed by the Vardhman Applicant Privacy Notice.",
             contactingUs: {
                 title: "Contacting Us",
-                text: "If you have questions about this Privacy Statement, please contact us at contact@varthman.com or use the contact form on our website."
+                text: "If you have questions about this Privacy Statement, please contact us at contact@vardhman.com or use the contact form on our website."
             },
             sections: [
                 {
@@ -533,7 +534,7 @@ export const translations = {
                 },
                 {
                     h: "Your Rights",
-                    p: "Depending on your location, you may have the right to access, correct, or delete personal information, and request data portability. Requests can be sent to contact@varthman.com."
+                    p: "Depending on your location, you may have the right to access, correct, or delete personal information, and request data portability. Requests can be sent to contact@vardhman.com."
                 },
                 {
                     h: "Security",
@@ -546,14 +547,14 @@ export const translations = {
             sections: [
                 {
                     h: "Usage Rules",
-                    p: "By using Varthman, you agree to provide accurate information and honor the purchase commitments made on the platform."
+                    p: "By using Vardhman, you agree to provide accurate information and honor the purchase commitments made on the platform."
                 },
                 {
                     h: "Refunds",
                     p: "Refunds are processed within 5-7 business days after the returned product passes quality inspection."
                 }
             ],
-            footerText: "By continuing to use Varthman, you agree to these legal terms. We reserve the right to modify these rules at any time."
+            footerText: "By continuing to use Vardhman, you agree to these legal terms. We reserve the right to modify these rules at any time."
         },
         compare: {
             title: 'Compare Products',
@@ -646,12 +647,12 @@ export const translations = {
     },
     HI: {
         header: {
-            welcome: "वर्थमान में आपका स्वागत है - आपका खेती भागीदार",
+            welcome: "वर्धमान में आपका स्वागत है - आपका खेती भागीदार",
             bulkOrders: "थोक आदेश पूछताछ",
             getApp: "ऐप डाउनलोड करें",
             login: "लॉग इन",
             searchPlaceholder: "आप क्या ढूंढ रहे हैं?",
-            title: "वर्थमान",
+            title: "वर्धमान",
             tagline: "हमारे साथ बढ़ें",
             orders: "ऑर्डर",
             myOrders: "मेरे ऑर्डर",
@@ -755,8 +756,8 @@ export const translations = {
         },
 
         brands: {
-            varthman: "वर्थमान",
-            varthmanexperts: "वर्थमान एक्सपर्ट्स",
+            vardhman: "वर्धमान",
+            vardhmanexperts: "वर्धमान एक्सपर्ट्स",
             agrilab: "एग्रीलैव",
             agritechsolutions: "एग्रीटेक सॉल्यूशंस",
             syngenta: "सिंजेंटा",
@@ -780,7 +781,8 @@ export const translations = {
             showMore: "और देखें",
             chooseSize: "एक मात्रा चुनें",
             save: "बचत करें",
-            off: "छूट"
+            off: "छूट",
+            inStock: "स्टॉक में"
         },
         wishlist: {
             title: "आपकी विशलिस्ट",
@@ -1142,7 +1144,7 @@ export const translations = {
             note: "नोट: यह गोपनीयता विवरण हमारे कर्मचारियों या नौकरी आवेदकों पर लागू नहीं होता है। आवेदकों के लिए, हमारे करियर पोर्टल के माध्यम से एकत्र की गई व्यक्तिगत जानकारी वर्धमान आवेदक गोपनीयता नोटिस द्वारा शासित होती है।",
             contactingUs: {
                 title: "हमसे संपर्क करना",
-                text: "यदि आपके पास इस गोपनीयता विवरण के बारे में प्रश्न हैं, तो कृपया हमसे contact@varthman.com पर संपर्क करें या हमारी वेबसाइट पर संपर्क फ़ॉर्म का उपयोग करें।"
+                text: "यदि आपके पास इस गोपनीयता विवरण के बारे में प्रश्न हैं, तो कृपया हमसे contact@vardhman.com पर संपर्क करें या हमारी वेबसाइट पर संपर्क फ़ॉर्म का उपयोग करें।"
             },
             sections: [
                 {
@@ -1179,7 +1181,7 @@ export const translations = {
                 },
                 {
                     h: "आपके अधिकार",
-                    p: "आपके स्थान के आधार पर, आपके पास व्यक्तिगत जानकारी तक पहुँचने, सही करने या हटाने और डेटा पोर्टेबिलिटी का अनुरोध करने का अधिकार हो सकता है। अनुरोध contact@varthman.com पर भेजे जा सकते हैं।"
+                    p: "आपके स्थान के आधार पर, आपके पास व्यक्तिगत जानकारी तक पहुँचने, सही करने या हटाने और डेटा पोर्टेबिलिटी का अनुरोध करने का अधिकार हो सकता है। अनुरोध contact@vardhman.com पर भेजे जा सकते हैं।"
                 },
                 {
                     h: "सुरक्षा",

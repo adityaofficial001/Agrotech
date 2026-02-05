@@ -61,8 +61,8 @@ const PrivacyPolicy = () => {
                             <div className="mt-12 p-6 bg-muted rounded-xl border border-border">
                                 <p className="text-sm text-muted-foreground italic">
                                     {language === 'HI'
-                                        ? 'अंतिम अपडेट: 20 जनवरी, 2026। इस नीति के बारे में किसी भी प्रश्न के लिए, कृपया contact@varthman.com पर हमसे संपर्क करें।'
-                                        : 'Last updated: January 20, 2026. For any questions regarding this policy, please contact us at contact@varthman.com.'}
+                                        ? 'अंतिम अपडेट: 20 जनवरी, 2026। इस नीति के बारे में किसी भी प्रश्न के लिए, कृपया contact@vardhman.com पर हमसे संपर्क करें।'
+                                        : 'Last updated: January 20, 2026. For any questions regarding this policy, please contact us at contact@vardhman.com.'}
                                 </p>
                             </div>
                         </div>

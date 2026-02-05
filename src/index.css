@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    /* Varthman Brand Colors - Organic Green Theme */
+    /* Vardhman Brand Colors - Organic Green Theme */
     --background: 120 20% 98%;
     --foreground: 150 30% 10%;
 
@@ -41,7 +41,7 @@
 
     --radius: 0.75rem;
 
-    /* Custom Varthman Colors */
+    /* Custom Vardhman Colors */
     --agri-green-dark: 135 55% 18%;
     --agri-green: 135 50% 25%;
     --agri-green-light: 95 45% 50%;

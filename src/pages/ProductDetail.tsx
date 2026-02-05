@@ -170,7 +170,7 @@ const ProductDetail = () => {
   };
 
   const shareProduct = () => {
-    const text = `Check out ${product?.name} on Varthman! ${window.location.href}`;
+    const text = `Check out ${product?.name} on Vardhman! ${window.location.href}`;
     const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };

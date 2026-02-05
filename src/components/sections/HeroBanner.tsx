@@ -51,7 +51,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({ currentLanguage = 'en' }) => {
           <div className="text-left">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 backdrop-blur-sm rounded-full mb-6 border border-primary/20">
               <Leaf className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Varthman</span>
+              <span className="text-sm font-medium text-primary">Vardhman</span>
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground mb-2 leading-tight">

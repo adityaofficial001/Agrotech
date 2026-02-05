@@ -103,8 +103,8 @@ const Signup = () => {
 
                     <div className="text-center">
                         <Link to="/" className="inline-flex items-center gap-2 mb-2">
-                            <img src="/logo.png" alt="Varthman" className="h-10 w-auto" />
-                            <span className="text-2xl font-display font-black text-green-800 tracking-tight">Varthman</span>
+                            <img src="/logo.png" alt="Vardhman" className="h-10 w-auto" />
+                            <span className="text-2xl font-display font-black text-green-800 tracking-tight">Vardhman</span>
                         </Link>
                         <h2 className="mt-4 text-3xl font-bold tracking-tight text-gray-900">
                             {loginT.createAccount}

@@ -13,7 +13,7 @@ const GetApp = () => {
 
   const translations = {
     en: {
-      title: 'Get the Varthman App',
+      title: 'Get the Vardhman App',
       subtitle: 'Shop smarter, faster, and save more!',
       description: 'Download our mobile app for the best shopping experience. Get exclusive app-only deals, track orders in real-time, and access expert farming advice.',
       downloadAndroid: 'Download for Android',
