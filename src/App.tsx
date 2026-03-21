@@ -34,6 +34,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import CropDoctor from "./pages/CropDoctor";
 import { UserPreferencesProvider } from "./contexts/UserPreferencesContext";
+import { Chatbot } from "./components/Chatbot";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
                       <Toaster />
                       <Sonner />
                       <ProductVariantModal />
+                      <Chatbot />
                       <BrowserRouter>
                         <ScrollToTop />
                         <Routes>
