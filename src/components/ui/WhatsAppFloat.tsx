@@ -35,7 +35,7 @@ const WhatsAppFloat: React.FC<WhatsAppFloatProps> = ({ productName, advisoryCont
     return (
         <button
             onClick={handleClick}
-            className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center gap-2 group animate-in fade-in slide-in-from-bottom-4"
+            className="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-50 bg-[#25D366] hover:bg-[#20bd5a] text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center gap-2 group animate-in fade-in slide-in-from-bottom-4"
             aria-label="Ask Expert"
         >
             <MessageCircle className="w-6 h-6" />

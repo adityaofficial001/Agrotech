@@ -10,26 +10,45 @@ export const generateChatResponse = async (
   language: string,
   systemPrompt: string
 ): Promise<string> => {
-  const recentMessages = messages.slice(-15);
+  if (!apiKey || apiKey === 'backend') {
+    throw new Error('Please configure your Gemini API Key in the Chatbot Settings.');
+  }
 
-  const contextText = `${systemPrompt}\nUser Preferred Language: ${language === 'HI' ? 'Hindi' : 'English'}\n\nChat History:\n` +
-    recentMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.text}`).join('\n') +
-    `\nAssistant:`;
+  const langInstruction = language === 'HI' 
+    ? "Please provide your response in Hindi language." 
+    : "Please provide your response in English language.";
 
-  const response = await fetch('http://localhost:5000/chat', {
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  const contents = messages.map(msg => ({
+    role: msg.role === 'user' ? 'user' : 'model',
+    parts: [{ text: msg.text }]
+  }));
+
+  const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ message: contextText })
+    body: JSON.stringify({
+      contents,
+      systemInstruction: {
+        parts: [{ text: systemPrompt + '\n\n' + langInstruction }]
+      },
+      generationConfig: {
+        temperature: 0.7,
+      }
+    })
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch from local backend.');
+    const errorData = await response.json().catch(() => ({}));
+    console.error('Gemini API Error:', errorData);
+    throw new Error(errorData.error?.message || 'Failed to fetch response from AI service.');
   }
 
   const data = await response.json();
-  const botResponse = data.choices?.[0]?.message?.content;
+  const botResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
   if (!botResponse) {
     throw new Error("The AI service returned an empty response.");
