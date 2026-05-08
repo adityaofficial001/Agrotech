@@ -134,7 +134,7 @@ export const ProductVariantModal = () => {
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && closeModal()}>
-            <DialogContent className="sm:max-w-[450px] p-0 overflow-hidden bg-white gap-0 border-0 shadow-2xl">
+            <DialogContent hideCloseButton={true} className="sm:max-w-[450px] p-0 overflow-hidden bg-white gap-0 border-0 shadow-2xl">
                 <div className="absolute right-4 top-4 z-10">
                     <DialogClose className="rounded-full bg-black/5 p-1.5 hover:bg-black/10 transition-colors" onClick={closeModal}>
                         <X className="w-4 h-4 text-gray-500" />

@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useOrders } from '@/hooks/useOrders';
 import { useLanguage } from '@/contexts/LanguageContext';
 import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+
 import Footer from '@/components/layout/Footer';
 import { Button } from "@/components/ui/button";
 import { format, differenceInHours } from 'date-fns';
@@ -45,7 +45,7 @@ const OrderDetails = () => {
         return (
             <div className="min-h-screen bg-gray-50 flex flex-col">
                 <TopHeader />
-                <CategoryNav />
+
                 <div className="flex-1 flex flex-col items-center justify-center p-8">
                     <h2 className="text-xl font-bold mb-4">Order Not Found</h2>
                     <Link to="/orders">
@@ -94,7 +94,7 @@ const OrderDetails = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
             <TopHeader />
-            <CategoryNav />
+
 
             <main className="flex-1 container mx-auto px-4 py-8">
 

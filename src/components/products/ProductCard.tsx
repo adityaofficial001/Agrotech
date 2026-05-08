@@ -37,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
   return (
     <div
-      className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-lg transition-all duration-300 flex flex-col cursor-pointer h-full"
+      className="group bg-card rounded-xl overflow-hidden shadow-agri-sm hover:shadow-agri-glow transition-all duration-500 flex flex-col cursor-pointer h-full"
       onClick={handleProductClick}
     >
       {/* Image Section with Pattern Background */}
@@ -91,7 +91,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <img
               src={product.image}
               alt={product.name}
-              className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+              className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out"
             />
           ) : (
             <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center">

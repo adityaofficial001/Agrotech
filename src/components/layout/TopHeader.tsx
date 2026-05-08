@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, Package, Smartphone, User, Globe, Tractor, ShoppingCart, History, ChevronDown, Heart } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
@@ -51,6 +51,34 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [animatingCart, setAnimatingCart] = useState(false);
+  const [animatingWishlist, setAnimatingWishlist] = useState(false);
+
+  // Sticky Glassmorphism Header logic
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Cart Badge Animation logic
+  useEffect(() => {
+    if (itemsCount > 0) {
+      setAnimatingCart(true);
+      const timer = setTimeout(() => setAnimatingCart(false), 400);
+      return () => clearTimeout(timer);
+    }
+  }, [itemsCount]);
+
+  // Wishlist Badge Animation logic
+  useEffect(() => {
+    if (wishlistCount > 0) {
+      setAnimatingWishlist(true);
+      const timer = setTimeout(() => setAnimatingWishlist(false), 400);
+      return () => clearTimeout(timer);
+    }
+  }, [wishlistCount]);
 
   const translations = {
     en: {
@@ -110,7 +138,7 @@ const TopHeader: React.FC<TopHeaderProps> = ({
   const inactiveClass = "text-foreground hover:text-primary";
 
   return (
-    <header className="bg-card border-b border-border">
+    <header className={`sticky top-0 z-[60] transition-all duration-300 border-b ${isScrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow-sm border-transparent' : 'bg-card border-border'}`}>
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           {/* Logo */}
@@ -210,9 +238,9 @@ const TopHeader: React.FC<TopHeaderProps> = ({
                 size="sm"
                 className={`gap-2 relative ${location.pathname === '/wishlist' ? activeClass : ''}`}
               >
-                <Heart className="w-4 h-4" />
+                <Heart className={`w-4 h-4 ${animatingWishlist ? 'animate-wiggle text-orange-500' : ''}`} />
                 {wishlistCount > 0 && (
-                  <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${location.pathname === '/wishlist' ? 'bg-white text-[#1a5319]' : 'bg-primary text-primary-foreground'}`}>
+                  <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shadow-sm transition-all ${animatingWishlist ? 'animate-pop bg-orange-500 text-white' : location.pathname === '/wishlist' ? 'bg-white text-[#1a5319]' : 'bg-orange-500 text-white'}`}>
                     {wishlistCount > 99 ? '99+' : wishlistCount}
                   </span>
                 )}
@@ -226,9 +254,9 @@ const TopHeader: React.FC<TopHeaderProps> = ({
               className={`gap-2 relative ${isCartOpen ? activeClass : ''}`}
               onClick={() => setIsCartOpen(true)}
             >
-              <ShoppingCart className="w-4 h-4" />
+              <ShoppingCart className={`w-4 h-4 ${animatingCart ? 'animate-wiggle text-orange-500' : ''}`} />
               {itemsCount > 0 && (
-                <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center ${isCartOpen ? 'bg-white text-[#1a5319]' : 'bg-primary text-primary-foreground'}`}>
+                <span className={`absolute -top-1 -right-1 w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shadow-sm transition-all ${animatingCart ? 'animate-pop bg-orange-500 text-white' : isCartOpen ? 'bg-white text-[#1a5319]' : 'bg-orange-500 text-white'}`}>
                   {itemsCount > 99 ? '99+' : itemsCount}
                 </span>
               )}

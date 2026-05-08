@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Smartphone, Download, Star, Shield, Zap, Bell, QrCode, CheckCircle } from 'lucide-react';
 import { AgriButton } from '@/components/ui/AgriButton';
 import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+
 import Footer from '@/components/layout/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -62,7 +62,7 @@ const GetApp = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <TopHeader />
 
-      <CategoryNav activeCategory="" />
+
 
       <main className="flex-1 py-12">
         <div className="container mx-auto px-4">

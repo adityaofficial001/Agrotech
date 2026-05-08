@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Heart, ShoppingBag } from 'lucide-react';
 import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/products/ProductCard';
 import { useWishlist } from '@/contexts/WishlistContext';
@@ -50,35 +50,12 @@ const Wishlist = () => {
 
   const t = translations[currentLanguage];
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col">
-        <TopHeader currentLanguage={currentLanguage} onLanguageChange={setCurrentLanguage} />
-        <CategoryNav currentLanguage={currentLanguage} activeCategory="" onCategoryChange={() => {}} />
-        
-        <main className="flex-1 flex items-center justify-center">
-          <div className="text-center p-8">
-            <div className="w-20 h-20 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
-              <Heart className="w-10 h-10 text-primary" />
-            </div>
-            <h2 className="text-xl font-display font-bold text-foreground mb-2">
-              {t.login}
-            </h2>
-            <Link to="/login">
-              <AgriButton className="mt-4">{t.loginBtn}</AgriButton>
-            </Link>
-          </div>
-        </main>
 
-        <Footer currentLanguage={currentLanguage} />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <TopHeader currentLanguage={currentLanguage} onLanguageChange={setCurrentLanguage} />
-      <CategoryNav currentLanguage={currentLanguage} activeCategory="" onCategoryChange={() => {}} />
+
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">

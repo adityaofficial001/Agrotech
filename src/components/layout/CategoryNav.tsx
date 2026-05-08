@@ -1,19 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  Bug,
-  Leaf,
-  Wrench,
-  Sprout,
-  Droplets,
-  TrendingUp,
-  Microscope,
-  ShoppingBag,
-  BookOpen,
-  Gift,
-  Menu,
-  X
-} from 'lucide-react';
 import { NAV_CATEGORIES, NavCategory } from '@/data/categories';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -31,7 +17,6 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
 }) => {
   const { language } = useLanguage();
   const currentLanguage = propsCurrentLanguage || (language === 'HI' ? 'hi' : 'en');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(externalActiveCategory || 'insecticides');
   const scrollTrackerRef = useRef<boolean>(false);
   const navigate = useNavigate();
@@ -77,7 +62,6 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
   }, [location.pathname, onCategoryChange]);
 
   const handleCategoryClick = (category: NavCategory) => {
-    setIsMobileMenuOpen(false);
     setActiveCategory(category.id);
 
     // If an external handler is provided, let it handle the navigation logic completely
@@ -110,72 +94,38 @@ const CategoryNav: React.FC<CategoryNavProps> = ({
   };
 
   return (
-    <nav className="agri-gradient-header sticky top-0 z-40">
+    <nav className="agri-gradient-header sticky top-[108px] md:top-[104px] z-50 shadow-md">
       <div className="container mx-auto px-4">
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center justify-center">
-          {NAV_CATEGORIES.map((category) => {
-            const Icon = category.icon;
-            const isActive = activeCategory === category.id;
+        {/* Responsive Horizontal Scrollable Navigation */}
+        <div className="flex items-center overflow-x-auto no-scrollbar scroll-smooth w-full">
+          <div className="flex items-center justify-start min-w-max mx-auto gap-1 lg:gap-2 py-2">
+            {NAV_CATEGORIES.map((category) => {
+              const Icon = category.icon;
+              const isActive = activeCategory === category.id;
 
-            return (
-              <button
-                key={category.id}
-                onClick={() => handleCategoryClick(category)}
-                className={`flex items-center gap-2 px-4 py-3.5 text-sm font-medium transition-all duration-300 relative group ${isActive
-                  ? 'text-agri-lime'
-                  : 'text-primary-foreground/80 hover:text-white hover:bg-white/10'
-                  }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="whitespace-nowrap">{category.name[currentLanguage]}</span>
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryClick(category)}
+                  className={`flex items-center gap-2 px-3 py-3 lg:px-4 lg:py-3.5 text-sm font-medium transition-all duration-300 relative group ${isActive
+                    ? 'text-agri-lime font-bold'
+                    : 'text-primary-foreground/90 hover:text-white hover:bg-white/10 rounded-lg lg:rounded-none'
+                    }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="whitespace-nowrap">{category.name[currentLanguage]}</span>
 
-                {/* Active Indicator Underline */}
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-agri-lime transition-all duration-300 transform ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-50'
-                  }`} />
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Mobile Navigation Toggle */}
-        <div className="lg:hidden flex items-center justify-between py-3">
-          <span className="text-primary-foreground font-medium">
-            {NAV_CATEGORIES.find(c => c.id === activeCategory)?.name[currentLanguage] || 'Categories'}
-          </span>
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-primary-foreground hover:bg-primary-foreground/10 rounded-lg transition-colors"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden pb-4 animate-slide-up bg-primary/95 mt-[-1px] rounded-b-2xl shadow-xl">
-            <div className="grid grid-cols-2 gap-2 p-2">
-              {NAV_CATEGORIES.map((category) => {
-                const Icon = category.icon;
-                const isActive = activeCategory === category.id;
-
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`flex items-center gap-2 px-3 py-3 rounded-xl text-sm font-medium transition-all ${isActive
-                      ? 'bg-agri-lime text-primary font-bold shadow-lg'
-                      : 'text-primary-foreground/90 hover:bg-white/10'
-                      }`}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{category.name[currentLanguage]}</span>
-                  </button>
-                );
-              })}
-            </div>
+                  {/* Active Indicator Underline */}
+                  <div className={`hidden lg:block absolute bottom-0 left-0 right-0 h-0.5 bg-agri-lime transition-all duration-300 transform ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-50'
+                    }`} />
+                    
+                  {/* Mobile Active Indicator Background */}
+                  {isActive && <div className="lg:hidden absolute inset-0 bg-white/10 rounded-lg -z-10" />}
+                </button>
+              );
+            })}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );

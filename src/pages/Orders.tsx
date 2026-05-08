@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Package, ChevronRight, Truck, CheckCircle2, Clock, Box, MapPin, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+
 import Footer from '@/components/layout/Footer';
 import { useOrders, OrderStatus, Order } from '@/hooks/useOrders';
 import { useAuth } from '@/contexts/AuthContext';
@@ -74,7 +74,7 @@ const Orders = () => {
     return (
       <div className="min-h-screen bg-background flex flex-col">
         <TopHeader />
-        <CategoryNav />
+
 
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center p-8">
@@ -98,7 +98,7 @@ const Orders = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <TopHeader />
-      <CategoryNav />
+
 
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">

@@ -324,7 +324,7 @@ const CategoryPage = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
 
-      <div className="mt-20">
+      <div className="mt-[108px] md:mt-[104px]">
         <CategoryNav
           activeCategory={categoryId || 'insecticides'}
           onCategoryChange={handleCategoryChange}

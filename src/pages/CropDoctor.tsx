@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+
 import Footer from '@/components/layout/Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { CROPS, SYMPTOMS, CROP_ISSUES } from '@/data/cropDoctorData';
@@ -104,7 +104,7 @@ const CropDoctor = () => {
     return (
         <div className="min-h-screen bg-gray-50 font-sans">
             <TopHeader />
-            <CategoryNav currentLanguage={currentLangCode} activeCategory="" onCategoryChange={() => { }} />
+
 
             <main className="container mx-auto px-4 py-8 max-w-5xl">
 

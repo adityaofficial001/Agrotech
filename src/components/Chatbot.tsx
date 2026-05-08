@@ -28,7 +28,7 @@ export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [apiKey, setApiKey] = useState('backend');
+  const [apiKey, setApiKey] = useState('');
   const [inputApiKey, setInputApiKey] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
@@ -36,7 +36,8 @@ export function Chatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const savedKey = localStorage.getItem('gemini_api_key');
+    // Check localStorage first, then fallback to environment variable
+    const savedKey = localStorage.getItem('grok_api_key') || import.meta.env.VITE_GROK_API_KEY || '';
     if (savedKey) {
       setApiKey(savedKey);
       setInputApiKey(savedKey);
@@ -67,7 +68,7 @@ export function Chatbot() {
   };
 
   const handleSaveApiKey = () => {
-    localStorage.setItem('gemini_api_key', inputApiKey);
+    localStorage.setItem('grok_api_key', inputApiKey);
     setApiKey(inputApiKey);
     setIsSettingsOpen(false);
   };
@@ -169,7 +170,7 @@ export function Chatbot() {
           <Bot size={22} className="md:w-6 md:h-6" />
           <div>
             <h3 className="font-semibold leading-tight text-sm md:text-base">AgriCare Assistant</h3>
-            <span className="text-[10px] md:text-xs text-primary-foreground/80">{language === 'HI' ? 'हिंदी में उपलब्ध' : 'Powered by AI'}</span>
+            <span className="text-[10px] md:text-xs text-primary-foreground/80">{language === 'HI' ? 'हिंदी में उपलब्ध' : 'Powered by Grok AI'}</span>
           </div>
         </div>
         <div className="flex items-center gap-1 md:gap-2">
@@ -212,7 +213,7 @@ export function Chatbot() {
           <div className="bg-white p-5 rounded-xl border border-border shadow-sm flex flex-col gap-4 animate-in fade-in zoom-in-95">
             <h4 className="font-semibold flex items-center gap-2"><Settings size={18} className="text-primary"/> Configuration</h4>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Enter your Gemini API Key to enable the smart assistant. Keys are stored locally in your browser.
+              Enter your Grok API Key to enable the smart assistant. Keys are stored locally in your browser.
             </p>
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">API Key</label>
@@ -220,7 +221,7 @@ export function Chatbot() {
                 type="password"
                 value={inputApiKey}
                 onChange={(e) => setInputApiKey(e.target.value)}
-                placeholder="AIzaSy..."
+                placeholder="xoxb-..."
                 className="w-full text-sm p-2.5 rounded-md border border-slate-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
               />
             </div>
@@ -237,7 +238,7 @@ export function Chatbot() {
               <Bot size={40} />
             </div>
             <h3 className="font-semibold text-lg text-slate-800">Welcome to AI Assistant</h3>
-            <p className="text-sm text-slate-500">Please configure your Gemini API Key to start receiving expert agricultural advice.</p>
+            <p className="text-sm text-slate-500">Please configure your Grok API Key to start receiving expert agricultural advice.</p>
             <button 
               onClick={() => setIsSettingsOpen(true)}
               className="px-6 py-2.5 mt-4 bg-primary/10 text-primary rounded-full text-sm font-medium hover:bg-primary/20 transition-colors"

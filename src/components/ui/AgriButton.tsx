@@ -9,7 +9,7 @@ const agriButtonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-agri-green-dark shadow-agri-sm hover:shadow-agri-md active:scale-[0.98]",
+          "bg-primary text-primary-foreground shadow-agri-sm hover:shadow-agri-md active:scale-[0.98] btn-liquid btn-liquid-default",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-agri-lime shadow-agri-sm hover:shadow-agri-md active:scale-[0.98]",
         outline:
@@ -19,9 +19,9 @@ const agriButtonVariants = cva(
         link:
           "text-primary underline-offset-4 hover:underline",
         hero:
-          "bg-agri-lime text-agri-green-dark font-bold hover:bg-agri-yellow shadow-agri-md hover:shadow-agri-glow active:scale-[0.98]",
+          "bg-agri-lime text-agri-green-dark font-bold shadow-agri-md hover:shadow-agri-glow active:scale-[0.98] btn-liquid btn-liquid-hero",
         cart:
-          "bg-agri-yellow text-agri-brown font-bold hover:bg-agri-lime shadow-agri-sm hover:shadow-agri-md active:scale-[0.98]",
+          "bg-agri-yellow text-agri-brown font-bold shadow-agri-sm hover:shadow-agri-md active:scale-[0.98] btn-liquid btn-liquid-cart",
         danger:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-agri-sm",
       },

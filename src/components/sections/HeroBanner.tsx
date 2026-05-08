@@ -45,6 +45,14 @@ const HeroBanner: React.FC<HeroBannerProps> = ({ currentLanguage = 'en' }) => {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent" />
       </div>
 
+      {/* Floating Leaves Decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <Leaf className="absolute top-20 left-[15%] w-8 h-8 text-agri-lime/40 animate-float-slow -rotate-12" />
+        <Leaf className="absolute top-40 right-[25%] w-12 h-12 text-agri-green/30 animate-float-fast rotate-45" />
+        <Leaf className="absolute bottom-32 left-[40%] w-10 h-10 text-primary/30 animate-float-medium rotate-90" />
+        <Leaf className="absolute top-1/2 right-[10%] w-6 h-6 text-agri-yellow/40 animate-float-slow rotate-180" />
+      </div>
+
       <div className="container mx-auto px-4 py-16 lg:py-24 relative z-10">
         <div className="max-w-2xl">
           {/* Content */}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import TopHeader from '@/components/layout/TopHeader';
-import CategoryNav from '@/components/layout/CategoryNav';
+
 import Footer from '@/components/layout/Footer';
 import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 import { Button } from '@/components/ui/button';
@@ -15,7 +15,7 @@ const Blog = () => {
     return (
         <div className="min-h-screen bg-background flex flex-col">
             <TopHeader />
-            <CategoryNav activeCategory="" onCategoryChange={() => { }} />
+
 
             <main className="flex-1">
                 <div className="container mx-auto px-4 py-8">
